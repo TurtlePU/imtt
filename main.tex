@@ -1,0 +1,40 @@
+\documentclass
+    [acmsmall,screen,review,anonymous,nonacm]{acmart}
+
+\usepackage{
+    amsmath,fontawesome,mathpartir,mathtools,minted,
+    newunicodechar,simplebnf,xcolor
+}
+
+\newunicodechar{∀}{$\forall$}
+\newunicodechar{∷}{$\dblcolon$}
+
+\title{Type Systems That Reinterpret Themselves}
+
+\begin{abstract}
+We advocate that type systems should be able to
+reinterpret their own terms in any internal model of
+themselves: equipped with a single tool of
+reinterpretation, you can express many desired features of
+type systems, including universe polymorphism, limited
+effect polymorphism, external parametricity and more. To
+this end, we present two type systems capable of
+self-reinterpretation, namely STLC-R and MLTT-R, prove
+their basic properties and show how the features we claim
+they contain are definable on the library level.
+\end{abstract}
+
+\begin{document}
+
+\maketitle
+
+\input{intro.tex}
+\input{simply-typed.tex}
+\input{dependently-typed.tex}
+\input{discussion.tex}
+\input{conclusion.tex}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{bibliography}
+
+\end{document}

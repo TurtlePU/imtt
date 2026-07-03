@@ -1,0 +1,493 @@
+\section
+    {Almost simply typed reinterpretable language: STLC-R}
+    \label{STLC-R}
+
+We start with a simpler language to iron out the details
+and actually figure out how to properly reinterpret terms
+internally before moving on to dependently typed system.
+Our starting point is simply typed lambda calculus with
+products, which we call <<STLC>> throughout this paper. As
+discussed before, we will add self-reinterpretation
+capabilities to it to enable reinterpretation in any
+<<model>> of STLC specifiable inside our language. Here's
+the thing we \textit{wish} to do with it, where
+$t\,@\,\mathcal{M}$ is an operator of reinterpretation of
+term $t$ in internal model $\mathcal{M}$:
+\begin{multline*}
+    (\lambda f x y. (f x, y))\,@\,\langle(\circ),
+        \mathtt{pair},\mathtt{proj}_1,\mathtt{proj}_2,
+        \mathtt{lam},\mathtt{eval},\ldots\rangle=\\=
+    \mathtt{lam}\,(\mathtt{lam}\,(\mathtt{lam}\,(
+        \mathtt{pair}\,
+            (\mathtt{eval}\,\circ\,\mathtt{pair}\,
+                (\mathtt{proj}_2\circ\mathtt{proj}_1
+                    \circ\mathtt{proj}_1
+                )\,
+                (\mathtt{proj}_2\circ\mathtt{proj}_1)
+            )\,
+            \mathtt{proj}_2
+    )))
+\end{multline*}
+
+Where $\mathtt{lam}$,\,$\mathtt{pair}$ and $\mathtt{eval}$
+are correspondingly constructor of an exponential object,
+constructor of a product and evaluation morphism, in the
+same way they are specified in the definition of cartesian
+closed categories.
+
+There are a few things to ponder:
+
+\begin{itemize}
+    \item How to reinterpret free variables?
+    \item How to type universes?
+    \item We're in a simply typed setting, so there's no
+        way to enforce that universe satisfies coherence
+        conditions on their operations. How to structure
+        computation in such a way that it doesn't break
+        Church-Rosser property?
+\end{itemize}
+
+To answer the first question, we actually disallow (most
+of) free variables in a terms that are to be reinterpreted
+since it is not clear how to lift arbitrary \textit{value}
+into current universe, so we have to enforce some kind of
+a typing discipline for introducing terms amenable to
+reinterpretation. In a sense, reinterpretation is a strong
+form of polymorphism, so let's structure our grammar and
+typing rules similarly to how it's done in Hindley-Milner
+type systems today and see how far we can go; that's
+figure \ref{stlc-r-grammar}.
+
+\begin{figure}
+\centering
+\begin{bnf}
+    $S,T,C,P,E,TT$ : \textsf{MonoType} ::=
+    | $\alpha$ : type variable
+    | $\top$ : unit type
+    | $S\times T$ : product type
+    | $S\to T$ : arrow type
+    ;;
+    $\sigma$ : \textsf{PolyType} ::=
+    | $T$ : monomorphic type
+    | $\forall\alpha.\sigma$ : forall type
+    ;;
+    $s,t$ : \textsf{Term} ::=
+    | $x$ : variable
+    | $()$ : singleton
+    | $(s, t)$ : pair
+    | $\pi_1\,t$ : first projection
+    | $\pi_2\,t$ : second projection
+    | $\lambda x. t$ : abstraction
+    | $t\,s$ : application
+    | \texttt{let}\,$x=s$\,\texttt{in}\,$t$
+        : polymorphic binding
+    | $x^\mathcal{M}$ : reinterpretation
+    ;;
+    $\mathcal{M}$ : \textsf{Model} ::=
+    | $\langle T, t, \ldots \rangle$
+        : model def. (see below)
+\end{bnf}
+\caption{STLC-R grammar}
+\Description{}
+\label{stlc-r-grammar}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{mathpar}
+    \inferrule{x:\sigma\in\Gamma}{\Gamma\vdash x:\sigma}
+    \and
+    \inferrule{}{\Gamma\vdash ():\top}
+    \and
+    \inferrule{\Gamma\vdash s:S\\\Gamma\vdash t:T}
+        {\Gamma\vdash (s,t):S\times T}
+    \and
+    \inferrule{\Gamma\vdash t:S\times T}
+        {\Gamma\vdash \pi_1\,t:S}
+    \and
+    \inferrule{\Gamma\vdash t:S\times T}
+        {\Gamma\vdash \pi_2\,t:T}\\
+    \and
+    \inferrule{\Gamma,x:S\vdash t:T}
+        {\Gamma\vdash\lambda x.t:S\to T}
+    \and
+    \inferrule{\Gamma\vdash t:S\to T\\\Gamma\vdash s:S}
+        {\Gamma\vdash t\,s:T}
+    \and
+    \inferrule{\Gamma\vdash t:\sigma}
+        {\Gamma\vdash t:\forall\alpha.\sigma}
+    \and
+    \inferrule{\Gamma\vdash t:\forall\alpha.\sigma}
+        {\Gamma\vdash t:\sigma[\alpha\coloneqq T]}
+    \and
+    \inferrule{
+        \mathrm{fv}(\sigma)=\varnothing\\
+        \forall\Gamma\vdash s:\sigma\\
+        \forall\Gamma,x:\sigma,\Delta\vdash t:T
+    }{\forall\Gamma,\Delta\vdash
+        \mathtt{let}\,x=s\,\mathtt{in}\,t:T}
+    \and
+    \inferrule{
+        x:\forall\vec{\alpha}.T\in\forall\Gamma\\
+        \forall\Gamma,\Delta\vdash
+            \mathcal{M}\,\mathrm{model}
+    }{\forall\Gamma,\Delta\vdash x^\mathcal{M}
+        :\llbracket T\rrbracket^\mathcal{M}_{
+            \left[\vec{\alpha}\coloneqq\vec{S}\right]}}
+    \and
+    \inferrule{
+        \mathrm{fv}(C)\cup\mathrm{fv}(P)\cup
+            \mathrm{fv}(E)\subseteq\{0,1\}\\
+        \Gamma\vdash\mathtt{id}:
+            \forall\alpha.C[\alpha,\alpha]\\
+        \Gamma\vdash\mathtt{comp}:
+            \forall\alpha\beta\gamma.
+            C[\beta,\gamma]\to C[\alpha,\beta]\to
+            C[\alpha,\gamma]\\
+        \mathrm{fv}(TT)=\varnothing\\
+        \Gamma\vdash\mathtt{cnst}:
+            \forall\alpha.C[\alpha,TT]\\
+        \Gamma\vdash\mathtt{pair}:
+            \forall\alpha\beta\gamma.
+            C[\gamma,\alpha]\to C[\gamma,\beta]\to
+            C[\gamma,P[\alpha,\beta]]\\
+        \Gamma\vdash\mathtt{proj}_1:
+            \forall\alpha\beta.C[P[\alpha,\beta],\alpha]\\
+        \Gamma\vdash\mathtt{proj}_2:
+            \forall\alpha\beta.C[P[\alpha,\beta],\beta]\\
+        \Gamma\vdash\mathtt{lam}:
+            \forall\alpha\beta\gamma.
+            C[P[\gamma,\beta],\alpha]\to
+            C[\gamma,E[\alpha,\beta]]\\
+        \Gamma\vdash\mathtt{eval}:
+            \forall\alpha\beta.
+            C[P[E[\alpha,\beta],\beta],\alpha]
+    }{\Gamma\vdash\langle
+        \Lambda 01.C,\mathtt{id},\mathtt{comp}, TT,
+        \mathtt{cnst}, \Lambda 01.P,\mathtt{pair},
+        \mathtt{proj}_1,\mathtt{proj}_2,
+        \Lambda 01.E,\mathtt{lam},\mathtt{eval}
+    \rangle\,\mathrm{model}}
+\end{mathpar}
+\caption{STLC-R declarative typing rules}
+\Description{}
+\label{stlc-r-typing}
+\end{figure}
+
+In figure \ref{stlc-r-typing}, we mostly repeat usual
+declarative typing rules of a Hindley-Milner type system
+\cite{Clement:ML1986} (TODO: check source) with an
+addition of a rule for reinterpretation (discussed below)
+and an important change in \texttt{let} case: as
+discussed, we don't take local context in account when
+checking polymorphic term $s$. Instead, it can only
+reference other polymorphic terms. This is safe since
+other polymorphic terms are constrained in the same way,
+and can be safely used inside $s$.
+
+To check models, we abuse our type system a bit in order
+to avoid adding type operators and complicate the type
+system: types of arrows $C$, products $P$ and exponentials
+$E$ are specified as open monomorphic types which can use
+two type variables, $0$ and $1$. This fact is reflected in
+the syntax of a model using notation $\Lambda 01.C$,
+$\Lambda 01.P$ and $\Lambda 01.E$ respectively. $0$ and
+$1$ are then filled in by substitution when we need to
+type model operations (notation $T[S_1, S_2]$ is a
+shorthand for $T[0\coloneqq S_1,1\coloneqq S_2]$).
+
+We could generalize model definition to include something
+else as objects instead of types, but there is no way to
+build meaningful $C$,$P$ and $E$ with anything other than
+types in base system.
+
+\begin{definition}
+    Let $\mathcal{M}=\langle\Lambda 01.C,\mathtt{id},
+    \mathtt{comp},TT,\mathtt{cnst},\Lambda 01.P,
+    \mathtt{pair},\mathtt{proj}_1,\mathtt{proj}_2,
+    \Lambda 01.E,\mathtt{lam},\mathtt{eval}\rangle$. Then,
+    interpretation of type in a model is the following
+    function:
+    \begin{align}{}
+    \llbracket T\rrbracket^\mathcal{M}_\sigma &=
+        C[TT,T^\mathcal{M}_\sigma] \\
+    \alpha^\mathcal{M}_\sigma &= \sigma\alpha \\
+    \top^\mathcal{M}_\sigma &= TT \\
+    (S\times T)^\mathcal{M}_\sigma &=
+        P[S^\mathcal{M}_\sigma,T^\mathcal{M}_\sigma] \\
+    (S\to T)^\mathcal{M}_\sigma &=
+        E[S^\mathcal{M}_\sigma,T^\mathcal{M}_\sigma].
+    \end{align}
+\end{definition}
+
+Having defined typing rules, let's pin down computation
+rules in order to prove some useful properties. General
+idea is the following: before inlining a \texttt{let}
+binding, we first have to make sure that the polymorphic
+term is closed and is in normal form; in all other cases,
+standard reductions of STLC apply.
+
+\begin{figure}
+\centering
+\begin{align*}
+    u,v&\Coloneqq n\;|\;()\;|\;(u,v)\;|\;\lambda x.v\\
+    n&\Coloneqq x\;|\;\pi_i\,n\;|\;n\,v
+\end{align*}
+\caption{Values and neutral terms of STLC-R}
+\Description{}
+\label{stlc-r-val}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{mathpar}
+    \inferrule{s\to s'}{(s,t)\to(s',t)}
+    \and
+    \inferrule{t\to t'}{(s,t)\to(s,t')}
+    \and
+    \inferrule{t\to t'}{\pi_i t\to\pi_i t'}
+    \and
+    \inferrule{}{\pi_i(t_1, t_2)\to t_i}
+    \\
+    \inferrule{t\to t'}{\lambda x.t\to\lambda x.t'}
+    \and
+    \inferrule{s\to s'}{s\,t\to s'\,t}
+    \and
+    \inferrule{t\to t'}{s\,t\to s\,t'}
+    \and
+    \inferrule{}{(\lambda x.t)s\to t[x\coloneqq s]}
+    \\
+    \inferrule{s\to s'}{
+        \mathtt{let}\,x=s\,\mathtt{in}\,t\to
+        \mathtt{let}\,x=s'\,\mathtt{in}\,t
+    }
+    \and
+    \inferrule{t\to t'}{
+        \mathtt{let}\,x=s\,\mathtt{in}\,t\to
+        \mathtt{let}\,x=s\,\mathtt{in}\,t'
+    }
+    \and
+    \inferrule{\mathrm{fv}(v)=\varnothing}{
+        \mathtt{let}\,x=v\,\mathtt{in}\,t\to
+            t\llbracket x\coloneqq v\rrbracket
+    }
+\end{mathpar}
+\caption{STLC-R computation rules}
+\Description{}
+\label{stlc-r-comp}
+\end{figure}
+
+\begin{definition}
+    By $t\llbracket x\coloneqq v\rrbracket$ we mean an
+    operation which works as a regular substitution of $v$
+    into $t$ except for the case of reinterpretation:
+    \begin{align}{}
+        x^\mathcal{M}\llbracket
+            x\coloneqq v\rrbracket &= \llbracket
+                v \rrbracket^\mathcal{M}/\varepsilon
+        \\
+        \llbracket()\rrbracket^\mathcal{M}/\gamma &=
+            \mathtt{cnst}
+        \\
+        \llbracket(s,t)\rrbracket^\mathcal{M}/\gamma &=
+            \mathtt{pair}
+                \,
+                \llbracket s\rrbracket^\mathcal{M}/\gamma
+                \,
+                \llbracket t\rrbracket^\mathcal{M}/\gamma
+        \\
+        \llbracket\pi_i\,t\rrbracket^\mathcal{M}/\gamma &=
+            \mathtt{comp}\,\mathtt{proj}_i\,\llbracket
+                t\rrbracket^\mathcal{M}/\gamma
+        \\
+        \llbracket x\rrbracket^\mathcal{M}/\gamma &=
+            \gamma\,x
+        \\
+        \llbracket\lambda x.t\rrbracket^\mathcal{M}/\gamma
+            &= \mathtt{lam}\,\llbracket t
+            \rrbracket^\mathcal{M}/\left[
+                \vec{y}\coloneqq\mathtt{comp}\,
+                    \mathtt{proj}_1(\gamma\,\vec{y}),\;
+                x\coloneqq\mathtt{proj}_2
+            \right]
+        \\
+        \llbracket t\,s\rrbracket^\mathcal{M}/\gamma &=
+            \mathtt{comp}\,\mathtt{eval}\,\left(
+                \mathtt{pair}
+                \,
+                \llbracket t\rrbracket^\mathcal{M}/\gamma
+                \,
+                \llbracket s\rrbracket^\mathcal{M}/\gamma
+            \right)
+    \end{align}
+    where model operations \texttt{cnst},\,\texttt{pair}
+    and others are taken from $\mathcal{M}$ and
+    $\varepsilon$ is an empty substitution.
+\end{definition}
+
+\subsection{Metatheoretical properties of STLC-R}
+
+Here we only study some basic properties of a system to
+make sure that everything works as expected: computations
+don't diverge; types are preserved by all computations;
+all of the types can be inferred if you wish to do so;
+everything terminates and, modulo reduction of
+\texttt{let}-bindings, this is the same old STLC we
+started with. Proofs are mostly following standard
+techniques, since rules for reinterpretation are
+structured to directly plug into proofs of properties of
+STLC.
+
+\begin{theorem}[Church-Rosser theorem for STLC-R]
+    Reflexive transitive closure of $(\to)$ has
+    Church-Rosser property.
+\end{theorem}
+\begin{proof}
+    Classic proof via parallel reduction relation
+    \cite{CRproof}. Parallel reduction is defined as:
+    \begin{mathpar}
+        \inferrule{}{t\twoheadrightarrow t}
+        \and
+        \inferrule{
+            s\twoheadrightarrow s'\\
+            t\twoheadrightarrow t'
+        }{(s,t)\twoheadrightarrow(s',t')}
+        \and
+        \inferrule{t\twoheadrightarrow t'}
+            {\pi_i\,t\twoheadrightarrow\pi_i\,t'}
+        \and
+        \inferrule{
+            t_1\twoheadrightarrow t_1'\\
+            t_2\twoheadrightarrow t_2'
+        }
+        {\pi_i(t_1,t_2)\twoheadrightarrow t_i'}
+        \\
+        \inferrule{t\twoheadrightarrow t'}
+            {\lambda x.t\twoheadrightarrow\lambda x.t'}
+        \and
+        \inferrule{
+            s\twoheadrightarrow s'\\
+            t\twoheadrightarrow t'
+        }
+        {s\,t\twoheadrightarrow s'\,t'}
+        \and
+        \inferrule{
+            s\twoheadrightarrow s'\\
+            t\twoheadrightarrow t'
+        }
+        {(\lambda x.s)\,t\twoheadrightarrow
+            s'[x\coloneqq t']}
+        \\
+        \inferrule{
+            s\twoheadrightarrow s'\\
+            t\twoheadrightarrow t'
+        }{
+            \mathrm{let}\,x=s\,\mathrm{in}\,t
+                \twoheadrightarrow
+            \mathrm{let}\,x=s'\,\mathrm{in}\,t'
+        }
+        \and
+        \inferrule{t\twoheadrightarrow t'}{
+            \mathrm{let}\,x=v\,\mathrm{in}\,t
+                \twoheadrightarrow
+            t'\llbracket x\coloneqq v\rrbracket
+        }
+    \end{mathpar}
+\end{proof}
+
+\begin{theorem}[Type preservation for STLC-R]
+    The following is true:
+    \begin{enumerate}
+        \item If $\mathcal{M}\,\mathrm{model}$,
+            $\gamma\,x:C[\Gamma^\mathcal{M},
+            \Gamma(x)^\mathcal{M}]$ for all $x\in\Gamma$
+            and $\Gamma\vdash t:T$, then $\llbracket t
+            \rrbracket^\mathcal{M}/\gamma:
+            C[\Gamma^\mathcal{M},T^\mathcal{M}]$.
+        \item If $\Gamma\vdash s:S$ and
+            $\Gamma,x:S,\Delta\vdash t:T$, then
+            $\Gamma,\Delta\vdash t[x\coloneqq s]:T$.
+        \item If $\Gamma\vdash v:\sigma$ and
+            $\Gamma,x:\sigma,\Delta\vdash t:T$, then
+            $\Gamma,\Delta\vdash t\llbracket x\coloneqq v
+            \rrbracket:T$.
+        \item If $\Gamma\vdash t:T$ and $t\to t'$, then
+            $\Gamma\vdash t':T$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    By structural induction on terms and $(\to)$.
+\end{proof}
+
+\begin{theorem}[Strong normalization for STLC-R]
+    Closed terms typable in STLC-R are strongly normalizing with respect to $(\to)$.
+\end{theorem}
+\begin{proof}
+    By Tait's method of logical relations. Let $SN$ be a set of strongly normalizing terms. Let there be the following relation $\mathcal{R}\subseteq\mathsf{PolyType}\times\mathsf{Term}$:
+
+    \begin{itemize}
+        \item $t\in\mathcal{R}_\alpha,\mathcal{R}_\top$ iff $t\in SN$;
+        \item $t\in\mathcal{R}_{T_1\times T_2}$ iff $\pi_i\,t\in\mathcal{R}_{T_i}$ for $i=1,2$;
+        \item $t\in\mathcal{R}_{S\to T}$ iff for all $s\in\mathcal{R}_S$, $t\,s\in\mathcal{R}_T$;
+        \item $t\in\mathcal{R}_{\forall\vec{\alpha}.T}$ iff $t\in SN_\mathtt{let}$ and for all $\mathcal{U}\in\mathcal{R}_{univ}$ and $\vec{S}$,
+        $nf_\mathtt{let}(t)\,@\,\mathcal{U}\in\mathcal{R}_{\mathcal{U}\llbracket T\rrbracket[\vec{\alpha}\coloneqq\vec{S}]}$.
+    \end{itemize}
+
+    $\mathcal{U}\in\mathcal{R}_{univ}$ is defined similarly by requiring that all terms inside $\mathcal{U}$ belong to respective $\mathcal{R}$-s.
+
+    Then we can prove our main lemma by mutual induction on typing rules:
+
+    \begin{itemize}
+        \item If $\Gamma\vdash t:T$ and $\gamma$ is a substitution s.t. $\gamma\,x\in\mathcal{R}_{\Gamma(x)}$ for all $x\in\Gamma$ then $\gamma\,t\in\mathcal{R}_T$.
+        \item If $\forall\Gamma\vdash t:T$, $\vec{\alpha}=fv(T)$ and $\gamma$ is a substitution s.t. $\gamma\,x\in\mathcal{R}_{\Gamma(x)}$ for all $x\in\Gamma$ then $\gamma\,t\in\mathcal{R}_{\forall\vec{\alpha}.T}$.
+    \end{itemize}
+
+    Noticing $\mathcal{R}_T\subseteq SN$ completes the proof.
+\end{proof}
+
+\begin{theorem}[Conservativity over STLC]
+    Normal forms of closed terms typable in STLC-R are typable in STLC.
+\end{theorem}
+\begin{proof}
+    Thanks to type preservation, normal form $nf(t)$ is typable in STLC-R. Normal form cannot contain let-bindings by definition of $(\to)$, therefore each subterm is $\forall$-closed. Therefore $nf(t)$ has no reinterpretation subterms.
+\end{proof}
+
+\begin{theorem}
+    Global type inference for STLC-R is decidable.
+\end{theorem}
+\begin{proof}
+    It is enough to extend any unification-based type inference algorithm for Hindley-Milner type system to support universes and reinterpretation.
+    \begin{itemize}
+        \item Since universes are provided explicitly, it is enough to \textit{check} them.
+        \item Since polymorphic functions do not depend on local context, their type is fully resolved when it's added to context.
+        \item Once universe is checked in $x\,@\,\mathcal{U}$, we can directly compute $\mathcal{U}\llbracket T\rrbracket$ (since $\mathcal{U}$ is known and $T$ is fully resolved) and instantiate it with fresh metavariables in $\vec{S}$.
+    \end{itemize}
+\end{proof}
+
+\subsection{Useful reinterpretations inside STLC-R} \label{STLC-R-applications}
+
+The idea to interpret STLC terms in cartesian closed categories is really not new and is already thoroughly explored by Conal Elliott in ``Compiling to Categories'' \cite{Elliott:Compcat2017}; our addition here is that we internalized reinterpretation inside the calculus without working through compiler plugin. So all of the main applications from the cited paper are still applicable here whenever they are expressible as universes in STLC-R. As STLC-R is not the main focus of the paper, we will not be reiterating the examples here, but we would like to add just one more example.
+
+Following Moggi \cite{MOGGI199155}, we can use monads to model side effects in a language. What is new here is that instead of parameterizing a function by arbitrary monad, we can simply \textit{reinterpret} pure terms as if they were run in monadic context. Therefore, our universe is a Kleisli category; however, it is only cartesian, but in general not cartesian \textit{closed}. The problem is the following operation (here $F$ is a monad in question, $E$ is whatever exponential object we were to use):
+\[ \mathtt{lam}:(\alpha\times\beta\to F[\gamma])\to(\alpha\to F[E[\gamma,\beta]]) \]
+In other words, $F$ has to \textit{distribute} over an arrow. Well, at least arrow type distributes over itself:
+\begin{align*}
+    \mathcal{U}_E &= \langle\\
+        &\Lambda01.\,0\to E\to1,\\
+        &\lambda x e.x,\\
+        &\lambda gfxe.g(fxe)e,\\
+        &\top,\\
+        &\lambda e.(),\\
+        &\Lambda01.\,0\times1,\\
+        &\lambda fgxe.(fxe,gxe),\\
+        &\lambda pe.\pi_1\,p,\\
+        &\lambda pe.\pi_2\,p,\\
+        &\Lambda01.\,0\to1,\\
+        &\lambda fxey.f(x,y)e,\\
+        &\lambda pe.(\pi_1\,p)\,(\pi_2\,p)\\
+    \rangle
+\end{align*}
+
+Interestingly enough, if, using Curry-Howard correspondence, we take closed STLC term $t$ to represent proof of an intuitionistic proposition, $t\,@\,\mathcal{U}_E$ corresponds to hypothesis elimination in intuitionistic logic.
+
+We \textit{could} write down a universe for arbitrary monad if we had capability to interpret terms which do not use abstractions in arbitrary cartesian category, which is actually achievable with \cite{Elliott:Compcat2017}. We leave study of such ``partial'' interpretation for future work.
