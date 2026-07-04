@@ -86,7 +86,7 @@ model.
 \begin{figure}
 \centering
 \begin{bnf}
-$\Gamma$ : Context ::=
+$\Gamma$,$\Delta$ : Context ::=
     | $\cdot$ : empty context
     | $\Gamma$, $x\,\colon T$ : variable extension
     | $\Gamma.\,\text{\faLock}$ : context locking
@@ -94,44 +94,48 @@ $\Gamma$ : Context ::=
 $T$, $S$ : Type ::=
     | $\mathcal{U}_\ell$ : universe
     | $\mathrm{El}_\ell(t)$ : universal type family
-    | $\mathrm{Nat}$ : natural number type
+    | $\mathrm{Nat}_\ell$ : natural number type
     | $(x\,\colon S)\times T$ : $\Sigma$-type
     | $(x\,\colon S)\to T$ : $\Pi$-type
     | $t_1=_T t_2$ : identity type
     | $\Box\,T$ : type of closed terms
     | $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa}$
         : type of models
+    | $T^t_\Delta$
+        : reinterpretation of type inside a model
     ;;
 $\ell$, $\kappa$, $j$ : Level :in: $\mathbb{N}$
     : finite levels ;;
 $t$, $s$ : Term ::=
-    | $x$ // $y$ // \texttt{m} // $\ldots$ : variables
-    | $\mathrm{U}_\ell$ : code of a universe
-    | $\mathtt{nat}_\mathcal{U}$
+    | $x$ // $y$ // $z$ // \texttt{m} // $\ldots$
+        : variables
+    | $\mathtt{U}_\ell$ : code of a universe
+    | $\mathtt{Nat}_\ell$
         : code of a natural number type
     | $0$ : zero
     | $\mathrm{S}\,t$ : successor
     | $\mathrm{natind}_{x.T}\,t\,\{s_0,y\mapsto s_S\}$
         : induction
-    | $(x\,\colon s)\times_\mathcal{U} t$
+    | $\mathtt{Sigma}(x\,\colon s)t$
         : code of a $\Sigma$-type
     | $(s, t)$ : pairing
     | $\pi_1\,t$ // $\pi_2\,t$ : projections
-    | $(x\,\colon s)\to_\mathcal{U} t$
+    | $\mathtt{Pi}(x\,\colon s)t$
         : code of a $\Pi$-type
     | $\lambda x.\,t$ : abstraction
     | $t\,s$ : application
-    | $\mathtt{id}_\mathcal{U}\,t\,t_1\,t_2$
+    | $\mathtt{Id}\,t\,t_1\,t_2$
         : code of an identity type
     | $\mathrm{refl}$ : reflexivity
     | $\mathrm{J}_{xy.S}\,t\,s$
         : J rule (elimination of equality type)
-    | $\Box_\mathcal{U}\,t$ : code of a box type
+    | $\mathtt{Box}\,t$ : code of a box type
     | $[t]_\text{\faLock}$ : locking
     | $[t]_\text{\faUnlock}$ : unlocking
     | $\llbracket t
         \rrbracket^{\ell_0,\ldots,\ell_\kappa}$
         : internal interpretation
+    | $t_\Delta^s$ : intermediate interpretation
     | $t\,\colon T$ : ascription
     ;;
 \end{bnf}
@@ -165,8 +169,9 @@ $t$, $s$ : Term ::=
             \Gamma\vdash\mathrm{level}
                 (\mathrm{El}_\ell(t)) = \ell}
     \and
-    \inferrule[Level-Nat]{\Gamma\;\mathrm{wf}}
-        {\Gamma\vdash\mathrm{level}(\mathrm{Nat})=0}
+    \inferrule[Level-Nat]{\Gamma\;\mathrm{wf}}{
+        \Gamma\vdash\mathrm{level}(\mathrm{Nat}_\ell)=
+            \ell}
     \and
     \inferrule[Level-Box]
         {\Gamma\vdash\mathrm{level}(T)=\ell}
@@ -192,6 +197,14 @@ $t$, $s$ : Term ::=
             \mathcal{M}_{\ell_0,\ldots,\ell_\kappa}
         \right)=\max(\ell_0,\ldots,\ell_\kappa)+1
     }
+    \and
+    \inferrule[Level-TyInterp]{
+        \Gamma\vdash t\Rightarrow\mathcal{M}_{
+            \ell_0,\ldots,\ell_\kappa}\\
+        \Gamma.\,\text{\faLock},\Delta\vdash
+            \mathrm{level}(T)=j
+    }{\Gamma\vdash\mathrm{level}\left(T_\Delta^t\right)=
+        \ell_j}(j\leqslant\kappa)
 \end{mathpar}
 \caption{
     Context well-formedness \& level placement rules}
@@ -202,37 +215,38 @@ $t$, $s$ : Term ::=
 \centering
 \begin{mathpar}
     \inferrule[Infer-Uni]{\Gamma\;\mathrm{wf}}{
-        \Gamma\vdash\mathrm{U}_\ell\Rightarrow
+        \Gamma\vdash\mathtt{U}_\ell\Rightarrow
             \mathcal{U}_{\ell+1}}
     \and
     \inferrule[Infer-Nat]{\Gamma\;\mathrm{wf}}{
-        \Gamma\vdash\mathtt{nat}_\mathcal{U}\Rightarrow
-            \mathcal{U}_0}
+        \Gamma\vdash\mathtt{Nat}_\ell\Rightarrow
+            \mathcal{U}_\ell}
     \and
     \inferrule[Check-Zero]{\Gamma\;\mathrm{wf}}
-        {\Gamma\vdash 0\Leftarrow\mathrm{Nat}}
+        {\Gamma\vdash 0\Leftarrow\mathrm{Nat}_\ell}
     \and
     \inferrule[Check-Succ]
-        {\Gamma\vdash t\Leftarrow\mathrm{Nat}}
+        {\Gamma\vdash t\Leftarrow\mathrm{Nat}_\ell}
         {\Gamma\vdash\mathrm{S}\,t\Leftarrow
-            \mathrm{Nat}}
+            \mathrm{Nat}_\ell}
     \and
     \inferrule[Infer-NatInd]{
-        \Gamma\vdash t\Rightarrow\mathrm{Nat}\\
-        \Gamma,x:\mathrm{Nat}\vdash\mathrm{level}(T)=
-            \_\\
+        \Gamma\vdash t\Rightarrow\mathrm{Nat}_\ell\\
+        \Gamma,x:\mathrm{Nat}_\ell\vdash
+            \mathrm{level}(T)=\_\\
         \Gamma\vdash s_0\Leftarrow T[x\coloneqq 0]\\
-        \Gamma,y:\mathrm{Nat}\vdash s_S\Leftarrow
-            T[x\coloneqq\mathrm{S}\,y]
+        \Gamma,y:\mathrm{Nat}_\ell,z:T[x\coloneqq y]
+            \vdash s_S\Leftarrow
+                T[x\coloneqq\mathrm{S}\,y]
     }{\Gamma\vdash
-        \mathrm{natind}_{x.T}\,t\,\{s_0,y\mapsto s_S\}
+        \mathrm{natind}_{x.T}\,t\,\{s_0,yz.s_S\}
         \Rightarrow T[x\coloneqq t]}
     \and
     \inferrule[Infer-Sigma]{
         \Gamma\vdash s\Rightarrow\mathcal{U}_\kappa\\
         \Gamma,x:\mathrm{El}_\kappa(s)\vdash t
             \Rightarrow\mathcal{U}_\ell
-    }{\Gamma\vdash(x:s)\times_\mathcal{U}t\Rightarrow
+    }{\Gamma\vdash\mathtt{Sigma}(x:s)t\Rightarrow
         \mathcal{U}_{\max(\kappa,\ell)}}
     \and
     \inferrule[Check-Pair]{
@@ -253,7 +267,7 @@ $t$, $s$ : Term ::=
         \Gamma\vdash s\Rightarrow\mathcal{U}_\kappa\\
         \Gamma,x:\mathrm{El}_\kappa(s)\vdash t
             \Rightarrow\mathcal{U}_\ell
-    }{\Gamma\vdash(x:s)\to_\mathcal{U}t\Rightarrow
+    }{\Gamma\vdash\mathtt{Pi}(x:s)t\Rightarrow
         \mathcal{U}_{\max(\kappa,\ell)}}
     \and
     \inferrule[Check-Abs]
@@ -269,7 +283,7 @@ $t$, $s$ : Term ::=
         \Gamma\vdash t\Rightarrow\mathcal{U}_\ell\\
         \Gamma\vdash t_1,t_2\Leftarrow
             \mathrm{El}_\ell(t)
-    }{\Gamma\vdash\mathtt{id}\,t\,t_1\,t_2\Rightarrow
+    }{\Gamma\vdash\mathtt{Id}\,t\,t_1\,t_2\Rightarrow
         \mathcal{U}_\ell}
     \and
     \inferrule[Check-Refl]
@@ -292,7 +306,7 @@ $t$, $s$ : Term ::=
     \inferrule[Infer-Box]
         {\Gamma.\,\text{\faLock}\vdash t\Rightarrow
             \mathcal{U}_\ell}
-        {\Gamma\vdash\Box_\mathcal{U} t\Rightarrow
+        {\Gamma\vdash\mathtt{Box}\,t\Rightarrow
             \mathcal{U}_\ell}
     \and
     \inferrule[Check-Lock]
@@ -306,13 +320,21 @@ $t$, $s$ : Term ::=
     \and
     \inferrule[Infer-Interp]{
         \Gamma\vdash t\Rightarrow\Box T\\
-        \Gamma\vdash\mathrm{level}(T)=\kappa
+        \Gamma.\,\text{\faLock}\vdash
+            \mathrm{level}(T)=\kappa
     }{\Gamma\vdash\llbracket t\rrbracket^{
         \ell_0,\ldots,\ell_\kappa}\Rightarrow
         \left(\mathtt{m}:\mathcal{M}_{
             \ell_0,\ldots,\ell_\kappa}\right)\to
-        \mathtt{m}\,\llbracket T\rrbracket
+        T^\mathtt{m}_\cdot
     }
+    \and
+    \inferrule[Infer-Interm-Interp]{
+        \Gamma\vdash s\Rightarrow\mathcal{M}_{
+            \ell_0,\ldots,\ell_\kappa}\\
+        \Gamma.\,\text{\faLock},\Delta\vdash t
+            \Rightarrow T
+    }{\Gamma\vdash t^s_\Delta\Rightarrow T^s_\Delta}
     \\
     \inferrule[Infer-Ascr]{
         \Gamma\vdash\mathrm{level}(T)=\_\\
