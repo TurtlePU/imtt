@@ -1,7 +1,7 @@
 \section{Introduction}
 
-Consider the following well-known function which maps over
-elements of the list, written in Agda:
+Consider the following well-known function which maps
+over elements of the list, written in Agda:
 
 \begin{minted}{agda}
 map : ∀ {A B : Set} → (A → B) → List A → List B
@@ -11,110 +11,118 @@ map f (x ∷ xs) = f x ∷ map f xs
 
 Enjoying both composability of this function and
 simplicity of its type, we would like to reuse its
-definition as much as possible. Up to a certain level, we
-would surely be able to do so: after all, its definition
-is polymorphic in source and target types, so we can
-instantiate it with whatever types we want. But we might
-wish for much more; of things that come to our mind are
-the following:
+definition as much as possible. Up to a certain level,
+we would surely be able to do so: after all, its
+definition is polymorphic in source and target types, so
+we can instantiate it with whatever types we want. But
+we might wish for much more; of things that come to our
+mind are the following:
 
 \begin{itemize}
     \item Reuse \texttt{map} at higher universe levels,
         e.g., given a \textit{type operator}, map over
         \textit{list of types};
-    \item Automagically obtain a proof of the free theorem
-        for \texttt{map} -- that is, some term of type
+    \item Automagically obtain a proof of the free
+        theorem for \texttt{map} -- that is, some term
+        of type
         \begin{multline*}
             \forall A\,A'\,(Q:A\to A'\to\mathtt{Prop}),
-            \forall B\,B'\,(R:B\to B'\to\mathtt{Prop}),\\
-            \forall f\,f',\left(\forall x\,x',Q\,x\,x'\to
-                R(f x)\left(f' x'\right)\right)\to\\
-            \forall(\mathtt{xs}:\mathtt{List}\,A)
+            \forall B\,B'\,(R:B\to B'\to\mathtt{Prop}),
+            \\
+            \forall f\,f',\left(
+                \forall x\,x',Q\,x\,x'\to
+                R(f x)\left(f' x'\right)
+            \right)\to\\
+            \forall
+                (\mathtt{xs}:\mathtt{List}\,A)
                 (\mathtt{xs}':\mathtt{List}\,A'),
             Q^*\,\mathtt{xs}\,\mathtt{xs}'\to
             R^*(\mathtt{map}\,f\,\mathtt{xs})
                 (\mathtt{map}\,f'\,\mathtt{xs}');
         \end{multline*}
-    \item Given a group $G$, sets $A$ and $B$ with actions
-        $a$, $b$ of $G$ on them, and a function
+    \item Given a group $G$, sets $A$ and $B$ with
+        actions $a$, $b$ of $G$ on them, and a function
         $f: A \to B$ which respects $a$ and $b$, prove
         that $\mathtt{map}\;f$ respects actions on
-        $\mathtt{List}\,A$ and $\mathtt{List}\,B$ induced
-        by $a$ and $b$, respectfully;..
+        $\mathtt{List}\,A$ and $\mathtt{List}\,B$
+        induced by $a$ and $b$, respectfully;..
 \end{itemize}
 
 The first wish is, of course, granted by adjusting the
-definition and making it level-polymorphic. Second one is
-possible in a system with \textit{internal parametricity},
-as exemplified by Altenkirch and others
+definition and making it level-polymorphic. Second one
+is possible in a system with \textit{internal
+parametricity}, as exemplified by Altenkirch and others
 \cite{Altenkirch:Parametricity2024}. The last wish,
 however, has to be fulfilled manually, albeit with a
 simple list induction.
 
-A shift in perspective might help. Instead of tweaking the
-definition of \texttt{map}, let's remember all of the
-metatheoretic power our type system already has.
+A shift in perspective might help. Instead of tweaking
+the definition of \texttt{map}, let's remember all of
+the metatheoretic power our type system already has.
 Parametricity is a first hint; another is due to Lambek
-\cite{Lambek1980} who established that simply-typed lambda
-calculus (STLC) is an \textit{internal language} of
-\textit{cartesian closed categories} (CCC) \footnote{This
-is, of course, part of well-known Curry-Howard-Lambek
-correspondence.}. In particular, any term written in STLC
-can be interpreted in any cartesian closed category; this
-way, you don't have to repeat your construction in any CCC
-you meet, you just reinterpret the STLC term you already
-have \cite{Elliott:Compcat2017}. This correspondence can
-be extended further into dependently typed systems,
+\cite{Lambek1980} who established that simply-typed
+lambda calculus (STLC) is an \textit{internal language}
+of \textit{cartesian closed categories} (CCC)
+\footnote{This is, of course, part of well-known
+Curry-Howard-Lambek correspondence.}. In particular, any
+term written in STLC can be interpreted in any cartesian
+closed category; this way, you don't have to repeat your
+construction in any CCC you meet, you just reinterpret
+the STLC term you already have
+\cite{Elliott:Compcat2017}. This correspondence can be
+extended further into dependently typed systems,
 establishing correspondence with certain kinds of topoi
-and enabling us to do synthetic mathematics: prove general
-statements in higher-order intuitionistic logic and
-translate them into particular theorems about our topos of
-interest \cite{Nawrocki:Lean2026}.
+and enabling us to do synthetic mathematics: prove
+general statements in higher-order intuitionistic logic
+and translate them into particular theorems about our
+topos of interest \cite{Nawrocki:Lean2026}.
 
 All of this power, unfortunately, lies beyond what usual
 type systems can see, since that's their metatheoretical
-properties. But what if they were internalized? What if we
-had a way to \textit{reinterpret terms of a type system
-inside itself}? We experiment with this idea and end up
-with two minimal systems, STLC-R (section \ref{STLC-R})
-and MLTT-R (section \ref{MLTT-R}), based on simply typed
-lambda calculus and Martin-L\"of type theory respectively.
-Turns out that their capability of
+properties. But what if they were internalized? What if
+we had a way to \textit{reinterpret terms of a type
+system inside itself}? We experiment with this idea and
+end up with two minimal systems, STLC-R (section
+\ref{STLC-R}) and MLTT-R (section \ref{MLTT-R}), based
+on simply typed lambda calculus and Martin-L\"of type
+theory respectively. Turns out that their capability of
 \textit{self-reinterpretation} is expressive enough to
-cover all of the discussed usecases, including restricted
-form of effect polymorphism (section
-\ref{STLC-R-applications}), synthetic mathematics (section
-\ref{MLTT-R-synthetic}), universe polymorphism (section
-\ref{MLTT-R-displacement}), parametricity (section
-\ref{MLTT-R-parametricity}) and more.
+cover all of the discussed usecases, including
+restricted form of effect polymorphism (section
+\ref{STLC-R-applications}), synthetic mathematics
+(section \ref{MLTT-R-synthetic}), universe polymorphism
+(section \ref{MLTT-R-displacement}), parametricity
+(section \ref{MLTT-R-parametricity}) and more.
 
 \subsection{Contributions}
 
 \begin{itemize}
     \item We start by giving the syntax and semantics of
-        our first type system that reinterprets itself. It
-        is based on simply typed lambda calculus and is
-        called STLC-R. We prove that STLC-R is sound, and
-        that global type inference is decidable (section
-        \ref{STLC-R}).
+        our first type system that reinterprets itself.
+        It is based on simply typed lambda calculus and
+        is called STLC-R. We prove that STLC-R is sound,
+        and that global type inference is decidable
+        (section \ref{STLC-R}).
     \item As expected, you can reinterpret STLC-R terms
-        in any cartesian closed category you define inside
-        it, including categories of differentiable
-        manifolds for applications in autodifferentiation,
-        Kleisli categories of certain monads and more
-        (section \ref{STLC-R-applications}).
+        in any cartesian closed category you define
+        inside it, including categories of
+        differentiable manifolds for applications in
+        autodifferentiation, Kleisli categories of
+        certain monads and more (section
+        \ref{STLC-R-applications}).
     \item Building upon the insights gathered from
         developing STLC-R, we give the syntax and
         semantics of a dependently typed
-        self-reinterpreting language based on Martin-L\"of
-        type theory called MLTT-R. We prove soundness of
-        MLTT-R as well, and motivate bidirectional typing
-        discipline for it (section \ref{MLTT-R}).
+        self-reinterpreting language based on
+        Martin-L\"of type theory called MLTT-R. We prove
+        soundness of MLTT-R as well, and motivate
+        bidirectional typing discipline for it (section
+        \ref{MLTT-R}).
     \item As we intended, MLTT-R incorporates both a
         restricted form of universe polymorphism and
         external parametricity by virtue of
-        reinterpretation only. And, of course, you can use
-        MLTT-R as a system for synthetic mathematics with
-        internal reuse of synthetic results (section
-        \ref{MLTT-R-applications}).
+        reinterpretation only. And, of course, you can
+        use MLTT-R as a system for synthetic mathematics
+        with internal reuse of synthetic results
+        (section \ref{MLTT-R-applications}).
 \end{itemize}

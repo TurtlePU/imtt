@@ -1,28 +1,87 @@
-\section{Dependently typed reinterpretable language: MLTT-R} \label{MLTT-R}
+\section{
+    Dependently typed reinterpretable language: MLTT-R
+} \label{MLTT-R}
 
-Now we are ready to take on the main challenge: design a minimal dependently typed reinterpretable language, and provide internal models of itself to yield universe polymorphism, external parametricity and do synthetic mathematics inside it. As a starting point, we take Martin-Lof type theory with $\Pi-$,$\Sigma-$,$\mathrm{Id}-$ types and infinite cumulative hierarchy of universes. The problems are similar to the ones we had with simply-typed calculus:
+Now we are ready to take on the main challenge: design a
+minimal dependently typed reinterpretable language, and
+provide internal models of itself to yield universe
+polymorphism, external parametricity and do synthetic
+mathematics inside it. As a starting point, we take
+Martin-L\"of type theory with $\Pi-$,$\Sigma-$,
+$\mathrm{Id}-$ types, natural number type and infinite
+non-cumulative hierarchy of universes. The problems are
+similar to the ones we had with simply-typed calculus:
 
 \begin{itemize}
     \item How to reinterpret free variables?
     \item How to type universes?
-    \item Now, there is a way to enforce that internal model satisfies coherence conditions on their operations. How to structure computation in such a way that it doesn't break Church-Rosser property?
+    \item Now, there is a way to enforce that internal
+        model satisfies coherence conditions on their
+        operations. How to structure computation in such
+        a way that it doesn't break Church-Rosser
+        property?
     \item How to respect conversion rule?
 \end{itemize}
 
-As before, we sidestep the question with free variables by considering a term for reinterpretation iff it is closed in local context. To properly capture this property, we introduce a modality of closed terms $\Box$ which is already extensively studied in previous works (TODO: provide refs). To type universes, we have to consider:
+As before, we sidestep the question with free variables
+by considering a term for reinterpretation iff it is
+closed in local context. To properly capture this
+property, we introduce a modality of closed terms $\Box$
+which is already extensively studied in previous works
+(TODO: provide refs). To type universes, we have to
+consider:
 
 \begin{itemize}
-    \item Typing rules for MLTT are necessarily mutually recursive with rules of context well-formedness. Which framework to use to capture this in a model?
-    \item How to provide a ``universe'' for each level in the interpreted term?
+    \item Typing rules for MLTT are necessarily mutually
+        recursive with rules of context well-formedness.
+        Which framework to use to capture this in a
+        model?
+    \item How to provide a ``universe'' for each level
+        in the interpreted term?
 \end{itemize}
 
-To deal with the first problem, we use Categories-with-Families \cite{castellan2020cwf} as one of the most convenient models of dependent type theories in use today. Second one, however, is reminiscent of classical circularity paradoxes in logic and computer science: if we were to provide a model to each universe at each finite level, in which universe does the model lie? The first solution which comes to mind is to add another sequence of levels $\omega,\omega+1,\ldots$ and allow to use only finite-level universes inside reinterpretable term; such a system, however, would not ``eat itself'', a property that we wanted to achieve. Consider instead the following observation: in a system without level binders, each term uses only a finite number of levels. Hence to reinterpret this term, we need to only provide a finite number of universe models, which can together fit into some universe of a finite level.
+To deal with the first problem, we use
+Categories-with-Families \cite{castellan2020cwf} as one
+of the most convenient models of dependent type theories
+in use today. Second one, however, is reminiscent of
+classical circularity paradoxes in logic and computer
+science: if we were to provide a model to each universe
+at each finite level, in which universe does the model
+lie? The first solution which comes to mind is to add
+another sequence of levels $\omega,\omega+1,\ldots$ and
+allow to use only finite-level universes inside
+reinterpretable term; such a system, however, would not
+``eat itself'', a property that we wanted to achieve.
+Consider instead the following observation: in a system
+without level binders, each term uses only a finite
+number of levels. Hence to reinterpret this term, we
+need to only provide a finite number of universe models,
+which can together fit into some universe of a finite
+level.
 
-The problem with Church-Rosser is solved in absolutely the same way as with simply-typed case: we just do not perform any $\beta$-reductions inside a let-binding, only inline \texttt{let} declarations before performing a substitution.
+The problem with Church-Rosser is solved in absolutely
+the same way as with simply-typed case: we just do not
+perform any $\beta$-reductions inside a let-binding,
+only inline \texttt{let} declarations before performing
+a substitution.
 
-The problem with conversion rule is the following: in definition of a universe, we can now ask for propositional proofs of coherence. Thus types which were \textit{definitionally} equal before reinterpretation are now only \textit{propositionally} equal. To solve this issue, we start by first pinpointing the locations where conversion rule is actually used; in order to do this, we \textit{need} to use bidirectional type checking. After translation, point of conversion is wrapped in a \texttt{rewrite} call.
+The problem with conversion rule is the following: in
+definition of a universe, we can now ask for
+propositional proofs of coherence. Thus types which were
+\textit{definitionally} equal before reinterpretation
+are now only \textit{propositionally} equal. To solve
+this issue, we start by first pinpointing the locations
+where conversion rule is actually used; in order to do
+this, we \textit{need} to use bidirectional type
+checking. After translation, point of conversion is
+wrapped in a \texttt{rewrite} call.
 
-But how do we synthesize a propositional proof of equivalence? Here we translate a chain of reductions performed during checking of definitional equality into a chain of propositional equivalences taken from coherence conditions proven in the definition of a model.
+But how do we synthesize a propositional proof of
+equivalence? Here we translate a chain of reductions
+performed during checking of definitional equality into
+a chain of propositional equivalences taken from
+coherence conditions proven in the definition of a
+model.
 
 \begin{figure}
 \centering
@@ -40,10 +99,11 @@ $T$, $S$ : Type ::=
     | $(x\,\colon S)\to T$ : $\Pi$-type
     | $t_1=_T t_2$ : identity type
     | $\Box\,T$ : type of closed terms
-    | $\mathcal{M}_{\ell_1,\ldots,\ell_\kappa}$
+    | $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa}$
         : type of models
     ;;
-$\ell$, $\kappa$, $j$ : Level :in: $\mathbb{N}$;;
+$\ell$, $\kappa$, $j$ : Level :in: $\mathbb{N}$
+    : finite levels ;;
 $t$, $s$ : Term ::=
     | $x$ // $y$ // \texttt{m} // $\ldots$ : variables
     | $\mathrm{U}_\ell$ : code of a universe
@@ -127,12 +187,14 @@ $t$, $s$ : Term ::=
         \Gamma\vdash t_1,t_2\Leftarrow T
     }{\Gamma\vdash\mathrm{level}(t_1=_T t_2)=\ell}
     \and
-    \inferrule[Level-Model]{\Gamma\;\mathrm{wf}}
-        {\Gamma\vdash\mathrm{level}\left(
-            \mathcal{M}_{\ell_0,\ldots,\ell_\kappa}\right)
-            =\max(\ell_0,\ldots,\ell_\kappa)+1}
+    \inferrule[Level-Model]{\Gamma\;\mathrm{wf}}{
+        \Gamma\vdash\mathrm{level}\left(
+            \mathcal{M}_{\ell_0,\ldots,\ell_\kappa}
+        \right)=\max(\ell_0,\ldots,\ell_\kappa)+1
+    }
 \end{mathpar}
-\caption{Context well-formedness \& level placement rules}
+\caption{
+    Context well-formedness \& level placement rules}
 \Description{}
 \end{figure}
 
@@ -152,11 +214,13 @@ $t$, $s$ : Term ::=
     \and
     \inferrule[Check-Succ]
         {\Gamma\vdash t\Leftarrow\mathrm{Nat}}
-        {\Gamma\vdash\mathrm{S}\,t\Leftarrow\mathrm{Nat}}
+        {\Gamma\vdash\mathrm{S}\,t\Leftarrow
+            \mathrm{Nat}}
     \and
     \inferrule[Infer-NatInd]{
         \Gamma\vdash t\Rightarrow\mathrm{Nat}\\
-        \Gamma,x:\mathrm{Nat}\vdash\mathrm{level}(T)=\_\\
+        \Gamma,x:\mathrm{Nat}\vdash\mathrm{level}(T)=
+            \_\\
         \Gamma\vdash s_0\Leftarrow T[x\coloneqq 0]\\
         \Gamma,y:\mathrm{Nat}\vdash s_S\Leftarrow
             T[x\coloneqq\mathrm{S}\,y]
@@ -166,8 +230,8 @@ $t$, $s$ : Term ::=
     \and
     \inferrule[Infer-Sigma]{
         \Gamma\vdash s\Rightarrow\mathcal{U}_\kappa\\
-        \Gamma,x:\mathrm{El}_\kappa(s)\vdash t\Rightarrow
-            \mathcal{U}_\ell
+        \Gamma,x:\mathrm{El}_\kappa(s)\vdash t
+            \Rightarrow\mathcal{U}_\ell
     }{\Gamma\vdash(x:s)\times_\mathcal{U}t\Rightarrow
         \mathcal{U}_{\max(\kappa,\ell)}}
     \and
@@ -187,8 +251,8 @@ $t$, $s$ : Term ::=
     \and
     \inferrule[Infer-Pi]{
         \Gamma\vdash s\Rightarrow\mathcal{U}_\kappa\\
-        \Gamma,x:\mathrm{El}_\kappa(s)\vdash t\Rightarrow
-            \mathcal{U}_\ell
+        \Gamma,x:\mathrm{El}_\kappa(s)\vdash t
+            \Rightarrow\mathcal{U}_\ell
     }{\Gamma\vdash(x:s)\to_\mathcal{U}t\Rightarrow
         \mathcal{U}_{\max(\kappa,\ell)}}
     \and
@@ -203,7 +267,8 @@ $t$, $s$ : Term ::=
     \and
     \inferrule[Infer-Id]{
         \Gamma\vdash t\Rightarrow\mathcal{U}_\ell\\
-        \Gamma\vdash t_1,t_2\Leftarrow\mathrm{El}_\ell(t)
+        \Gamma\vdash t_1,t_2\Leftarrow
+            \mathrm{El}_\ell(t)
     }{\Gamma\vdash\mathtt{id}\,t\,t_1\,t_2\Rightarrow
         \mathcal{U}_\ell}
     \and
@@ -213,7 +278,8 @@ $t$, $s$ : Term ::=
     \and
     \inferrule[Infer-J]{
         \Gamma\vdash t\Rightarrow t_1=_T t_2\\
-        \Gamma,x:T,y:t_1=_T x\vdash\mathrm{level}(S)=\_\\
+        \Gamma,x:T,y:t_1=_T x\vdash\mathrm{level}(S)=
+            \_\\
         \Gamma\vdash s\Leftarrow
             S[x\coloneqq t_1,y\coloneqq\mathrm{refl}]
     }{\Gamma\vdash\mathrm{J}_{xy.S}\,t\,s\Rightarrow
@@ -234,7 +300,8 @@ $t$, $s$ : Term ::=
         {\Gamma\vdash[t]_\text{\faLock}\Leftarrow\Box T}
     \and
     \inferrule[Infer-Unlock]
-        {\Gamma^\text{\faUnlock}\vdash t\Rightarrow\Box T}
+        {\Gamma^\text{\faUnlock}\vdash t\Rightarrow
+            \Box T}
         {\Gamma\vdash[t]_\text{\faUnlock}\Rightarrow T}
     \and
     \inferrule[Infer-Interp]{
@@ -261,160 +328,122 @@ $t$, $s$ : Term ::=
 \Description{}
 \end{figure}
 
-%\begin{figure}
-%    \centering
-%\begin{mathpar}
-%    \inferrule{}{\cdot\,\mathrm{ctx}}
-%    \and\inferrule{
-%        \Gamma\,\mathrm{ctx}\\
-%        \Gamma\vdash T\Rightarrow U_i
-%    }{
-%        \Gamma,x:T\,\mathrm{ctx}\\
-%        \Gamma,x:\square T\,\mathrm{ctx}
-%    }
-%    \and\inferrule{}{
-%        \Gamma\vdash U_i\Rightarrow U_{\mathrm{suc}\,i}
-%    }
-%    \and\inferrule
-%        {\Gamma\vdash t\Rightarrow U_i\\ i\le j}
-%        {\Gamma\vdash t\Leftarrow U_j}
-%    \and\inferrule{}
-%        {\Gamma,x:T,\Delta\vdash x\Rightarrow T}
-%    \and\inferrule{
-%        \Gamma\vdash S\Leftarrow U_i\\
-%        \Gamma,x:(S:U_i)\vdash T\Leftarrow U_i
-%    }{\Gamma\vdash\Sigma_{x:S}T(x)\Leftarrow U_i}
-%    \and\inferrule{
-%        \Gamma\vdash s\Leftarrow S\\
-%        \Gamma\vdash t\Leftarrow T(s)
-%    }{\Gamma\vdash(s, t)\Leftarrow\Sigma_{x:S}T(x)}
-%    \and\inferrule
-%        {\Gamma\vdash t\Rightarrow\Sigma_{x:S}T(x)}
-%        {\Gamma\vdash \pi_1 t\Rightarrow S}
-%    \and\inferrule
-%        {\Gamma\vdash t\Rightarrow\Sigma_{x:S}T(x)}
-%        {\Gamma\vdash \pi_2 t\Rightarrow T(\pi_1 t)}
-%    \and\inferrule{}{\pi_i((t_1,t_2):\Sigma_{x:S}T(x))\to_\beta t_i}
-%    \and\inferrule{
-%        \Gamma\vdash S\Leftarrow U_i\\
-%        \Gamma,x:(S:U_i)\vdash T\Leftarrow U_i
-%    }{\Gamma\vdash\Pi_{x:S}T(x)\Leftarrow U_i}
-%    \and\inferrule
-%        {\Gamma\vdash S\Rightarrow U_i\\
-%        \Gamma,x:S\vdash t\Leftarrow T(x)}
-%        {\Gamma\vdash\lambda x.t\Leftarrow
-%            \Pi_{x:S}.T(x)}
-%    \and\inferrule{
-%        \Gamma\vdash t\Rightarrow\Pi_{x:S}T(x)\\
-%        \Gamma\vdash s\Leftarrow S
-%    }{\Gamma\vdash t\,s\Rightarrow T(s)}
-%    \and\inferrule{}{
-%        (\lambda x. t : \Pi_{x:S}T(x))s\to_\beta
-%        t[x\coloneqq(s:S)]
-%    }
-%    \and\inferrule{
-%        \Gamma\vdash T: U_i\\
-%        \Gamma\vdash s,t\Leftarrow T
-%    }{\Gamma\vdash s=_T t: U_i}
-%    \and\inferrule
-%        {\Gamma\vdash t\Rightarrow T}
-%        {\Gamma\vdash\mathtt{refl}\,t\Rightarrow t=_T t}
-%    \and\inferrule{
-%        \Gamma\vdash s\Rightarrow s_1=_S s_2\\
-%        \Gamma,x:S,y:s_1=_S x\vdash
-%            T(x,y)\Rightarrow U_i\\
-%        \Gamma\vdash t\Leftarrow
-%            T(s_1, \mathtt{refl} (s_1 : S))
-%    }{\Gamma\vdash\mathtt{rewrite}_{x\,y.T(x,y)}s\,t
-%        \Rightarrow T(s_2, s)
-%    }
-%    \and\inferrule{}{
-%        \mathrm{rewrite}_{x\,y.T(x,y)}
-%            \,(\mathrm{refl} \,(s : S))\,t\to_\beta t
-%    }
-%    \and\inferrule{
-%        \square\Gamma\vdash s\Rightarrow S\\
-%        \square\Gamma,x:\square S,\Delta\vdash t:T
-%    }{
-%        \square\Gamma,\Delta\vdash
-%        \mathtt{let}\,x=s\,\mathtt{in}\,t:T
-%    }
-%    \and\inferrule
-%        {s\to_\mathtt{let} s'}
-%        {\mathtt{let}\,x=s\,\mathtt{in}\,t
-%        \to_\mathtt{let}
-%        \mathtt{let}\,x=s'\,\mathtt{in}\,t}
-%    \and\inferrule
-%        {\mathtt{let}\not\in s}
-%        {\mathtt{let}\,x=s\,\mathtt{in}\,t
-%        \to_\mathtt{let}t[x\coloneqq s]}
-%    \and\inferrule{
-%        \square\Gamma\vdash x\Rightarrow\square T\\
-%        \mathcal{U}\,\mathrm{model}
-%    }{x\,@\,\mathcal{U}\Rightarrow\mathcal{U}\llbracket T\rrbracket}
-%    \and\inferrule{
-%        \mathtt{C}\Rightarrow U_0\\
-%        \mathtt{Sub}\Rightarrow C\to C\to U_0\\
-%        \mathtt{*}\Rightarrow C\\
-%        \mathtt{Ty}\Rightarrow C\to U_0\\
-%        \ldots
-%    }{\langle \mathtt{C},\ldots \rangle\,\mathrm{model}}
-%\end{mathpar}
-%    \caption{MLTT-R typing rules}
-%    \Description{MLTT-R typing rules}
-%    \label{mltt-r-typing}
-%\end{figure}
-
-To actually compute interpretation in MLTT-R, we need two mutually recursive functions: $t\,@^\gamma_{\Leftarrow T}\mathcal{U}$ and $t\,@^\gamma_{\Rightarrow}\mathcal{U}$ for checkable and synthesizing terms, respectively. \textbf{We're sorry to be glossing over details here and will provide all definitions in the updated version of the paper.}
+To actually compute interpretation in MLTT-R, we need
+two mutually recursive functions:
+$t\,@^\gamma_{\Leftarrow T}\mathcal{U}$ and
+$t\,@^\gamma_{\Rightarrow}\mathcal{U}$ for checkable and
+synthesizing terms, respectively. TODO: FINISH.
 
 \subsection{Metatheoretical properties of MLTT-R}
 
-Once again, we only try to make sure of the most essential properties: that computations do not diverge, that types during computations are preserved, all computations terminate and that resulting type system is, in essence, the same as base MLTT modulo inlining of \texttt{let}-bindings.
+Once again, we only try to make sure of the most
+essential properties: that computations do not diverge,
+that types during computations are preserved, all
+computations terminate and that resulting type system
+is a conservative extension of MLTT.
 
 \begin{theorem}[Church-Rosser theorem for STLC-R]
-    Reflexive transitive closure of $(\to)$ has Church-Rosser property.
+    Reflexive transitive closure of $(\to)$ has
+    Church-Rosser property.
 \end{theorem}
-\begin{proof} Classic proof via parallel reduction relation \cite{CRproof}. Both reductions outside and inside \texttt{let}-reduction have to be parallelized in order to prove the theorem. \end{proof}
+\begin{proof}
+    Classic proof via parallel reduction relation
+    \cite{CRproof}.
+\end{proof}
 
 \begin{theorem}[Type preservation for MLTT-R]
 \end{theorem}
 \begin{proof}
-    By structural induction on terms and $(\to)$. It is important that, due to the way computations are structured, $t\triangleleft_x s$ is always applied to closed $s$, therefore $t@\mathcal{U}$ is always applied to $t$ that is $\square$-closed.
+    By structural induction on terms and $(\to)$.
 \end{proof}
 
 \begin{theorem}[Strong normalization for MLTT-R]
-    Closed terms typable in MLTT-R are strongly normalizing with respect to $(\to)$.
+    Closed terms typable in MLTT-R are strongly
+    normalizing with respect to $(\to)$.
 \end{theorem}
 \begin{proof}
-    Tait's method of logical relations for MLTT with modifications similar to ones performed in a proof of strong normalization for STLC-R should suffice. However, we're not completely sure.
+    Tait's method of logical relations for MLTT with
+    modifications similar to ones performed in a proof
+    of strong normalization for STLC-R should suffice. 
+    However, we're not completely sure.
 \end{proof}
 
 \begin{theorem}[Conservativity over MLTT]
-    Normal forms of closed terms typable in MLTT-R are typable in MLTT.
+    For MLTT context $\Gamma$, MLTT type $T$ and MLTT-R
+    term $t$, if $\Gamma\vdash t\Leftarrow T$, then
+    $\Gamma\vdash_\mathrm{MLTT}\mathrm{nf}(t):T$.
 \end{theorem}
 \begin{proof}
-    Thanks to type preservation, normal form $nf(t)$ is typable in MLTT-R. Normal form cannot contain let-bindings by definition of $(\to)$, therefore each subterm has no $\square$ in context. Therefore $nf(t)$ has no reinterpretation subterms.
+    Thanks to type preservation, normal form
+    $\mathrm{nf}(t)$ is typable in MLTT-R. TODO TODO
+    TODO. Therefore $\mathrm{nf}(t)$ is an MLTT term and    is typable in MLTT.
 \end{proof}
 
-\subsection{Useful reinterpretations inside MLTT-R} \label{MLTT-R-applications}
+\subsection{Useful reinterpretations inside MLTT-R}
+\label{MLTT-R-applications}
 
-Here we list some of the language features which reinterpretation enables without any additional language support.
+Here we list some of the language features which
+reinterpretation enables without any additional language
+support.
 
-\subsubsection{Crude, but effective stratification} \label{MLTT-R-displacement}
+\subsubsection{Crude, but effective stratification}
+\label{MLTT-R-displacement}
 
-Due to McBride \cite{McBride:Crude2002}, a technique of crude, but effective stratification works as follows: instead of providing complete support for level polymorphism, let's consider a \textit{displacement operator} which, given a term $t$ using universes $U_i,U_j,U_k,\ldots$, produces a term which is equal to $t$ except for universes which are replaced with $U_{i+1},U_{j+1},U_{k+1},\ldots$. The displaced term is also well-typed, however it is defined <<one level higher>>. Notice that displacement operator is \textit{definable} in MLTT as $\_\,@\,\mathcal{U}_\mathrm{McBride}$ where
+Due to McBride \cite{McBride:Crude2002}, a technique of
+crude, but effective stratification works as follows:
+instead of providing complete support for level
+polymorphism, let's consider a \textit{displacement
+operator} which, given a term $t$ using universes
+$U_i,U_j,U_k,\ldots$, produces a term which is equal to
+$t$ except for universes which are replaced with
+$U_{i+1},U_{j+1},U_{k+1},\ldots$. The displaced term is
+also well-typed, however it is defined <<one level
+higher>>. Notice that displacement operator is
+\textit{definable} in MLTT-R as
+$\_\,@\,\mathcal{U}_\mathrm{McBride}$ where
 
 \[\mathcal{U}_\mathrm{McBride} = \langle
   \Lambda l.U_{suc\,l}, \ldots
 \rangle\]
 
-\subsubsection{Internal external parametricity} \label{MLTT-R-parametricity}
+\subsubsection{Displayed type theory}
+\label{MLTT-R-displayedtt}
 
-Demonstrated by Reynolds \cite{reynolds1983types}, parametricity is a property of a type system that, in simple words, <<polymorphic function cannot meaningfully depend on generic inputs>>. Thus any polymorphic function of type $\sigma$ satisfies a certain <<free theorem>> $\llbracket \sigma \rrbracket$
-defined via relational interpretation of a type.
+\subsubsection{Internal external parametricity}
+\label{MLTT-R-parametricity}
 
-In recent works \cite{Bernardy:Parametricity2010} \cite{Altenkirch:Parametricity2024}, a streamlined definition is given for parametricity interpretation of dependently-typed systems dubbed <<external parametricity>>. Once again, this relational interpretation is definable in our system \textit{internally} with the help of a relational model $\mathcal{U}_\mathrm{para}$. Since interpreted functions do not depend on local context, we sidestep issues with relational context highlighted by Altenkirch and others \cite{Altenkirch:Parametricity2024}, thus result of the interpretation is a proper proof of a free theorem.
+Demonstrated by Reynolds \cite{reynolds1983types},
+parametricity is a property of a type system that, in
+simple words, <<polymorphic function cannot meaningfully
+depend on generic inputs>>. Thus any polymorphic
+function of type $\sigma$ satisfies a certain <<free
+theorem>> $\llbracket \sigma \rrbracket$ defined via
+relational interpretation of a type.
 
-\subsubsection{Synthetic mathematics} \label{MLTT-R-synthetic}
+In recent works \cite{Bernardy:Parametricity2010}
+\cite{Altenkirch:Parametricity2024}, a streamlined
+definition is given for parametricity interpretation of
+dependently-typed systems dubbed <<external
+parametricity>>. Once again, this relational
+interpretation is definable in our system
+\textit{internally} with the help of a relational model
+$\mathcal{U}_\mathrm{para}$. Since interpreted functions
+do not depend on local context, we sidestep issues with
+relational context highlighted by Altenkirch and others
+\cite{Altenkirch:Parametricity2024}, thus result of the
+interpretation is a proper proof of a free theorem.
 
-As thoroughly discussed in a recent paper by Nawrocki and others \cite{Nawrocki:Lean2026}, thanks to MLTT being an internal language of certain $(\infty,1)$-categories, we can do \textit{synthetic mathematics} inside it: prove a theorem inside MLTT about types; interpret it in a model of MLTT and yield a proof about objects in that model. It is easy to see that reinterpretation operator we have in MLTT-R is sufficient to do synthetic mathematics in it and immediately apply results interpreted in a suitable model. 
+\subsubsection{Synthetic mathematics}
+\label{MLTT-R-synthetic}
+
+As thoroughly discussed in a recent paper by Nawrocki
+and others \cite{Nawrocki:Lean2026}, thanks to MLTT
+being an internal language of certain
+$(\infty,1)$-categories, we can do \textit{synthetic
+mathematics} inside it: prove a theorem inside MLTT
+about types; interpret it in a model of MLTT and yield a
+proof about objects in that model. It is easy to see
+that reinterpretation operator we have in MLTT-R is
+sufficient to do synthetic mathematics in it and
+immediately apply results interpreted in a suitable
+model.
