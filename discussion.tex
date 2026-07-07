@@ -82,3 +82,112 @@ context since reinterpretation is applied only to terms
 whose context is also <<reinterpretable>> and is not
 affected by the translation (section
 \ref{MLTT-R-parametricity}).
+
+\subsection{What we could've done differently}
+
+\subsubsection{Modality of global elements}
+\label{global-elements}
+
+One could hope to salvage a situation by providing a
+``modality of global elements'' which is a convenient
+relaxation of a notion of closed terms.
+
+\begin{definition}
+    A dependently-typed system with a type of functions
+    $(\to)$ has a \textit{global elements modality}
+    $\Box$ if there is a one-hole term
+    $\mathrm{nec}\,\_$ and an atomic two-hole term
+    $\mathrm{K}\,\_\,\_$ such that the following rules
+    are admissible:
+    \begin{mathpar}
+    \inferrule{\cdot\vdash T\,\mathrm{type}}
+        {\Gamma\vdash\Box\,T\,\mathrm{type}}
+    \and
+    \inferrule{\cdot\vdash t:T}
+        {\Gamma\vdash\mathrm{nec}\,t:\Box\,T}
+    \and
+    \inferrule{
+        \Gamma\vdash f:\Box\,(S\to T)\\
+        \Gamma\vdash t:\Box\,S
+    }{\Gamma\vdash K\,f\,t:\Box\,T}
+    \end{mathpar}
+    And, in addition, the following reduction is
+    admissible: $K\,(\mathrm{nec}\,\lambda x.t)\,
+    (\mathrm{nec}\,s)\to^*
+    \mathrm{nec}(t[x\coloneqq s])$.
+\end{definition}
+
+The intuition behind the reduction is that, if we apply
+a ``global function'' to a ``global argument'', we
+should be able to ``inline'' this application, what this
+reduction precisely does.
+
+Then, a corresponding weakening of computational
+reinterpretation can be defined as follows.
+
+\begin{definition}[Modal computational reinterpretation]
+    We call a type operator $F[\_]$ a modal
+    computational reinterpretation of types if it is
+    defined on boxed types (if
+    $\Gamma\vdash\Box\,T\,\mathrm{Type}$, then
+    $\Gamma\vdash F[T]\,\mathrm{Type}$), respects
+    computation on types (if $T\to T'$, then
+    $F[T]\to^* F[T']$) and computes as a primitive
+    recursive function on normal forms of types.
+    Analogously, term with a hole
+    $\llbracket\_\rrbracket$ is a modal computational
+    reinterpretation of terms if it respects computation
+    on terms, computes as a primitive recursive
+    function on normal forms of terms and, if
+    $\Gamma\vdash t:\Box\,T$, then
+    $\Gamma\vdash\llbracket t\rrbracket:F[T]$.
+\end{definition}
+
+Maybe, this definition of reintrerpretation is ``nice''?
+Regrettably, there's a no-go theorem which is similar to
+na\"{\i}ve version \ref{no-go} which holds in this case:
+
+\begin{theorem}[No-go theorem of modal reinterpretation]
+    In a confluent type system with modal computational
+    reinterpretation, the following should hold for
+    arbitrary well-typed $s$ and $t$:
+    \[
+        \mathtt{app}\llbracket\mathrm{nec}\,\lambda x.t
+        \rrbracket\llbracket\mathrm{nec}\,s\rrbracket
+        \equiv\llbracket\mathrm{nec}(t[x\coloneqq s])
+        \rrbracket
+    \]
+    where $\equiv$ is definitional equality and
+    $\mathtt{app}$ is how $\llbracket\_\rrbracket$
+    acts on $K$.
+\end{theorem}
+
+\begin{proof}
+    By direct example. We are given well-formed types
+    $\cdot\vdash S,T\,\mathrm{type}$ and well-typed
+    terms $\cdot\vdash s:S$ and $\cdot,x:S\vdash t:T$.
+    Consider the following term:
+    \[
+        \Gamma,x:\Box(S\to T),y:\Box\,S\vdash
+            \llbracket K\,x\,y\rrbracket:F[T]
+    \]
+    Since $K$ is atomic, term under interpretation is in
+    normal form, hence the whole term computes to
+    $\mathtt{app}\llbracket x\rrbracket \llbracket y
+    \rrbracket$. Substituting $\mathrm{nec}\,
+    \lambda x.t$ for $x$ and $\mathrm{nec}\,s$ for $y$,
+    we get $\mathtt{app}\llbracket\mathrm{nec}\,
+    \lambda x.t\rrbracket\llbracket\mathrm{nec}\,
+    s\rrbracket$.
+
+    On the other hand, if we perform substitution first,
+    we would get $\Gamma\vdash\llbracket K\,
+    (\mathrm{nec}\,\lambda x.t)(\mathrm{nec}\,s)
+    \rrbracket:F[T]$. Since modal reinterpretation
+    respects reduction, this reduces to
+    $\llbracket\mathrm{nec}(t[x\coloneqq s])\rrbracket$.
+
+    In a confluent type system with functions,
+    multi-step reduction commutes with substitution,
+    therefore two terms are definitionally equivalent.
+\end{proof}

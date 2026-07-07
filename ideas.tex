@@ -1,0 +1,140 @@
+\section{Main ideas}\label{main-ideas}
+
+We aim to design a type system that allows its users to
+reuse native syntax of a system for special kinds of
+user-defined ``domain-specific languages''. This
+approach has several advantages:
+
+\begin{itemize}
+    \item From the pragmatic standpoint, it would allow
+        DSL designers to use a syntax which is already
+        familiar to their users;
+    \item From type-theoretical standpoint, type
+        theorists could internalize metatheoretical
+        properties of such type system directly inside
+        itself;
+    \item From philosophical standpoint, it would be
+        particularly satisfying to have a type system
+        capable of ``eating itself''.
+\end{itemize}
+
+To define a new DSL in such system, it is enough to
+specify how to interpret the native syntax inside your
+domain of interest. It is natural to expect that
+provided interpretations respect definitional equalities
+of a system; finally, we want interpretations to be
+definable inside a system, so we call them
+\textit{internal models} of a system, or just
+\textit{model} for short.
+
+Now, before actually specifying a system, let's find out
+what we cannot hope to achieve.
+
+\subsection{No-go theorem of internal interpretation}
+
+We're going to work inside a classical type-theoretical
+framework which introduces a sort of contexts $\Gamma$,
+terms $t,t'$ and types $T$ linked by the typing relation
+$\Gamma\vdash t:T$; computation is specified by one-step
+reduction relation $t\to t'$ on terms. In this section
+we'll show that, if we want a practical system with
+internal interpretation as discussed in the start of the
+section \ref{main-ideas}, we have to either a)
+reinterpret closed terms only; b) forbid reductions
+inside reintrerpreted terms altogether; c) severely
+restrict a class of definable models.
+
+\begin{definition}
+    [Na\"{\i}ve computational reinterpretation]
+    We call a type operator $F[\_]$ a na\"{\i}ve
+    computational reinterpretation of types if it
+    respects computation on types (that is, if there is
+    a reduction relation on types $(\to)$ and $T\to T'$,
+    then $F[T]\to^* F[T']$), and computes as a primitive
+    recursive function on normal forms of types.
+    Analogously, term with a hole
+    $\llbracket\_\rrbracket$ is a na\"{\i}ve
+    computational reinterpretation of terms if it
+    respects computation on terms, computes as a
+    primitive recursive function on normal forms of
+    terms and, if $\Gamma\vdash t:T$, then
+    $\Gamma\vdash\llbracket t\rrbracket:F[T]$.
+\end{definition}
+
+\begin{theorem}[No-go theorem of naive reinterpretation]
+\label{no-go}
+    In a confluent type system with a type of functions
+    and na\"{\i}ve computational reinterpretation, the
+    following should hold for arbitrary well-typed $s$
+    and $t$:
+    \[
+        \mathtt{app}\llbracket\lambda x.t\rrbracket
+        \llbracket s \rrbracket \equiv
+        \llbracket t[x\coloneqq s] \rrbracket
+    \]
+    where $\equiv$ is definitional equality and
+    $\mathtt{app}$ is how $\llbracket\_\rrbracket$
+    acts on applications.
+\end{theorem}
+
+Principally, it means that \textbf{we cannot use
+propositional equality to enforce equational properties
+of models}. The proof is by direct example:
+
+\begin{proof}
+    We are given well-typed $\Gamma\vdash s:S$ and
+    $\Gamma,x:S\vdash t:T$. Consider the following term:
+    \[
+        \Gamma,x:S\to T,y:S\vdash
+            \llbracket x\,y\rrbracket:F[T]
+    \]
+    Term under interpretation is in normal form, hence
+    the whole term computes to $\mathtt{app}\llbracket x
+    \rrbracket\llbracket y\rrbracket$.
+    Substituting $\lambda x.t$ for $x$ and $s$ for $y$,
+    we get $\mathtt{app}\llbracket\lambda x.t\rrbracket
+    \llbracket s \rrbracket$.
+
+    On the other hand, if we perform substitution first,
+    we would get $\Gamma\vdash\llbracket(\lambda x.t)s
+    \rrbracket:F[T]$. Since na\"{\i}ve reinterpretation
+    respects reduction, this reduces to
+    $\llbracket t[x\coloneqq s] \rrbracket$.
+
+    In a confluent type system with functions,
+    multi-step reduction commutes with substitution,
+    therefore two terms are definitionally equivalent.
+\end{proof}
+
+Fundamentally, the proof above exploits openness of the
+original term; if we restrict reinterpretation to
+compute on closed terms only, we can arrive at a sound
+system without requiring definitional equalities in
+models, as is exemplified by our non-dependently-typed
+system STLC-R described in section \ref{STLC-R}.
+However, such a tradeoff is unacceptable in a system
+with dependent types which has to compute on open terms
+in order to have a flexible typing discipline. This
+leaves us with three options:
+
+\begin{enumerate}
+    \item Introduce a ``modality of global elements''
+        $\Box$ which reifies a metatheoretical notion of
+        a closed term in a dependent type system, then
+        allow to reinterpret boxed terms only.
+    \item Forbid computations under
+        $\llbracket\_\rrbracket$ unless term is closed.
+        To allow reasoning on open terms, equations
+        describing behavior of interpretation are
+        exposed as axioms in equality type.
+    \item Restrict models to those where equalities hold
+        definitionally rather than propositionally.
+\end{enumerate}
+
+While the first approach is most desirable, it
+unfortunately still doesn't work, as is shown in section
+\ref{global-elements}. The second one looks consistent
+with propositional definition of models and is left for
+future work; in \ref{MLTT-R}, we explore the third
+approach as it seems easier to work with in practice
+thanks to more flexible computation rules.

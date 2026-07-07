@@ -86,10 +86,13 @@ model.
 \begin{figure}
 \centering
 \begin{bnf}
-$\Gamma$,$\Delta$ : Context ::=
-    | $\cdot$ : empty context
-    | $\Gamma$, $x\,\colon T$ : variable extension
-    | $\Gamma.\,\text{\faLock}$ : context locking
+$\Gamma$ : Context ::=
+    | $\varepsilon$ : empty global context
+    | $\Gamma;\Theta$ : localization
+    ;;
+$\Theta$ : Small context ::=
+    | $\cdot$ : empty small context
+    | $\Theta$, $x\,\colon T$ : variable extension
     ;;
 $T$, $S$ : Type ::=
     | $\mathcal{U}_\ell$ : universe
@@ -101,8 +104,7 @@ $T$, $S$ : Type ::=
     | $\Box\,T$ : type of closed terms
     | $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa}$
         : type of models
-    | $T^t_\Delta$
-        : reinterpretation of type inside a model
+    | $T^t_\Gamma$ : typal reinterpretation
     ;;
 $\ell$, $\kappa$, $j$ : Level :in: $\mathbb{N}$
     : finite levels ;;
@@ -135,7 +137,7 @@ $t$, $s$ : Term ::=
     | $\llbracket t
         \rrbracket^{\ell_0,\ldots,\ell_\kappa}$
         : internal interpretation
-    | $t_\Delta^s$ : intermediate interpretation
+    | $t_\Gamma^s$ : intermediate interpretation
     | $t\,\colon T$ : ascription
     ;;
 \end{bnf}
@@ -147,41 +149,42 @@ $t$, $s$ : Term ::=
 \begin{figure}
 \centering
 \begin{mathpar}
-    \inferrule[WF-Nil]{}{\cdot\;\mathrm{wf}}
+    \inferrule[WF-Loc]{\Gamma\vdash\Theta}
+        {\Gamma;\Theta\;\mathrm{wf}}
+    \and
+    \inferrule[WF-Eps]{}{\varepsilon\vdash\cdot}
+    \and
+    \inferrule[WF-Nil]{\Gamma\;\mathrm{wf}}
+        {\Gamma\vdash\cdot}
     \and
     \inferrule[WF-Var]{
-        \Gamma\;\mathrm{wf}\\
-        \Gamma\vdash \mathrm{level}(T)=\ell
-    }{\Gamma,x:T\;\mathrm{wf}}
-    \and
-    \inferrule[WF-Lock]
-        {\Gamma\;\mathrm{wf}}
-        {\Gamma.\,\text{\faLock}\;\mathrm{wf}}
+        \Gamma\vdash\Theta\\
+        \Gamma;\Theta\vdash\mathrm{level}(T)=\ell
+    }{\Gamma\vdash\Theta,x:T}
     \\
     \inferrule[Level-Uni]{\Gamma\;\mathrm{wf}}{
-        \Gamma\vdash\mathrm{level}(\mathcal{U}_\ell) =
-            \ell+1
+        \Gamma\vdash\mathrm{level}(
+            \mathcal{U}_\ell) = \ell+1
     }
     \and
     \inferrule[Level-El]
         {\Gamma\vdash t\Leftarrow\mathcal{U}_\ell}
-        {
-            \Gamma\vdash\mathrm{level}
-                (\mathrm{El}_\ell(t)) = \ell}
+        {\Gamma\vdash\mathrm{level}(
+            \mathrm{El}_\ell(t)) = \ell}
     \and
     \inferrule[Level-Nat]{\Gamma\;\mathrm{wf}}{
-        \Gamma\vdash\mathrm{level}(\mathrm{Nat}_\ell)=
-            \ell}
+        \Gamma\vdash\mathrm{level}(
+            \mathrm{Nat}_\ell) = \ell}
     \and
     \inferrule[Level-Box]
-        {\Gamma\vdash\mathrm{level}(T)=\ell}
+        {\Gamma;\cdot\vdash\mathrm{level}(T)=\ell}
         {\Gamma\vdash\mathrm{level}(\Box\,T)=\ell}
     \and
     \inferrule[Level-Sigma, Level-Pi]{
-        \Gamma\vdash\mathrm{level}(S)=\kappa \\
-        \Gamma,x:S\vdash\mathrm{level}(T)=\ell
+        \Gamma;\Theta\vdash\mathrm{level}(S) = \kappa \\
+        \Gamma;\Theta,x:S\vdash\mathrm{level}(T) = \ell
     }{
-        \Gamma\vdash
+        \Gamma;\Theta\vdash
             \mathrm{level}((x:S)\times T)=
             \mathrm{level}((x:S)\to T)=
             \max(\kappa,\ell)
@@ -201,10 +204,11 @@ $t$, $s$ : Term ::=
     \inferrule[Level-TyInterp]{
         \Gamma\vdash t\Rightarrow\mathcal{M}_{
             \ell_0,\ldots,\ell_\kappa}\\
-        \Gamma.\,\text{\faLock},\Delta\vdash
-            \mathrm{level}(T)=j
-    }{\Gamma\vdash\mathrm{level}\left(T_\Delta^t\right)=
-        \ell_j}(j\leqslant\kappa)
+        \Gamma\vdash\Theta\\
+        \Gamma;\Theta\vdash\mathrm{level}(T)=j\\
+        j\leqslant\kappa
+    }{\Gamma\vdash\mathrm{level}\left(
+        T_\Delta^t\right) = \ell_j}
 \end{mathpar}
 \caption{
     Context well-formedness \& level placement rules}
