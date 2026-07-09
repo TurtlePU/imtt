@@ -4,18 +4,18 @@
 
 We start with a simpler language to iron out the details
 and actually figure out how to properly reinterpret
-terms internally before moving on to dependently typed
+terms internally before moving on to a dependently typed
 system. The simplest language for which we know a lot of
 interesting models is simply typed lambda calculus with
-products, to which we refer to as ``STLC'' throughout
+products, which we refer to as ``STLC'' throughout
 this paper; in this section, we'll present a language
 capable of interpreting STLC terms as constructions in
-STLC models which can be defined in our language.
+STLC models that can be defined in our language.
 
-So, what are the models of STLC? In addition to usual
+So, what are the models of STLC? In addition to the usual
 set-theoretic semantics where $S\to T$ is interpreted as
 a function from $S$ to $T$ and $S\times T$ is a
-cartesian product, there's proof-theoretic semantics
+cartesian product, there is proof-theoretic semantics
 that relate terms of type $T$ to intuitionistic proofs
 of proposition $\llbracket T\rrbracket$, where $(\to)$
 is now understood to mean implication and $(\times)$ is
@@ -30,7 +30,7 @@ CCCs for short). Definitions vary; we're going to use
 the definition \ref{ccc}.
 
 \begin{definition}[Cartesian closed category]\label{ccc}
-Cartesian closed category is the following datum:
+A cartesian closed category is the following datum:
 \begin{enumerate}
 \item A set of \textit{objects} $\mathrm{Ob}$ and a
     family of \textit{morphisms} $\mathrm{Hom}(S, T)$
@@ -45,7 +45,7 @@ Cartesian closed category is the following datum:
     for each $f:A\to B$ and $g:B\to C$, there's their
     \textit{composition} $g\circ f:A\to C$. If a
     source-target of an identity morphism is clear from
-    context, the subscript is elided. Also, the
+    the context, the subscript is elided. Also, the
     following properties hold:
     \begin{align*}
         \mathrm{id}\circ f = f = f\circ\mathrm{id} & &
