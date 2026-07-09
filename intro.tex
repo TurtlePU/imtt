@@ -1,7 +1,7 @@
 \section{Introduction}
 
-Consider the following well-known function which maps
-over elements of the list, written in Agda:
+Consider the following well-known function that maps
+over the elements of a list, written in Agda:
 
 \begin{minted}{agda}
 map : ∀ {A B : Set} → (A → B) → List A → List B
@@ -9,13 +9,13 @@ map f [] = []
 map f (x ∷ xs) = f x ∷ map f xs
 \end{minted}
 
-Enjoying both composability of this function and
+Enjoying both composability of this function and the
 simplicity of its type, we would like to reuse its
 definition as much as possible. Up to a certain level,
 we would surely be able to do so: after all,
 \texttt{map} is polymorphic in source and target types,
 so we can instantiate it with whatever types we want.
-However, were we to find a magic lamp with a
+However, if we were to find a magic lamp with a
 type-theoretical djinn inside, we would ask him to grant
 us three wishes:
 
@@ -63,17 +63,17 @@ Altenkirch:Parametricity2024}. The last wish currently
 has to be fulfilled manually (or with some
 metaprogramming involved \cite{Nawrocki:Lean2026}),
 albeit with a couple of list inductions: some to define
-a groupoid instance for \texttt{List} and few more to
-prove functoriality of \texttt{map}.
+a groupoid instance for \texttt{List} and a few more to
+prove the functoriality of \texttt{map}.
 
 We suggest a different approach. Before tweaking the
 definition of \texttt{map}, let's first remember all of
 the metatheoretic power our type system already has.
-Abovementioned parametricity of polymorphic definitions
+The abovementioned parametricity of polymorphic definitions
 is the first result that comes to mind; note that it is
 obtained by specifying a \textit{relational
-interpretation} of the typing judgement
-\cite{reynolds1983types}. And indeed, ones of the most
+interpretation} of the typing judgment
+\cite{reynolds1983types}. And indeed, some of the most
 interesting metatheoretic results can be expressed by
 constructing a certain \textit{model} of a type system:
 synthetic results in homotopy theory are based on
@@ -95,22 +95,22 @@ capabilities \textit{reflective}.
 
 \begin{itemize}
     \item Our main goal is to construct an implementable
-        reflective dependently typed system. Main
+        reflective dependently typed system. The main
         difficulty in doing so arises from a certain
         no-go result discussed in section
-        \ref{no-go-section} which forces us to limit the
+        \ref{no-go-section}, which forces us to limit the
         power of reinterpretation in order to keep type
         checking decidable.
     \item For ease of presentation, we first offer a
-        reflective type system based on Hindley-Milner
+        reflective type system based on the Hindley-Milner
         type system called HM-R (section \ref{HM-R}).
         We prove that HM-R is sound, conservative with
-        respect to simply-typed lambda calculus and that
+        respect to simply-typed lambda calculus, and that
         global type inference is decidable (section
         \ref{HM-R-properties}).
     \item Building upon the insights gathered from
-        developing HM-R, we're finally equipped to dive
-        into reflective version of Martin-L\"of type
+        developing HM-R, we are finally equipped to dive
+        into the reflective version of Martin-L\"of type
         theory dubbed MLTT-R (section \ref{MLTT-R}). We
         prove soundness and conservativity of MLTT-R as
         well (section \ref{MLTT-R-properties}).

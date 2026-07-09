@@ -2,7 +2,7 @@
 \label{no-go-section}
 
 So we want to build a reflective type system. That is,
-a system where a user is able to both define model of a
+a system where a user is able to both define a model of a
 system internally and apply it to well-typed terms to
 get their internal interpretations. Naturally, we would
 like user-defined models to respect definitional
@@ -21,10 +21,10 @@ The theorem proven below asserts that we cannot have all
 three in a single system.
 
 First, a couple of definitions. We're going to work
-inside a classical type-theoretical framework which
+within a classical type-theoretical framework, which
 introduces a sort of contexts $\Gamma$, terms $t,t'$ and
 types $T$ linked by the typing relation
-$\Gamma\vdash t:T$; computation is specified by one-step
+$\Gamma\vdash t:T$; computation is specified by a one-step
 reduction relation $t\leadsto t'$ on terms.
 
 \begin{definition}
@@ -95,26 +95,26 @@ The proof is by direct example:
     both terms reduce to.
 \end{proof}
 
-Fundamentally, the proof above exploits openness of the
+Fundamentally, the proof above exploits the openness of the
 original term; if we restrict reinterpretation to
 compute on closed terms only, we can arrive at a sound
 system without requiring definitional equalities in
-models, as is exemplified by our non-dependently-typed
+models, as exemplified by our non-dependently typed
 system HM-R described in section \ref{HM-R}. For
-dependently typed system, however, our no-go theorem
+a dependently typed system, however, our no-go theorem
 leaves us with three options:
 
 \begin{enumerate}
     \item Restrict models to those where equalities hold
         definitionally rather than propositionally.
     \item Do not proceed with reinterpretation unless
-        term is closed. To allow reasoning on open
-        terms, equations describing behavior of
+        the term is closed. To allow reasoning on open
+        terms, equations describing the behavior of
         interpretation are exposed as propositional
         axioms.
     \item Do not reduce open terms under
-        reinterpretation at all, performing
-        reinterpretation as-is. To simplify result of
+        reinterpretation at all, performing the
+        reinterpretation as-is. To simplify the result of
         reinterpretation, one can rewrite it with
         equalities present in the model.
 \end{enumerate}
@@ -126,26 +126,26 @@ displayed type theory \cite{Kolomatskaia_Shulman_2025}
 through the lens of reinterpretation inside a fixed
 model (or family of models), you'll see that
 corresponding models indeed validate equalities
-definitionally, so it seems that the first approach
+definitionally; thus it seems that the first approach
 needs to be taken. It is also the most satisfying from
-computational point of view. However, if you want a
+the computational point of view. However, if you want a
 sound system where models can be user-defined, you need
 to constrain models through typing discipline. By
 following techniques currently known to us
 \cite{bezem2021notegeneralizedalgebraictheories},
-constraining models in such a way would require to
-define a type of models as a type of algebras of an
+constraining models in such a way would require
+defining a type of models as a type of algebras of an
 inductive-inductive-recursive type (or even
 inductive-inductive-recursive simplicial type, for
 univalent type theories) which is well beyond the scope
 of this paper.
 
-Out of two remaining options, the last one is better
+Out of the two remaining options, the last one is better
 suited for practical dependently-typed systems since it
 properly computes on open terms. In addition, it doesn't
 restrict the class of possible models while at the same
 time providing the benefits of the first approach: if
-model is such that equations hold definitionally, no
+a model is such that the equations hold definitionally, no
 rewriting on the result of reinterpretation is needed to
 reduce it. The only downside is that, possibly,
 reductions \textit{after} interpretation are more costly
