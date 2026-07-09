@@ -25,17 +25,17 @@ inside a classical type-theoretical framework which
 introduces a sort of contexts $\Gamma$, terms $t,t'$ and
 types $T$ linked by the typing relation
 $\Gamma\vdash t:T$; computation is specified by one-step
-reduction relation $t\to t'$ on terms.
+reduction relation $t\leadsto t'$ on terms.
 
 \begin{definition}
     [Na\"{\i}ve computational reinterpretation]
     We call a type operator $F[\_]$ a na\"{\i}ve
     computational reinterpretation of types if it
     respects computation on types (that is, if there is
-    a reduction relation on types $(\to)$ and $T\to T'$,
-    then $F[T]\to^* F[T']$), and computes as a primitive
-    recursive function on normal forms of types.
-    Analogously, term with a hole
+    a reduction relation on types $(\leadsto)$ and
+    $T\leadsto T'$, then $F[T]\leadsto^* F[T']$), and
+    computes as a primitive recursive function on normal
+    forms of types. Analogously, term with a hole
     $\llbracket\_\rrbracket$ is a na\"{\i}ve
     computational reinterpretation of terms if it
     respects computation on terms, computes as a
@@ -52,17 +52,23 @@ reduction relation $t\to t'$ on terms.
     well-typed $s$ and $t$ there exists $u$ such that:
     \[
         \mathtt{app}\llbracket\lambda x.t\rrbracket
-        \llbracket s \rrbracket \to^* u\;
-        \text{\reflectbox{$\to^*$}}\;
+        \llbracket s \rrbracket \leadsto^* u\;
+        \text{\reflectbox{$\leadsto^*$}}\;
         \llbracket t[x\coloneqq s] \rrbracket
     \]
     where $\mathtt{app}$ is how $\llbracket\_\rrbracket$
     acts on applications.
 \end{theorem}
 
-Principally, it means that \textbf{propositional
-equality is not strong enough to enforce equational
-properties of models}. The proof is by direct example:
+Therefore, $\mathtt{app}\llbracket\lambda x.t\rrbracket
+\llbracket s \rrbracket$ and $\llbracket t[x\coloneqq s]
+\rrbracket$ are definitionally equivalent, which forces
+beta-reductions in a model to hold definitionally rather
+than propositionally, directly contradicting our desired
+outcome. Analogous theorems can be proven for any other
+reduction present in the system; in other words,
+\textbf{propositional equality is not strong enough}.
+The proof is by direct example:
 
 \begin{proof}
     We are given well-typed $\Gamma\vdash s:S$ and
@@ -106,24 +112,33 @@ leaves us with three options:
         terms, equations describing behavior of
         interpretation are exposed as propositional
         axioms.
-    \item Do not reduce terms under reinterpretation at
-        all, performing reinterpretation as-is. To
-        simplify result of reinterpretation, one can
-        rewrite it with equalities present in the model.
+    \item Do not reduce open terms under
+        reinterpretation at all, performing
+        reinterpretation as-is. To simplify result of
+        reinterpretation, one can rewrite it with
+        equalities present in the model.
 \end{enumerate}
 
 If you view existing work on displacement
 \cite{McBride:Crude2011, McBride:Crude2012}, internal
 parametricity \cite{Altenkirch:Parametricity2024} and
-displayed type theory (TODO: cite) through the lens of
-reinterpretation inside a fixed model (or family of
-models), you'll see that corresponding models indeed
-validate equalities definitionally, so it seems that the
-first approach needs to be taken. It is also the most
-satisfying from computational point of view.
-Regrettably so, we currently lack the means to constrain
-models in such a way through the typing discipline, so
-that's a possible prospect for the future work.
+displayed type theory \cite{Kolomatskaia_Shulman_2025}
+through the lens of reinterpretation inside a fixed
+model (or family of models), you'll see that
+corresponding models indeed validate equalities
+definitionally, so it seems that the first approach
+needs to be taken. It is also the most satisfying from
+computational point of view. However, if you want a
+sound system where models can be user-defined, you need
+to constrain models through typing discipline. By
+following techniques currently known to us
+\cite{bezem2021notegeneralizedalgebraictheories},
+constraining models in such a way would require to
+define a type of models as a type of algebras of an
+inductive-inductive-recursive type (or even
+inductive-inductive-recursive simplicial type, for
+univalent type theories) which is well beyond the scope
+of this paper.
 
 Out of two remaining options, the last one is better
 suited for practical dependently-typed systems since it
