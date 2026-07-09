@@ -416,17 +416,17 @@ support.
 \subsubsection{Crude, but effective stratification}
 \label{MLTT-R-displacement}
 
-Due to McBride \cite{McBride:Crude2002}, a technique of
-crude, but effective stratification works as follows:
-instead of providing complete support for level
-polymorphism, let's consider a \textit{displacement
-operator} which, given a term $t$ using universes
-$U_i,U_j,U_k,\ldots$, produces a term which is equal to
-$t$ except for universes which are replaced with
-$U_{i+1},U_{j+1},U_{k+1},\ldots$. The displaced term is
-also well-typed, however it is defined <<one level
-higher>>. Notice that displacement operator is
-\textit{definable} in MLTT-R as
+Due to McBride \cite{McBride:Crude2011,
+McBride:Crude2012}, a technique of crude, but effective
+stratification works as follows: instead of providing
+complete support for level polymorphism, let's consider
+a \textit{displacement operator} which, given a term $t$
+using universes $U_i,U_j,U_k,\ldots$, produces a term
+which is equal to $t$ except for universes which are
+replaced with $U_{i+1},U_{j+1},U_{k+1},\ldots$. The
+displaced term is also well-typed, however it is defined
+<<one level higher>>. Notice that displacement operator
+is \textit{definable} in MLTT-R as
 $\_\,@\,\mathcal{U}_\mathrm{McBride}$ where
 
 \[\mathcal{U}_\mathrm{McBride} = \langle
@@ -447,9 +447,9 @@ function of type $\sigma$ satisfies a certain <<free
 theorem>> $\llbracket \sigma \rrbracket$ defined via
 relational interpretation of a type.
 
-In recent works \cite{Bernardy:Parametricity2010}
-\cite{Altenkirch:Parametricity2024}, a streamlined
-definition is given for parametricity interpretation of
+In recent works \cite{Bernardy:Parametricity2010,
+Altenkirch:Parametricity2024}, a streamlined definition
+is given for parametricity interpretation of
 dependently-typed systems dubbed <<external
 parametricity>>. Once again, this relational
 interpretation is definable in our system
