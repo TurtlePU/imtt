@@ -2,8 +2,8 @@
     [acmsmall,screen,review,anonymous,nonacm]{acmart}
 
 \usepackage{
-    amsmath,fontawesome,mathpartir,mathtools,minted,
-    newunicodechar,simplebnf,xcolor
+    amsmath,fontawesome,graphicx,mathpartir,mathtools,
+    minted,newunicodechar,simplebnf,xcolor
 }
 
 \newunicodechar{∀}{$\forall$}
@@ -15,13 +15,13 @@
 We advocate that type systems should be able to
 reinterpret their own terms in any internal model of
 themselves: equipped with a single tool of
-reinterpretation, you can express many desired features of
-type systems, including universe polymorphism, limited
-effect polymorphism, external parametricity and more. To
-this end, we present two type systems capable of
-self-reinterpretation, namely STLC-R and MLTT-R, prove
-their basic properties and show how the features we claim
-they contain are definable on the library level.
+reinterpretation, you can express a variety of features,
+such as universe polymorphism, external parametricity,
+ability to do synthetic mathematics internally and more.
+To this end, we explore limits of self-reinterpretation
+and present two type systems capable of it, namely HM-R
+and MLTT-R, prove their basic properties and show
+several examples of useful internal models.
 \end{abstract}
 
 \begin{document}

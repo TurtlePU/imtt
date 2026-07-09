@@ -25,12 +25,13 @@ provided interpretations respect definitional equalities
 of a system; finally, we want interpretations to be
 definable inside a system, so we call them
 \textit{internal models} of a system, or just
-\textit{model} for short.
+\textit{models} for short.
 
 Now, before actually specifying a system, let's find out
 what we cannot hope to achieve.
 
 \subsection{No-go theorem of internal interpretation}
+\label{no-go-section}
 
 We're going to work inside a classical type-theoretical
 framework which introduces a sort of contexts $\Gamma$,
@@ -39,9 +40,8 @@ $\Gamma\vdash t:T$; computation is specified by one-step
 reduction relation $t\to t'$ on terms. In this section
 we'll show that, if we want a practical system with
 internal interpretation as discussed in the start of the
-section \ref{main-ideas}, we have to either a)
-reinterpret closed terms only; b) forbid reductions
-inside reintrerpreted terms altogether; c) severely
+section \ref{main-ideas}, we have to either compute
+reinterpretation only on closed terms, or severely
 restrict a class of definable models.
 
 \begin{definition}
@@ -64,22 +64,22 @@ restrict a class of definable models.
 \begin{theorem}[No-go theorem of naive reinterpretation]
 \label{no-go}
     In a confluent type system with a type of functions
-    and na\"{\i}ve computational reinterpretation, the
-    following should hold for arbitrary well-typed $s$
-    and $t$:
+    and na\"{\i}ve computational reinterpretation, if
+    reduction commutes with substitution, for arbitrary
+    well-typed $s$ and $t$ there exists $u$ such that:
     \[
         \mathtt{app}\llbracket\lambda x.t\rrbracket
-        \llbracket s \rrbracket \equiv
+        \llbracket s \rrbracket \to^* u\;
+        \text{\reflectbox{$\to^*$}}\;
         \llbracket t[x\coloneqq s] \rrbracket
     \]
-    where $\equiv$ is definitional equality and
-    $\mathtt{app}$ is how $\llbracket\_\rrbracket$
+    where $\mathtt{app}$ is how $\llbracket\_\rrbracket$
     acts on applications.
 \end{theorem}
 
-Principally, it means that \textbf{we cannot use
-propositional equality to enforce equational properties
-of models}. The proof is by direct example:
+Principally, it means that \textbf{propositional
+equality is not strong enough to enforce equational
+properties of models}. The proof is by direct example:
 
 \begin{proof}
     We are given well-typed $\Gamma\vdash s:S$ and
@@ -101,9 +101,9 @@ of models}. The proof is by direct example:
     respects reduction, this reduces to
     $\llbracket t[x\coloneqq s] \rrbracket$.
 
-    In a confluent type system with functions,
-    multi-step reduction commutes with substitution,
-    therefore two terms are definitionally equivalent.
+    Since reduction commutes with substitution and
+    system is confluent, there should be such $u$ that
+    both terms reduce to.
 \end{proof}
 
 Fundamentally, the proof above exploits openness of the

@@ -12,16 +12,22 @@ map f (x ∷ xs) = f x ∷ map f xs
 Enjoying both composability of this function and
 simplicity of its type, we would like to reuse its
 definition as much as possible. Up to a certain level,
-we would surely be able to do so: after all, its
-definition is polymorphic in source and target types, so
-we can instantiate it with whatever types we want. But
-we might wish for much more; of things that come to our
-mind are the following:
+we would surely be able to do so: after all,
+\texttt{map} is polymorphic in source and target types,
+so we can instantiate it with whatever types we want.
+However, were we to find a magic lamp with a
+type-theoretical djinn inside, we would ask him to grant
+us three wishes:
 
-\begin{itemize}
+\begin{enumerate}
     \item Reuse \texttt{map} at higher universe levels,
         e.g., given a \textit{type operator}, map over
-        \textit{list of types};
+        \textit{list of types}:
+        \[
+            (\mathtt{Set}\to\mathtt{Set})\to
+            \mathtt{List}\,\mathtt{Set}\to
+            \mathtt{List}\,\mathtt{Set}
+        \]
     \item Automagically obtain a proof of the free
         theorem for \texttt{map} -- that is, some term
         of type
@@ -40,89 +46,83 @@ mind are the following:
             R^*(\mathtt{map}\,f\,\mathtt{xs})
                 (\mathtt{map}\,f'\,\mathtt{xs}');
         \end{multline*}
-    \item Given a group $G$, sets $A$ and $B$ with
-        actions $a$, $b$ of $G$ on them, and a function
-        $f: A \to B$ which respects $a$ and $b$, prove
-        that $\mathtt{map}\;f$ respects actions on
-        $\mathtt{List}\,A$ and $\mathtt{List}\,B$
-        induced by $a$ and $b$, respectfully;..
-\end{itemize}
+    \item Given groupoids $A$ and $B$ and a functor
+        $f: A \to B$, construct a functor
+        $\mathtt{map}\;f$ between groupoids
+        $\mathtt{List}\,A$ and $\mathtt{List}\,B$.
+\end{enumerate}
 
 The first wish is, of course, granted by adjusting the
-definition and making it level-polymorphic. Second one
-is possible in a system with \textit{internal
-parametricity}, as exemplified by Altenkirch and others
-\cite{Altenkirch:Parametricity2024}. The last wish,
-however, has to be fulfilled manually, albeit with a
-simple list induction.
+definition and making it level-polymorphic. While the
+theorem in the second wish already holds in systems
+with parametricity, obtaining a proof \textit{inside}
+the system without human input is only possible in type
+systems where parametricity is internalized \cite{
+Bernardy:Parametricity2010,
+Altenkirch:Parametricity2024}. The last wish currently
+has to be fulfilled manually (or with some
+metaprogramming involved \cite{Nawrocki:Lean2026}),
+albeit with a couple of list inductions: some to define
+a groupoid instance for \texttt{List} and few more to
+prove functoriality of \texttt{map}.
 
-A shift in perspective might help. Instead of tweaking
-the definition of \texttt{map}, let's remember all of
+We suggest a different approach. Before tweaking the
+definition of \texttt{map}, let's first remember all of
 the metatheoretic power our type system already has.
-Parametricity is a first hint; another is due to Lambek
-\cite{Lambek1980} who established that simply-typed
-lambda calculus (STLC) is an \textit{internal language}
-of \textit{cartesian closed categories} (CCC)
-\footnote{This is, of course, part of well-known
-Curry-Howard-Lambek correspondence.}. In particular, any
-term written in STLC can be interpreted in any cartesian
-closed category; this way, you don't have to repeat your
-construction in any CCC you meet, you just reinterpret
-the STLC term you already have
-\cite{Elliott:Compcat2017}. This correspondence can be
-extended further into dependently typed systems,
-establishing correspondence with certain kinds of topoi
-and enabling us to do synthetic mathematics: prove
-general statements in higher-order intuitionistic logic
-and translate them into particular theorems about our
-topos of interest \cite{Nawrocki:Lean2026}.
-
-All of this power, unfortunately, lies beyond what usual
-type systems can see, since that's their metatheoretical
-properties. But what if they were internalized? What if
-we had a way to \textit{reinterpret terms of a type
-system inside itself}? We experiment with this idea and
-end up with two minimal systems, STLC-R (section
-\ref{STLC-R}) and MLTT-R (section \ref{MLTT-R}), based
-on simply typed lambda calculus and Martin-L\"of type
-theory respectively. Turns out that their capability of
-\textit{self-reinterpretation} is expressive enough to
-cover all of the discussed usecases, including
-restricted form of effect polymorphism (section
-\ref{STLC-R-applications}), synthetic mathematics
-(section \ref{MLTT-R-synthetic}), universe polymorphism
-(section \ref{MLTT-R-displacement}), parametricity
-(section \ref{MLTT-R-parametricity}) and more.
+Abovementioned parametricity of polymorphic definitions
+is the first result that comes to mind; note that it is
+obtained by specifying a \textit{relational
+interpretation} of the typing judgement
+\cite{reynolds1983types}. And indeed, ones of the most
+interesting metatheoretic results can be expressed by
+constructing a certain \textit{model} of a type system:
+synthetic results in homotopy theory are based on
+($(\infty, 1)$-)groupoid model of (homotopy) type theory
+\cite{HofmannStreicher-Thegroupoidmodelref,
+altenkirch:groupoids}; McBride's usage of displacement
+for universe polymorphism \cite{McBride:Crude2011,
+McBride:Crude2012} can be viewed as constructing a model
+of a type system in higher universes of itself and then
+interpreting displaced constructions in it. Then, all of
+our wishes listed above could be granted by constructing
+a suitable model of a type system \textit{inside} itself
+(hence we call these \textit{internal models}) and then
+instantiating \texttt{map} in it. Throughout the paper,
+we'll call type systems with self-reinterpretation
+capabilities \textit{reflective}.
 
 \subsection{Contributions}
 
 \begin{itemize}
-    \item We start by giving the syntax and semantics of
-        our first type system that reinterprets itself.
-        It is based on simply typed lambda calculus and
-        is called STLC-R. We prove that STLC-R is sound,
-        and that global type inference is decidable
-        (section \ref{STLC-R}).
-    \item As expected, you can reinterpret STLC-R terms
-        in any cartesian closed category you define
-        inside it, including categories of
-        differentiable manifolds for applications in
-        autodifferentiation, Kleisli categories of
-        certain monads and more (section
-        \ref{STLC-R-applications}).
+    \item Our main goal is to construct an implementable
+        reflective dependently typed system. Main
+        difficulty in doing so arises from a certain
+        no-go result discussed in section
+        \ref{no-go-section} which forces us to limit the
+        power of reinterpretation in order to keep type
+        checking decidable.
+    \item For ease of presentation, we first offer a
+        reflective type system based on Hindley-Milner
+        type system called HM-R (section \ref{STLC-R}).
+        We prove that HM-R is sound, conservative with
+        respect to simply-typed lambda calculus and that
+        global type inference is decidable.
+    \item As a warmup exercise, we provide an internal
+        model of HM-R (section
+        \ref{STLC-R-applications}) which by Curry-Howard
+        correspondence translates into hypothesis
+        elimination in intuitionistic logic.
     \item Building upon the insights gathered from
-        developing STLC-R, we give the syntax and
-        semantics of a dependently typed
-        self-reinterpreting language based on
-        Martin-L\"of type theory called MLTT-R. We prove
-        soundness of MLTT-R as well, and motivate
-        bidirectional typing discipline for it (section
-        \ref{MLTT-R}).
-    \item As we intended, MLTT-R incorporates both a
-        restricted form of universe polymorphism and
-        external parametricity by virtue of
-        reinterpretation only. And, of course, you can
-        use MLTT-R as a system for synthetic mathematics
+        developing HM-R, we're finally equipped to dive
+        into reflective version of Martin-L\"of type
+        theory dubbed MLTT-R (section \ref{MLTT-R}). We
+        prove soundness and conservativity of MLTT-R as
+        well.
+    \item As intended, by virtue of reinterpretation,
+        MLTT-R incorporates both a restricted form of
+        universe polymorphism and external
+        parametricity. And, of course, you can use
+        MLTT-R as a system for synthetic mathematics
         with internal reuse of synthetic results
         (section \ref{MLTT-R-applications}).
 \end{itemize}
