@@ -5,20 +5,114 @@
 We start with a simpler language to iron out the details
 and actually figure out how to properly reinterpret
 terms internally before moving on to dependently typed
-system. Our starting point is simply typed lambda
-calculus with products, which we call <<STLC>>
-throughout this paper. As discussed before, we will add
-self-reinterpretation capabilities to it to enable
-reinterpretation in any <<model>> of STLC specifiable
-inside our language. (TODO: enter cartesian categories
-and Curry-Howard-Lambek correspondence) Here's the thing
-we \textit{wish} to do with it, where
-$t\,@\,\mathcal{M}$ is an operator of reinterpretation
-of term $t$ in internal model $\mathcal{M}$:
+system. The simplest language for which we know a lot of
+interesting models is simply typed lambda calculus with
+products, to which we refer to as ``STLC'' throughout
+this paper; in this section, we'll present a language
+capable of interpreting STLC terms as constructions in
+STLC models which can be defined in our language.
+
+So, what are the models of STLC? In addition to usual
+set-theoretic semantics where $S\to T$ is interpreted as
+a function from $S$ to $T$ and $S\times T$ is a
+cartesian product, there's proof-theoretic semantics
+that relate terms of type $T$ to intuitionistic proofs
+of proposition $\llbracket T\rrbracket$, where $(\to)$
+is now understood to mean implication and $(\times)$ is
+conjunction. This, of course, is a classic Curry-Howard
+correspondence \cite{ho80}; both set-theoretic and
+proof-theoretic semantics are generalized by a complete
+description of STLC models as given by Joachim Lambek
+\cite{Lambek1980}. According to this
+\textit{Curry-Howard-Lambek} correspondence, models
+of STLC are precisely cartesian closed categories (or
+CCCs for short). Definitions vary; we're going to use
+the definition \ref{ccc}.
+
+\begin{definition}[Cartesian closed category]\label{ccc}
+Cartesian closed category is the following datum:
+\begin{enumerate}
+\item A set of \textit{objects} $\mathrm{Ob}$ and a
+    family of \textit{morphisms} $\mathrm{Hom}(S, T)$
+    indexed by $S,T\in\mathrm{Ob}$, where
+    $f\in\mathrm{Hom}(S,T)$ is denoted by $f:S\to T$. In
+    addition, $S$ is called \textit{source} of $f$,
+    while $T$ is \textit{target} of $f$, while both $S$
+    and $T$ together are referred to as \textit{ends}
+    of $f$.
+\item For each $A\in\mathrm{Ob}$ there's an
+    \textit{identity morphism} $\mathrm{id}_A: A\to A$;
+    for each $f:A\to B$ and $g:B\to C$, there's their
+    \textit{composition} $g\circ f:A\to C$. If a
+    source-target of an identity morphism is clear from
+    context, the subscript is elided. Also, the
+    following properties hold:
+    \begin{align*}
+        \mathrm{id}\circ f = f = f\circ\mathrm{id} & &
+        (f \circ g) \circ h = f \circ (g \circ h)
+    \end{align*}
+    for arbitrary morphisms $f,g,h$ with matching ends.
+\item There's a \textit{terminal object}
+    $\top\in\mathrm{Ob}$ such that for each
+    $A\in\mathrm{Ob}$ there's a \textbf{unique} morphism
+    $!_A:A\to\top$.
+\item For each $A,B\in\mathrm{Ob}$ there's their
+    \textit{product} $A\times B$ together with
+    \textit{projections} $\pi_1:A\times B\to A$ and
+    $\pi_2:A\times B\to B$; for each object
+    $C\in\mathrm{Ob}$ and a pair of morphisms $f:C\to A$
+    and $g:C\to B$, there's a \textbf{unique}
+    \textit{pairing morphism} $[f;g]:C\to A\times B$
+    such that the following properties hold:
+    \begin{align*}
+        \pi_1\circ[f;g]=f & & \pi_2\circ[f;g]=g
+    \end{align*}
+\item For each $A,B\in\mathrm{Ob}$ there's their
+    \textit{exponential object} $B^A$ together with
+    \textit{evaluation morphism}
+    $\mathrm{ev}:B^A\times A\to B$; for each object
+    $C\in\mathrm{Ob}$ and morphism $f:C\times A\to B$,
+    there's a \textbf{unique} \textit{abstraction}
+    $\lambda\,f:C\to B^A$ such that the following
+    property holds for arbitrary $g:C\to A$:
+    \[
+        \mathrm{ev}\circ[\lambda\,f; g]
+        = f\circ[\mathrm{id}_C; g]
+    \]
+\end{enumerate}
+\end{definition}
+
+Then, a well-typed term $\Gamma\vdash t:T$ is
+interpreted as a morphism $\llbracket t\rrbracket:
+\llbracket\Gamma\rrbracket\to\llbracket T\rrbracket$,
+where $\llbracket\Gamma\rrbracket$ is a left-nested
+product of interpretations of types from $\Gamma$:
+\[
+    \llbracket x:A,y:B,z:C\rrbracket=
+    ((\top\times\llbracket A\rrbracket)
+    \times\llbracket B\rrbracket)
+    \times\llbracket C\rrbracket.
+\]
+Unit type is now a terminal object; product of types is now a product of
+objects; arrow type is an exponential object. Equations
+in (2) are needed to validate structural properties of
+substitution; equations in (4) correspond to reductions
+of pairs; equation in (5) validates $\beta$-reduction.
+\textbf{Unique}ness properties correspond to
+$\eta$-equivalence.
+
+For example, in our language,
+$\llbracket t\rrbracket\,\mathcal{M}$ is an operator of
+reinterpretation of term $t$ in internal model
+$\mathcal{M}$. On a sample term
+\[
+    \cdot\vdash\lambda f x y. (f x, y):
+        (A\to B)\to A\to C\to B\times C
+\]
+it computes like this:
 \begin{multline*}
-    (\lambda f x y. (f x, y))\,@\,\langle(\circ),
-        \mathtt{pair},\mathtt{proj}_1,\mathtt{proj}_2,
-        \mathtt{lam},\mathtt{eval},\ldots\rangle=\\=
+    \llbracket\lambda f x y. (f x, y))\rrbracket
+    \mathcal{M}=\\=
     \mathtt{lam}\,(\mathtt{lam}\,(\mathtt{lam}\,(
         \mathtt{pair}\,
             (\mathtt{eval}\,\circ\,\mathtt{pair}\,
@@ -32,34 +126,49 @@ of term $t$ in internal model $\mathcal{M}$:
 \end{multline*}
 
 Where $\mathtt{lam}$,\,$\mathtt{pair}$ and
-$\mathtt{eval}$ are correspondingly constructor of an
-exponential object, constructor of a product and
-evaluation morphism, in the same way they are specified
-in the definition of cartesian closed categories.
+$\mathtt{eval}$ are correspondingly abstraction
+morphism, pairing morphism and evaluation morphism taken
+from $\mathcal{M}$, defined in the same way as in the
+definition \ref{ccc}, translated into types of our
+system.
 
-There are a few things to ponder:
+Now, moving on to the actual design of our language. As
+discussed in section \ref{no-go-section}, for a
+non-dependent case we're now in, we're going to only
+interpret normal forms of closed terms. Among other
+things, it means that we actually don't need equations
+and \textbf{unique}nesses from definition \ref{ccc} to
+hold in our internal models! This approach doesn't break
+any of the metatheoretical properties considered in
+section \ref{HM-R-properties}. Additionally, for the
+sake of example, we're only going to consider models
+where objects are types. Then, internalization of a
+definition \ref{ccc} would require 1) type operators to
+define types of morphisms, products and exponential
+objects; 2) polymorphic functions to operationalize the
+$\forall\exists$ introductions of constructions in a
+model. Actually, we're going to get rid of type
+operators as well, since we can make do with just
+types-in-a-context which are then substituted into
+definition of a model for checking term-level
+operations. This way, our language is a small extension
+to classic Hindley-Milner type system, hence the name
+HM-R; grammar rules are collected in a figure
+\ref{hm-r-grammar}. You'll notice that, despite our
+description, grammar doesn't define a reinterpretation
+operator $\llbracket t\rrbracket\,\mathcal{M}$ for
+arbitrary term $t$; instead, only variables get to be
+reinterpreted. In this system, reinterpretation is
+nothing but a total function on closed values.
 
-\begin{itemize}
-    \item How to reinterpret free variables?
-    \item How to type universes?
-    \item We're in a simply typed setting, so there's no
-        way to enforce that universe satisfies coherence
-        conditions on their operations. How to structure
-        computation in such a way that it doesn't break
-        Church-Rosser property?
-\end{itemize}
-
-To answer the first question, we actually disallow (most
-of) free variables in a terms that are to be
-reinterpreted since it is not clear how to lift
-arbitrary \textit{value} into current universe, so we
-have to enforce some kind of a typing discipline for
-introducing terms amenable to reinterpretation. In a
-sense, reinterpretation is a strong form of
-polymorphism, so let's structure our grammar and typing
-rules similarly to how it's done in Hindley-Milner type
-systems today and see how far we can go; grammar rules
-are collected in a figure \ref{hm-r-grammar}.
+\begin{definition}[Values of HM-R]
+Values are denoted by metavariables $u,v$ in the BNF
+grammar below. Metavariable $n$ denotes neutral terms:
+\begin{align*}
+    u,v&\Coloneqq n\;|\;()\;|\;(u,v)\;|\;\lambda x.v\\
+    n&\Coloneqq x\;|\;\pi_i\,n\;|\;n\,v
+\end{align*}
+\end{definition}
 
 \begin{figure}
 \centering
@@ -88,211 +197,18 @@ are collected in a figure \ref{hm-r-grammar}.
     ;;
     $\mathcal{M}$ : \textsf{Model} ::=
     | $\langle T, t, \ldots \rangle$
-        : model def. (see below)
+        : model def. (see typing rules)
 \end{bnf}
-\caption{HM-R grammar}
+\caption{HM-R terms and values}
 \Description{}
 \label{hm-r-grammar}
 \end{figure}
 
-\begin{figure}
-\centering
-\begin{mathpar}
-    \inferrule{x:\sigma\in\Gamma}{\Gamma\vdash x:\sigma}
-    \and
-    \inferrule{}{\Gamma\vdash ():\top}
-    \and
-    \inferrule{\Gamma\vdash s:S\\\Gamma\vdash t:T}
-        {\Gamma\vdash (s,t):S\times T}
-    \and
-    \inferrule{\Gamma\vdash t:S\times T}
-        {\Gamma\vdash \pi_1\,t:S}
-    \and
-    \inferrule{\Gamma\vdash t:S\times T}
-        {\Gamma\vdash \pi_2\,t:T}\\
-    \and
-    \inferrule{\Gamma,x:S\vdash t:T}
-        {\Gamma\vdash\lambda x.t:S\to T}
-    \and
-    \inferrule{\Gamma\vdash t:S\to T\\\Gamma\vdash s:S}
-        {\Gamma\vdash t\,s:T}
-    \and
-    \inferrule{\Gamma\vdash t:\sigma}
-        {\Gamma\vdash t:\forall\alpha.\sigma}
-    \and
-    \inferrule{\Gamma\vdash t:\forall\alpha.\sigma}
-        {\Gamma\vdash t:\sigma[\alpha\coloneqq T]}
-    \and
-    \inferrule{
-        \mathrm{fv}(\sigma)=\varnothing\\
-        \forall\Gamma\vdash s:\sigma\\
-        \forall\Gamma,x:\sigma,\Delta\vdash t:T
-    }{\forall\Gamma,\Delta\vdash
-        \mathtt{let}\,x=s\,\mathtt{in}\,t:T}
-    \and
-    \inferrule{
-        x:\forall\vec{\alpha}.T\in\forall\Gamma\\
-        \forall\Gamma,\Delta\vdash
-            \mathcal{M}\,\mathrm{model}
-    }{\forall\Gamma,\Delta\vdash x^\mathcal{M}
-        :\llbracket T\rrbracket^\mathcal{M}_{
-            \left[\vec{\alpha}\coloneqq\vec{S}\right]}}
-    \and
-    \inferrule{
-        \mathrm{fv}(C)\cup\mathrm{fv}(P)\cup
-            \mathrm{fv}(E)\subseteq\{0,1\}\\
-        \Gamma\vdash\mathtt{id}:
-            \forall\alpha.C[\alpha,\alpha]\\
-        \Gamma\vdash\mathtt{comp}:
-            \forall\alpha\beta\gamma.
-            C[\beta,\gamma]\to C[\alpha,\beta]\to
-            C[\alpha,\gamma]\\
-        \mathrm{fv}(TT)=\varnothing\\
-        \Gamma\vdash\mathtt{cnst}:
-            \forall\alpha.C[\alpha,TT]\\
-        \Gamma\vdash\mathtt{pair}:
-            \forall\alpha\beta\gamma.
-            C[\gamma,\alpha]\to C[\gamma,\beta]\to
-            C[\gamma,P[\alpha,\beta]]\\
-        \Gamma\vdash\mathtt{proj}_1:
-            \forall\alpha\beta.
-            C[P[\alpha,\beta],\alpha]\\
-        \Gamma\vdash\mathtt{proj}_2:
-            \forall\alpha\beta.
-            C[P[\alpha,\beta],\beta]\\
-        \Gamma\vdash\mathtt{lam}:
-            \forall\alpha\beta\gamma.
-            C[P[\gamma,\beta],\alpha]\to
-            C[\gamma,E[\alpha,\beta]]\\
-        \Gamma\vdash\mathtt{eval}:
-            \forall\alpha\beta.
-            C[P[E[\alpha,\beta],\beta],\alpha]
-    }{\Gamma\vdash\langle
-        \Lambda 01.C,\mathtt{id},\mathtt{comp}, TT,
-        \mathtt{cnst}, \Lambda 01.P,\mathtt{pair},
-        \mathtt{proj}_1,\mathtt{proj}_2,
-        \Lambda 01.E,\mathtt{lam},\mathtt{eval}
-    \rangle\,\mathrm{model}}
-\end{mathpar}
-\caption{HM-R declarative typing rules}
-\Description{}
-\label{hm-r-typing}
-\end{figure}
+Thus, in order to define reinterpretation, it is enough
+to consider grammar forms of STLC:
 
-In figure \ref{hm-r-typing}, we mostly repeat usual
-declarative typing rules of a Hindley-Milner type system
-\cite{Clement:ML1986} (TODO: check source) with an
-addition of a rule for reinterpretation (discussed
-below) and an important change in \texttt{let} case: as
-discussed, we don't take local context in account when
-checking polymorphic term $s$. Instead, it can only
-reference other polymorphic terms. This is safe since
-other polymorphic terms are constrained in the same way,
-and can be safely used inside $s$.
-
-To check models, we abuse our type system a bit in order
-to avoid adding type operators and complicate the type
-system: types of arrows $C$, products $P$ and
-exponentials $E$ are specified as open monomorphic types
-which can use two type variables, $0$ and $1$. This fact
-is reflected in the syntax of a model using notation
-$\Lambda 01.C$, $\Lambda 01.P$ and $\Lambda 01.E$
-respectively. $0$ and $1$ are then filled in by
-substitution when we need to type model operations
-(notation $T[S_1, S_2]$ is a shorthand for
-$T[0\coloneqq S_1,1\coloneqq S_2]$).
-
-We could generalize model definition to include
-something else as objects instead of types, but there is
-no way to build meaningful $C$,$P$ and $E$ with anything
-other than types in base system.
-
-\begin{definition}
-    Let $\mathcal{M}=\langle\Lambda 01.C,\mathtt{id},
-    \mathtt{comp},TT,\mathtt{cnst},\Lambda 01.P,
-    \mathtt{pair},\mathtt{proj}_1,\mathtt{proj}_2,
-    \Lambda 01.E,\mathtt{lam},\mathtt{eval}\rangle$.
-    Then, interpretation of type in a model is the
-    following function:
+\begin{definition}[Reinterpretation of terms in HM-R]
     \begin{align}{}
-    \llbracket T\rrbracket^\mathcal{M}_\sigma &=
-        C[TT,T^\mathcal{M}_\sigma] \\
-    \alpha^\mathcal{M}_\sigma &= \sigma\alpha \\
-    \top^\mathcal{M}_\sigma &= TT \\
-    (S\times T)^\mathcal{M}_\sigma &=
-        P[S^\mathcal{M}_\sigma,T^\mathcal{M}_\sigma] \\
-    (S\to T)^\mathcal{M}_\sigma &=
-        E[S^\mathcal{M}_\sigma,T^\mathcal{M}_\sigma].
-    \end{align}
-\end{definition}
-
-Having defined typing rules, let's pin down computation
-rules in order to prove some useful properties. General
-idea is the following: before inlining a \texttt{let}
-binding, we first have to make sure that the polymorphic
-term is closed and is in normal form; in all other
-cases, standard reductions of STLC apply.
-
-\begin{figure}
-\centering
-\begin{align*}
-    u,v&\Coloneqq n\;|\;()\;|\;(u,v)\;|\;\lambda x.v\\
-    n&\Coloneqq x\;|\;\pi_i\,n\;|\;n\,v
-\end{align*}
-\caption{Values and neutral terms of HM-R}
-\Description{}
-\label{hm-r-val}
-\end{figure}
-
-\begin{figure}
-\centering
-\begin{mathpar}
-    \inferrule{s\to s'}{(s,t)\to(s',t)}
-    \and
-    \inferrule{t\to t'}{(s,t)\to(s,t')}
-    \and
-    \inferrule{t\to t'}{\pi_i t\to\pi_i t'}
-    \and
-    \inferrule{}{\pi_i(t_1, t_2)\to t_i}
-    \\
-    \inferrule{t\to t'}{\lambda x.t\to\lambda x.t'}
-    \and
-    \inferrule{s\to s'}{s\,t\to s'\,t}
-    \and
-    \inferrule{t\to t'}{s\,t\to s\,t'}
-    \and
-    \inferrule{}{(\lambda x.t)s\to t[x\coloneqq s]}
-    \\
-    \inferrule{s\to s'}{
-        \mathtt{let}\,x=s\,\mathtt{in}\,t\to
-        \mathtt{let}\,x=s'\,\mathtt{in}\,t
-    }
-    \and
-    \inferrule{t\to t'}{
-        \mathtt{let}\,x=s\,\mathtt{in}\,t\to
-        \mathtt{let}\,x=s\,\mathtt{in}\,t'
-    }
-    \and
-    \inferrule{\mathrm{fv}(v)=\varnothing}{
-        \mathtt{let}\,x=v\,\mathtt{in}\,t\to
-            t\llbracket x\coloneqq v\rrbracket
-    }
-\end{mathpar}
-\caption{HM-R computation rules}
-\Description{}
-\label{hm-r-comp}
-\end{figure}
-
-\begin{definition}
-    By $t\llbracket x\coloneqq v\rrbracket$ we mean an
-    operation which works as a regular substitution of
-    $v$ into $t$ except for the case of
-    reinterpretation:
-    \begin{align}{}
-        x^\mathcal{M}\llbracket
-            x\coloneqq v\rrbracket &= \llbracket
-                v \rrbracket^\mathcal{M}/\varepsilon
-        \\
         \llbracket()\rrbracket^\mathcal{M}/\gamma &=
             \mathtt{cnst}
         \\
@@ -329,8 +245,180 @@ cases, standard reductions of STLC apply.
     \end{align}
     where model operations \texttt{cnst},\,\texttt{pair}
     and others are taken from $\mathcal{M}$ and
-    $\varepsilon$ is an empty substitution.
+    $\gamma$ is a substitution.
 \end{definition}
+
+Here is our way to enforce a principle that \textit{only
+closed terms get interpreted}: once a term $s$ bound by
+a polymorphic let-binding
+$\mathtt{let}\,x=s\,\mathtt{in}\,t$ becomes closed and
+is brought into a normal form, only then it is
+substituted into $t$, and whenever it is substituted
+into $x^\mathcal{M}$, it then immediately gets
+reinterpreted. This operation is denoted by
+$t\llbracket x\coloneqq s\rrbracket$ in our computation
+rules given in figure \ref{hm-r-comp}. Once again, it
+acts like a regular substitution in all cases except for
+variables under reinterpretation:
+\[
+    \left(x^\mathcal{M}\right)\llbracket x\coloneqq s
+    \rrbracket = s^\mathcal{M}/\varepsilon
+    \quad\text{($\varepsilon$ is an empty substitution)}
+\]
+One can easily notice that computation would get stuck
+if let-bound terms were to contain variables coming
+from unapplied $\lambda$-abstractions. Our typing rules
+given in figure \ref{hm-r-typing} protect us from that,
+allowing to refer only to let-bound terms inside other
+let-bound terms. Again, aside from that and typing rule
+for universes, there's nothing different from usual
+declarative typing rules for a Hindley-Milner type
+system \cite{Clement:ML1986}.
+
+\begin{figure}
+\centering
+\begin{mathpar}
+    \inferrule{s\leadsto s'}{(s,t)\leadsto(s',t)}
+    \and
+    \inferrule{t\leadsto t'}{(s,t)\leadsto(s,t')}
+    \and
+    \inferrule{t\leadsto t'}{\pi_i t\leadsto\pi_i t'}
+    \and
+    \inferrule{}{\pi_i(t_1, t_2)\leadsto t_i}
+    \\
+    \inferrule{t\leadsto t'}
+        {\lambda x.t\leadsto\lambda x.t'}
+    \and
+    \inferrule{s\leadsto s'}{s\,t\leadsto s'\,t}
+    \and
+    \inferrule{t\leadsto t'}{s\,t\leadsto s\,t'}
+    \and
+    \inferrule{}{(\lambda x.t)s\leadsto t[x\coloneqq s]}
+    \\
+    \inferrule{s\leadsto s'}{
+        \mathtt{let}\,x=s\,\mathtt{in}\,t\leadsto
+        \mathtt{let}\,x=s'\,\mathtt{in}\,t
+    }
+    \and
+    \inferrule{t\leadsto t'}{
+        \mathtt{let}\,x=s\,\mathtt{in}\,t\leadsto
+        \mathtt{let}\,x=s\,\mathtt{in}\,t'
+    }
+    \and
+    \inferrule{\mathrm{fv}(v)=\varnothing}{
+        \mathtt{let}\,x=v\,\mathtt{in}\,t\leadsto
+            t\llbracket x\coloneqq v\rrbracket
+    }
+\end{mathpar}
+\caption{HM-R computation rules}
+\Description{}
+\label{hm-r-comp}
+\end{figure}
+
+To check models, we abuse our type system a bit in order
+to avoid adding type operators and complicate the type
+system: types of morphisms $C$, product objects $P$ and
+exponentials $E$ are specified as open monomorphic types
+which can use two type variables, $0$ and $1$. This fact
+is reflected in the syntax of a model using notation
+$\Lambda 01.C$, $\Lambda 01.P$ and $\Lambda 01.E$
+respectively. $0$ and $1$ are then filled in by
+substitution when we need to type model operations
+(notation $T[S_1, S_2]$ is a shorthand for
+$T[0\coloneqq S_1,1\coloneqq S_2]$). Terminal object is
+just a type named $TT$.
+
+To check reinterpretation, we need to define how model
+acts on monomorphic types. Since there's no computation
+on them, reinterpretation of types is once again defined
+as a recursive function on syntax:
+
+\begin{definition}[Reinterpretation of types in HM-R]
+    Let $\mathcal{M}$ be a correct model and $\sigma$ be
+    a substitution of monomorphic types. Then,
+    interpretation of type in a model is the following
+    function:
+    \begin{align}{}
+    \llbracket T\rrbracket^\mathcal{M}_\sigma &=
+        C[TT,T^\mathcal{M}_\sigma] \\
+    \alpha^\mathcal{M}_\sigma &= \sigma\alpha \\
+    \top^\mathcal{M}_\sigma &= TT \\
+    (S\times T)^\mathcal{M}_\sigma &=
+        P[S^\mathcal{M}_\sigma,T^\mathcal{M}_\sigma] \\
+    (S\to T)^\mathcal{M}_\sigma &=
+        E[S^\mathcal{M}_\sigma,T^\mathcal{M}_\sigma].
+    \end{align}
+\end{definition}
+
+\begin{figure}
+\centering
+\begin{mathpar}
+    \inferrule{}{\Gamma\vdash ():\top}
+    \and
+    \inferrule{\Gamma\vdash s:S\\\Gamma\vdash t:T}
+        {\Gamma\vdash (s,t):S\times T}
+    \and
+    \inferrule{\Gamma\vdash t:S\times T}
+        {\Gamma\vdash \pi_1\,t:S}
+    \and
+    \inferrule{\Gamma\vdash t:S\times T}
+        {\Gamma\vdash \pi_2\,t:T}\\
+    \and
+    \inferrule{x:T\in\Gamma}{\Gamma\vdash x:T}
+    \and
+    \inferrule{\Gamma,x:S\vdash t:T}
+        {\Gamma\vdash\lambda x.t:S\to T}
+    \and
+    \inferrule{\Gamma\vdash t:S\to T\\\Gamma\vdash s:S}
+        {\Gamma\vdash t\,s:T}
+    \and
+    \inferrule{
+        \forall\Gamma\vdash s:S\\
+        \mathrm{fv}(S)=\vec{\alpha}\\
+        \forall\Gamma,x:\forall\vec{\alpha}.S,
+        \Delta\vdash t:T
+    }{\forall\Gamma,\Delta\vdash
+        \mathtt{let}\,x=s\,\mathtt{in}\,t:T}
+    \and
+    \inferrule{
+        x:\forall\vec{\alpha}.T\in\forall\Gamma\\
+        \mathcal{M}\,\mathrm{model}
+    }{\forall\Gamma,\Delta\vdash x^\mathcal{M}
+        :\llbracket T\rrbracket^\mathcal{M}_{
+            \left[\vec{\alpha}\coloneqq\vec{S}\right]}}
+    \and
+    \inferrule{
+        \mathrm{fv}(C)\cup\mathrm{fv}(P)\cup
+            \mathrm{fv}(E)\subseteq\{0,1\}\\
+        \Gamma\vdash\mathtt{id}:C[\alpha,\alpha]\\
+        \Gamma\vdash\mathtt{comp}:
+            C[\beta,\gamma]\to C[\alpha,\beta]\to
+            C[\alpha,\gamma]\\
+        \mathrm{fv}(TT)=\varnothing\\
+        \Gamma\vdash\mathtt{cnst}:C[\alpha,TT]\\
+        \Gamma\vdash\mathtt{pair}:
+            C[\gamma,\alpha]\to C[\gamma,\beta]\to
+            C[\gamma,P[\alpha,\beta]]\\
+        \Gamma\vdash\mathtt{proj}_1:
+            C[P[\alpha,\beta],\alpha]\\
+        \Gamma\vdash\mathtt{proj}_2:
+            C[P[\alpha,\beta],\beta]\\
+        \Gamma\vdash\mathtt{lam}:
+            C[P[\gamma,\beta],\alpha]\to
+            C[\gamma,E[\alpha,\beta]]\\
+        \Gamma\vdash\mathtt{eval}:
+            C[P[E[\alpha,\beta],\beta],\alpha]
+    }{\Gamma\vdash\langle
+        \Lambda 01.C,\mathtt{id},\mathtt{comp}, TT,
+        \mathtt{cnst}, \Lambda 01.P,\mathtt{pair},
+        \mathtt{proj}_1,\mathtt{proj}_2,
+        \Lambda 01.E,\mathtt{lam},\mathtt{eval}
+    \rangle\,\mathrm{model}}
+\end{mathpar}
+\caption{HM-R declarative typing rules}
+\Description{}
+\label{hm-r-typing}
+\end{figure}
 
 \subsection{Metatheoretical properties of HM-R}
 \label{HM-R-properties}
@@ -419,22 +507,24 @@ properties of STLC and Hindley-Milner type system.
             $\Gamma,x:\sigma,\Delta\vdash t:T$, then
             $\Gamma,\Delta\vdash t\llbracket
             x\coloneqq v\rrbracket:T$.
-        \item If $\Gamma\vdash t:T$ and $t\to t'$, then
-            $\Gamma\vdash t':T$.
+        \item If $\Gamma\vdash t:T$ and $t\leadsto t'$,
+            then $\Gamma\vdash t':T$.
     \end{enumerate}
 \end{theorem}
 \begin{proof}
-    By structural induction on terms and $(\to)$.
+    By structural induction on terms and $(\leadsto)$.
 \end{proof}
 
 \begin{theorem}[Strong normalization for HM-R]
     Closed terms typable in HM-R are strongly
-    normalizing with respect to $(\to)$.
+    normalizing with respect to $(\leadsto)$ and reduce
+    to a value.
 \end{theorem}
 \begin{proof}
     By Tait's method of logical relations. Let $SN$ be a
-    set of strongly normalizing terms. Let there be the
-    following relation $\mathcal{R}\subseteq
+    set of strongly normalizing terms which reduce to a
+    value. Let there be the following relation
+    $\mathcal{R}\subseteq
     \mathsf{PolyType}\times\mathsf{Term}$:
     \begin{itemize}
         \item $t\in\mathcal{R}_\alpha,\mathcal{R}_\top$
@@ -444,33 +534,27 @@ properties of STLC and Hindley-Milner type system.
         \item $t\in\mathcal{R}_{S\to T}$ iff for all
             $s\in\mathcal{R}_S$, $t\,s\in\mathcal{R}_T$;
         \item $t\in\mathcal{R}_{\forall\vec{\alpha}.T}$
-            iff $t\in SN_\mathtt{let}$ and for all
-            $\mathcal{U}\in\mathcal{R}_{univ}$ and
-            $\vec{S}$, $nf_\mathtt{let}(t)\,@\,
-            \mathcal{U}\in\mathcal{R}_{\mathcal{U}
-            \llbracket T\rrbracket[\vec{\alpha}\coloneqq
-            \vec{S}]}$.
+            iff $t\in \mathcal{R}_{T[\vec{\alpha}
+            \coloneqq\vec{S}]}$ for all possible
+            $\vec{S}$.
     \end{itemize}
-    $\mathcal{U}\in\mathcal{R}_{univ}$ is defined
-    similarly by requiring that all terms inside
-    $\mathcal{U}$ belong to respective $\mathcal{R}$-s.
 
-    Then we can prove our main lemma by mutual induction
-    on typing rules:
-    \begin{itemize}
-        \item If $\Gamma\vdash t:T$ and $\gamma$ is a
-            substitution s.t. $\gamma\,x\in
-            \mathcal{R}_{\Gamma(x)}$ for all $x\in
-            \Gamma$ then $\gamma\,t\in\mathcal{R}_T$.
-        \item If $\forall\Gamma\vdash t:T$,
-            $\vec{\alpha}=fv(T)$ and $\gamma$ is a
-            substitution s.t. $\gamma\,x\in
-            \mathcal{R}_{\Gamma(x)}$ for all $x\in
-            \Gamma$ then $\gamma\,t\in
-            \mathcal{R}_{\forall\vec{\alpha}.T}$.
-    \end{itemize}
-    Noticing $\mathcal{R}_T\subseteq SN$ completes the
-    proof.
+    Note that $\mathcal{R}_T\subseteq SN$. Furthermore,
+    the following property holds: if
+    $t\in\mathcal{R}_{\forall\vec{\alpha}.T}$ and $t$ is
+    closed, $\llbracket\mathrm{nf}(t)
+    \rrbracket^\mathcal{M}/\varepsilon\in
+    \mathcal{R}_{\llbracket T\rrbracket\,\mathcal{M}\,[
+    \vec{\alpha}\coloneqq\vec{S}]}$ for all
+    $\mathcal{M}$ s.t. all terms inside it are in
+    corresponding $\mathcal{R}_\forall$. $\mathrm{nf}$
+    is well-defined here since system is confluent and
+    $t$ is in $SN$.
+
+    Then we can prove our main lemma: if
+    $\Gamma\vdash t:T$ and $\gamma$ is a substitution
+    s.t. $\gamma\,x\in\mathcal{R}_{\Gamma(x)}$ for all
+    $x\in\Gamma$, then $\gamma\,t\in\mathcal{R}_T$.
 \end{proof}
 
 \begin{theorem}[Conservativity over STLC]
@@ -478,11 +562,10 @@ properties of STLC and Hindley-Milner type system.
     typable in STLC.
 \end{theorem}
 \begin{proof}
-    Thanks to type preservation, normal form $nf(t)$ is
-    typable in HM-R. Normal form cannot contain
-    let-bindings by definition of $(\to)$, therefore
-    each subterm is $\forall$-closed. Therefore $nf(t)$
-    has no reinterpretation subterms.
+    Thanks to type preservation, normal form
+    $\mathrm{nf}(t)$ is typable in HM-R. By definition,
+    it is a value, therefore it has no reinterpretation
+    subterms and let-bindings, hence typable in STLC.
 \end{proof}
 
 \begin{theorem}
@@ -491,80 +574,29 @@ properties of STLC and Hindley-Milner type system.
 \begin{proof}
     It is enough to extend any unification-based type
     inference algorithm for Hindley-Milner type system
-    to support universes and reinterpretation.
+    to support models and reinterpretation.
     \begin{itemize}
-        \item Since universes are provided explicitly,
-            it is enough to \textit{check} them.
+        \item Since models are provided explicitly, it
+            is enough to \textit{check} them.
         \item Since polymorphic functions do not depend
             on local context, their type is fully
             resolved when it's added to context.
-        \item Once universe is checked in
-            $x\,@\,\mathcal{U}$, we can directly compute
-            $\mathcal{U}\llbracket T\rrbracket$ (since
-            $\mathcal{U}$ is known and $T$ is fully
-            resolved) and instantiate it with fresh
-            metavariables in $\vec{S}$.
+        \item Once model is checked in $x^\mathcal{M}$,
+            we can directly compute
+            $\llbracket T\rrbracket^\mathcal{M}_{[
+                \vec{\alpha}\coloneqq\vec{\eta}]}$
+            (since $\mathcal{M}$ is known and $T$ is
+            fully resolved) where $\vec{\eta}$ are
+            fresh metavariables.
     \end{itemize}
 \end{proof}
 
-\subsection{Useful reinterpretations inside HM-R}
-\label{HM-R-applications}
-
-The idea to interpret STLC terms in cartesian closed
-categories is really not new and is already thoroughly
-explored by Conal Elliott in ``Compiling to Categories''
-\cite{Elliott:Compcat2017}; our addition here is that we
-internalized reinterpretation inside the calculus
-without working through compiler plugin. So all of the
-main applications from the cited paper are still
-applicable here whenever they are expressible as
-universes in HM-R. As HM-R is not the main focus of
-the paper, we will not be reiterating the examples here,
-but we would like to add just one more example.
-
-Following Moggi \cite{MOGGI199155}, we can use monads to
-model side effects in a language. What is new here is
-that instead of parameterizing a function by arbitrary
-monad, we can simply \textit{reinterpret} pure terms as
-if they were run in monadic context. Therefore, our
-universe is a Kleisli category; however, it is only
-cartesian, but in general not cartesian \textit{closed}.
-The problem is the following operation (here $F$ is a
-monad in question, $E$ is whatever exponential object we
-were to use):
-\[
-    \mathtt{lam}:(\alpha\times\beta\to F[\gamma])\to
-        (\alpha\to F[E[\gamma,\beta]])
-\]
-In other words, $F$ has to \textit{distribute} over an
-arrow. Well, at least arrow type distributes over
-itself:
-\begin{align*}
-    \mathcal{U}_E &= \langle\\
-        &\Lambda01.\,0\to E\to1,\\
-        &\lambda x e.x,\\
-        &\lambda gfxe.g(fxe)e,\\
-        &\top,\\
-        &\lambda e.(),\\
-        &\Lambda01.\,0\times1,\\
-        &\lambda fgxe.(fxe,gxe),\\
-        &\lambda pe.\pi_1\,p,\\
-        &\lambda pe.\pi_2\,p,\\
-        &\Lambda01.\,0\to1,\\
-        &\lambda fxey.f(x,y)e,\\
-        &\lambda pe.(\pi_1\,p)\,(\pi_2\,p)\\
-    \rangle
-\end{align*}
-
-Interestingly enough, if, using Curry-Howard
-correspondence, we take closed STLC term $t$ to
-represent proof of an intuitionistic proposition,
-$t\,@\,\mathcal{U}_E$ corresponds to hypothesis
-elimination in intuitionistic logic.
-
-We \textit{could} write down a universe for arbitrary
-monad if we had capability to interpret terms which do
-not use abstractions in arbitrary cartesian category,
-which is actually achievable with
-\cite{Elliott:Compcat2017}. We leave study of such
-``partial'' interpretation for future work.
+Thus, in this section we introduced a sound type system
+based on Hindley-Milner type system which is capable of
+interpreting its own closed terms in arbitrary
+``cartesian closed category'' definable inside it. This
+system is not truly \textit{reflective} since models are
+not fully internal: they require special form of type
+operators to work which is not accessible to the rest of
+type system. To internalize model definition, we move on
+to dependently typed system in the next section.
