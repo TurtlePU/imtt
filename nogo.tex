@@ -1,48 +1,31 @@
-\section{Main ideas}\label{main-ideas}
-
-We aim to design a type system that allows its users to
-reuse native syntax of a system for special kinds of
-user-defined ``domain-specific languages''. This
-approach has several advantages:
-
-\begin{itemize}
-    \item From the pragmatic standpoint, it would allow
-        DSL designers to use a syntax which is already
-        familiar to their users;
-    \item From type-theoretical standpoint, type
-        theorists could internalize metatheoretical
-        properties of such type system directly inside
-        itself;
-    \item From philosophical standpoint, it would be
-        particularly satisfying to have a type system
-        capable of ``eating itself''.
-\end{itemize}
-
-To define a new DSL in such system, it is enough to
-specify how to interpret the native syntax inside your
-domain of interest. It is natural to expect that
-provided interpretations respect definitional equalities
-of a system; finally, we want interpretations to be
-definable inside a system, so we call them
-\textit{internal models} of a system, or just
-\textit{models} for short.
-
-Now, before actually specifying a system, let's find out
-what we cannot hope to achieve.
-
-\subsection{No-go theorem of internal interpretation}
+\section{No-go theorem of internal interpretation}
 \label{no-go-section}
 
-We're going to work inside a classical type-theoretical
-framework which introduces a sort of contexts $\Gamma$,
-terms $t,t'$ and types $T$ linked by the typing relation
+So we want to build a reflective type system. That is,
+a system where a user is able to both define model of a
+system internally and apply it to well-typed terms to
+get their internal interpretations. Naturally, we would
+like user-defined models to respect definitional
+equalities of a system; in a dependently typed system,
+this could be naturally achieved by using an identity
+type to spell out corresponding equalities inside a
+model. Then, it would be nice if, before reinterpreting
+a term, system would first bring it to normal form to
+get rid of the artifacts of the construction in the
+result of the interpretation. Finally, in a dependently
+typed system, it is natural to expect reductions of open
+terms, so we would like our interpretation to compute on
+open terms.
+
+The theorem proven below asserts that we cannot have all
+three in a single system.
+
+First, a couple of definitions. We're going to work
+inside a classical type-theoretical framework which
+introduces a sort of contexts $\Gamma$, terms $t,t'$ and
+types $T$ linked by the typing relation
 $\Gamma\vdash t:T$; computation is specified by one-step
-reduction relation $t\to t'$ on terms. In this section
-we'll show that, if we want a practical system with
-internal interpretation as discussed in the start of the
-section \ref{main-ideas}, we have to either compute
-reinterpretation only on closed terms, or severely
-restrict a class of definable models.
+reduction relation $t\to t'$ on terms.
 
 \begin{definition}
     [Na\"{\i}ve computational reinterpretation]
@@ -111,30 +94,43 @@ original term; if we restrict reinterpretation to
 compute on closed terms only, we can arrive at a sound
 system without requiring definitional equalities in
 models, as is exemplified by our non-dependently-typed
-system STLC-R described in section \ref{STLC-R}.
-However, such a tradeoff is unacceptable in a system
-with dependent types which has to compute on open terms
-in order to have a flexible typing discipline. This
+system HM-R described in section \ref{STLC-R}. For
+dependently typed system, however, our no-go theorem
 leaves us with three options:
 
 \begin{enumerate}
-    \item Introduce a ``modality of global elements''
-        $\Box$ which reifies a metatheoretical notion of
-        a closed term in a dependent type system, then
-        allow to reinterpret boxed terms only.
-    \item Forbid computations under
-        $\llbracket\_\rrbracket$ unless term is closed.
-        To allow reasoning on open terms, equations
-        describing behavior of interpretation are
-        exposed as axioms in equality type.
     \item Restrict models to those where equalities hold
         definitionally rather than propositionally.
+    \item Do not proceed with reinterpretation unless
+        term is closed. To allow reasoning on open
+        terms, equations describing behavior of
+        interpretation are exposed as propositional
+        axioms.
+    \item Do not reduce terms under reinterpretation at
+        all, performing reinterpretation as-is. To
+        simplify result of reinterpretation, one can
+        rewrite it with equalities present in the model.
 \end{enumerate}
 
-While the first approach is most desirable, it
-unfortunately still doesn't work, as is shown in section
-\ref{global-elements}. The second one looks consistent
-with propositional definition of models and is left for
-future work; in \ref{MLTT-R}, we explore the third
-approach as it seems easier to work with in practice
-thanks to more flexible computation rules.
+If you view existing work on displacement
+\cite{McBride:Crude2011, McBride:Crude2012}, internal
+parametricity \cite{Altenkirch:Parametricity2024} and
+displayed type theory (TODO: cite) through the lens of
+reinterpretation inside a fixed model (or family of
+models), the first approach is the one that seems to be
+taken. It is also the most satisfying from computational
+point of view. Regrettably so, we currently lack the
+means to constrain models in such a way through the
+typing discipline, so that's a possible prospect for the
+future work.
+
+Out of two remaining options, the last one is better
+suited for practical dependently-typed systems since it
+properly computes on open terms. In addition, it doesn't
+restrict the class of possible models while at the same
+time providing the benefits of the first approach: if
+model is such that equations hold definitionally, no
+rewriting on the result of reinterpretation is needed to
+reduce it. The only downside is that, possibly,
+reductions \textit{after} interpretation are more costly
+than the ones we could perform \textit{before} it.
