@@ -1,87 +1,114 @@
-\section{
-    Dependently typed reinterpretable language: MLTT-R
-} \label{MLTT-R}
+\section{Almost reflective dependently typed language:
+    MLTT-R}
+\label{MLTT-R}
 
 Now we are ready to take on the main challenge: design a
-minimal dependently typed reinterpretable language, and
+minimal dependently typed reflective language, and
 provide internal models of itself to yield universe
 polymorphism, external parametricity and do synthetic
 mathematics inside it. As a starting point, we take
 Martin-L\"of type theory with $\Pi-$,$\Sigma-$,
 $\mathrm{Id}-$ types, natural number type and infinite
-non-cumulative hierarchy of universes. The problems are
-similar to the ones we had with simply-typed calculus:
+non-cumulative hierarchy of universes. As discussed in
+section \ref{no-go-section}, the best practical solution
+to reinterpretation here would be to forbid reductions
+under it and reinterpret terms as-is, and constrain
+models using $\mathrm{Id}$-types. Still, in comparison
+to non-dependently typed case, there are infinitely more
+problems to solve if we want to define a truly
+reflective system:
 
-\begin{itemize}
-    \item How to reinterpret free variables?
-    \item How to type universes?
-    \item Now, there is a way to enforce that internal
-        model satisfies coherence conditions on their
-        operations. How to structure computation in such
-        a way that it doesn't break Church-Rosser
-        property?
-    \item How to respect conversion rule?
-\end{itemize}
+\begin{enumerate}
+    \item If we na\"{\i}vely adopt an approach to typing
+        of models from section \ref{HM-R}, in order to
+        specify a model, we would need to specify
+        countably many models, one per each universe.
+        And even if we did, to which universe does the
+        type of models belong?
+    \item Now that we have computations in types, we
+        have to deal with conversion rule under
+        reinterpretation:
+        \[
+            \dfrac{t:T\quad T\equiv T'}{t:T'}
+            \stackrel{?}{\leadsto}
+            \dfrac{\llbracket t\rrbracket:\llbracket T
+            \rrbracket\quad\llbracket T\rrbracket\equiv
+            \llbracket T'\rrbracket}{\llbracket t
+            \rrbracket:\llbracket T'\rrbracket}
+        \]
+        The problem is that, after interpretation,
+        $\llbracket T \rrbracket$ is only
+        \textit{propositionally} equal to $\llbracket T'
+        \rrbracket$.
+    \item If we want a truly reflective system, we need
+        to know what to do with \textit{reinterpretation
+        of reinterpretation}:
+        \[
+            \lambda x.\llbracket\llbracket x\rrbracket_1
+            \rrbracket_2
+            \quad\text{and}\quad
+            \llbracket\lambda x.\llbracket x\rrbracket_1
+            \rrbracket_2
+        \]
+        In the first case, we perform two subsequent
+        interpretations on a yet unknown $x$; in the
+        second case, we interpret the process of
+        interpretation itself. What should this mean?
+\end{enumerate}
 
-As before, we sidestep the question with free variables
-by considering a term for reinterpretation iff it is
-closed in local context. To properly capture this
-property, we introduce a modality of closed terms $\Box$
-which is already extensively studied in previous works
-(TODO: provide refs). To type universes, we have to
-consider:
+To deal with universe sizing issues, consider the
+following observation: in a system without level
+binders, each term uses only a finite number of levels.
+Hence to reinterpret this term, we need to only provide
+a finite number of universe models, which can together
+fit into some larger universe of a finite level. No
+universe polymorphism required!
 
-\begin{itemize}
-    \item Typing rules for MLTT are necessarily mutually
-        recursive with rules of context well-formedness.
-        Which framework to use to capture this in a
-        model?
-    \item How to provide a ``universe'' for each level
-        in the interpreted term?
-\end{itemize}
-
-To deal with the first problem, we use
-Categories-with-Families \cite{castellan2020cwf} as one
-of the most convenient models of dependent type theories
-in use today. Second one, however, is reminiscent of
-classical circularity paradoxes in logic and computer
-science: if we were to provide a model to each universe
-at each finite level, in which universe does the model
-lie? The first solution which comes to mind is to add
-another sequence of levels $\omega,\omega+1,\ldots$ and
-allow to use only finite-level universes inside
-reinterpretable term; such a system, however, would not
-``eat itself'', a property that we wanted to achieve.
-Consider instead the following observation: in a system
-without level binders, each term uses only a finite
-number of levels. Hence to reinterpret this term, we
-need to only provide a finite number of universe models,
-which can together fit into some universe of a finite
-level.
-
-The problem with Church-Rosser is solved in absolutely
-the same way as with simply-typed case: we just do not
-perform any $\beta$-reductions inside a let-binding,
-only inline \texttt{let} declarations before performing
-a substitution.
-
-The problem with conversion rule is the following: in
-definition of a universe, we can now ask for
-propositional proofs of coherence. Thus types which were
-\textit{definitionally} equal before reinterpretation
-are now only \textit{propositionally} equal. To solve
-this issue, we start by first pinpointing the locations
-where conversion rule is actually used; in order to do
-this, we \textit{need} to use bidirectional type
-checking. After translation, point of conversion is
-wrapped in a \texttt{rewrite} call.
-
-But how do we synthesize a propositional proof of
-equivalence? Here we translate a chain of reductions
-performed during checking of definitional equality into
-a chain of propositional equivalences taken from
+To interpret conversion rule, we start by first
+pinpointing the locations where conversion rule is
+actually used; in order to do this, we \textit{need} to
+use bidirectional type checking. At the moment of
+conversion, interpretation has enough information to
+know both $T$ and $T'$; thus we can translate a chain of
+reductions performed during definitional equality check
+into a chain of propositional equalities taken from
 coherence conditions proven in the definition of a
-model.
+model. Then, a point of conversion is wrapped in
+equality elimination with synthesized witness as a
+scrutinee.
+
+In reinterpreting reinterpretation, we actually only
+deal with ``double reinterpretation'': cases like
+$\lambda x.\llbracket\llbracket x\rrbracket_1
+\rrbracket_2$ can be dealt with by \textit{merging} two
+models into a new one, a technique reminiscent of
+\textit{Collapsing towers of interpreters} (TODO: cite).
+We do not try to actually interpret interpretation
+itself as in $\llbracket\lambda x.\llbracket x
+\rrbracket_1\rrbracket_2$ and introduce a modality
+$\Box$ meaning ``no interpretation was used in
+construction of this term''; reinterpretable terms have
+to have a boxed type. We also use $\Box$ to relax a ban
+on computations inside reinterpretation by allowing
+``splicing'' boxed expressions into other boxed
+expressions; inside splices, computation is allowed to
+bring terms to the boxed form for further
+interpretation.
+
+Note that discussion above was ambient to the choice of
+formalism to present models. In line with current state
+of the art, we use Categories-with-Families
+\cite{castellan2020cwf} as one of the most convenient
+frameworks used today to specify models of dependent
+type theories.
+
+TODO: CwF definition
+
+To actually compute interpretation in MLTT-R, we need
+two mutually recursive functions:
+$t\,@^\gamma_{\Leftarrow T}\mathcal{U}$ and
+$t\,@^\gamma_{\Rightarrow}\mathcal{U}$ for checkable and
+synthesizing terms, respectively. TODO: FINISH.
 
 \begin{figure}
 \centering
@@ -353,12 +380,6 @@ $t$, $s$ : Term ::=
 \caption{Bidirectional term typing rules}
 \Description{}
 \end{figure}
-
-To actually compute interpretation in MLTT-R, we need
-two mutually recursive functions:
-$t\,@^\gamma_{\Leftarrow T}\mathcal{U}$ and
-$t\,@^\gamma_{\Rightarrow}\mathcal{U}$ for checkable and
-synthesizing terms, respectively. TODO: FINISH.
 
 \subsection{Metatheoretical properties of MLTT-R}
 \label{MLTT-R-properties}

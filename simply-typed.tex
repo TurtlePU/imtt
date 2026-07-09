@@ -534,22 +534,19 @@ properties of STLC and Hindley-Milner type system.
         \item $t\in\mathcal{R}_{S\to T}$ iff for all
             $s\in\mathcal{R}_S$, $t\,s\in\mathcal{R}_T$;
         \item $t\in\mathcal{R}_{\forall\vec{\alpha}.T}$
-            iff $t\in \mathcal{R}_{T[\vec{\alpha}
-            \coloneqq\vec{S}]}$ for all possible
-            $\vec{S}$.
+            iff $t$ is closed and $t\in \mathcal{R}_{
+            T[\vec{\alpha}\coloneqq\vec{S}]}$ for all
+            possible $\vec{S}$.
     \end{itemize}
 
     Note that $\mathcal{R}_T\subseteq SN$. Furthermore,
     the following property holds: if
-    $t\in\mathcal{R}_{\forall\vec{\alpha}.T}$ and $t$ is
-    closed, $\llbracket\mathrm{nf}(t)
-    \rrbracket^\mathcal{M}/\varepsilon\in
-    \mathcal{R}_{\llbracket T\rrbracket\,\mathcal{M}\,[
-    \vec{\alpha}\coloneqq\vec{S}]}$ for all
-    $\mathcal{M}$ s.t. all terms inside it are in
-    corresponding $\mathcal{R}_\forall$. $\mathrm{nf}$
-    is well-defined here since system is confluent and
-    $t$ is in $SN$.
+    $t\in\mathcal{R}_{\forall\vec{\alpha}.T}$, then
+    $\llbracket\mathrm{nf}(t)\rrbracket^\mathcal{M}/
+    \varepsilon\in\mathcal{R}_{\llbracket T\rrbracket\,
+    \mathcal{M}\,[\vec{\alpha}\coloneqq\vec{S}]}$ for
+    all $\mathcal{M}$ s.t. all terms inside it are in
+    corresponding $\mathcal{R}_\forall$.
 
     Then we can prove our main lemma: if
     $\Gamma\vdash t:T$ and $\gamma$ is a substitution
