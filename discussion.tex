@@ -197,3 +197,59 @@ na\"{\i}ve version \ref{no-go} which holds in this case:
     multi-step reduction commutes with substitution,
     therefore two terms are definitionally equivalent.
 \end{proof}
+
+This, of course, doesn't prohibit us from using such a
+modality: as is with na\"{\i}ve interpretation, this
+approach works if we manage to constrain models to those
+where equalities hold definitionally.
+
+Another benefit of modal computational reinterpretation
+is the following property:
+
+\begin{theorem}[Collapse of computational modalities]
+    The following implication about MLTT-R is true:
+    \[\dfrac{
+        \exists\kappa:
+        \Gamma.\,{}_\ell\text{\faLock}\vdash_\kappa
+        t:T
+    }{\forall j\geqslant\mathrm{level}(T):
+        \Gamma.\,{}_\ell\text{\faLock}\vdash_j
+    \mathrm{nf}(t):\mathrm{nf}(T)}\]
+\end{theorem}
+
+We do not give a direct proof here, but the general idea
+is that any level higher than level of $T$ can only
+appear in some redex of $t$ or $T$. Then, if modalities
+were computational, it would be enough to use a single
+modality $\Box$ instead of using a family of modalities
+$\Box_\ell$: level of type under box would tell how many
+universe models do we need to provide.
+
+But, again, it all comes down to defining the type of
+\textit{definitional} internal models.
+
+\subsubsection{Reinterpreting reinterpretation}
+
+In section \ref{MLTT-R}, we introduced our
+``reinterpretable terms'' modality in a very
+constraining way specifically so that we wouldn't have
+to provide interpretation of this modality inside
+internal models. Once again, the problem is with terms
+that try to interpret variables from CwF context;
+simplest example is $\llbracket \lambda x.\llbracket x
+\rrbracket_1\rrbracket_2$. In order to be able to
+interpret such term, we would have to define \textit{
+what reinterpretation operator means inside an internal
+model}. This quickly gets out of hand: rather than just
+turning type of models into a (recursive? inductive?)
+type, type of models would become such a type that a
+type of one of its fields depends on the value of the
+whole model. Actually, this happened before:
+Kolomatskaya et al. \cite{Kolomatskaia_Shulman_2025}
+have already defined a type like this inside their
+\textit{displayed type theory}: type SST of
+semi-simplicial types is also defined coinductively in
+terms of itself. More generally, they dub such types
+\textit{higher coinductive types}. While it could be an
+interesting development of type system presented in this
+paper, we deem it out of scope for now.
