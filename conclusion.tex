@@ -2,8 +2,8 @@
 
 In retrospect, we managed to define two
 self-interpreting type systems, STLC-R and MLTT-R,
-meaning that they have a notion of their own <<internal
-models>> which they then can use to reinterpret their
+meaning that they have a notion of their own ``internal
+models'' which they then can use to reinterpret their
 own terms inside such models. In doing so, such type
 systems get new features which previously were defined
 as separate builtin quirks of a system. Basic
@@ -11,16 +11,48 @@ metatheoretical properties are proven; for future work
 we have the following plans:
 
 \begin{itemize}
-    \item Provide mechanized proofs of metatheoretical
-        properties of systems;
-    \item Provide implementation of MLTT-R in a
-        practical proof assistant;
-    \item Handle <<partial>> interpretation a-la Conal
-        Elliott's ``Compiling to Categories''
-        \cite{Elliott:Compcat2017};
-    \item Make equality in MLTT-R more extensional, most
-        probably by making type system closer to
-        Homotopy type theory \cite{hottbook};
-    \item Relax context constraints in reinterpretable
-        terms.
+    \item We might try making locking discipline in
+        section \ref{MLTT-R} more flexible, allowing
+        more than one lock in a context. Most likely,
+        this would require us to incorporate modalities
+        in the definition of an ``internal model'' type
+        and bring us closer to the truly reflective
+        system.
+    \item While our technique to reinterpret conversion
+        rule in section \ref{MLTT-R} works, a current
+        approach to equality witness extraction is a
+        \textit{hack}. A proper solution would require
+        to specify withess extraction as a redex and,
+        possibly, incorporate certain \textit{algebras
+        of reduction strategies} to make this process
+        more controllable in proof-relevant settings.
+    \item A Categories-with-Families approach to
+        specifying internal models here is, in a sense,
+        a ``deep'' interface: while all of its
+        facilities are properly used in interpretation,
+        we have a low-hanging fruit of being able to
+        interpret terms in arbitrary CwF context. This
+        hints at a direct extension of our modality of
+        reinterpretable terms into full-blown contextual
+        types.
+    \item Having implemented contextual types, it then
+        becomes possible to handle ``partial''
+        reinterpretation of terms: if a term under
+        interpretation doesn't use a certain feature of
+        a type system, then you shouldn't have to
+        specify it in a model! This would bring our
+        language closer to Conal Elliott's approach of
+        ``Compiling to Categories''
+        \cite{Elliott:Compcat2017} and closer to
+        \textit{actual} type system for synthetic
+        mathematics.
+    \item It would be nice to make equality in MLTT-R
+        more extensional, most probably by making type
+        system closer to Homotopy type theory
+        \cite{hottbook}.
+    \item At some moment we would have to pay due
+        diligence: provide mechanized proofs of
+        metatheoretical properties of systems and an
+        implementation of MLTT-R in a practical proof
+        assistant.
 \end{itemize}

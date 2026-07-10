@@ -92,8 +92,8 @@ in $\llbracket\lambda x.\llbracket x \rrbracket_1
 \rrbracket_2$, we explicitly forbid such constructions
 by introducing a family of modalities $\Box_\kappa$
 meaning ``no interpretation was used in construction of
-this term, and all levels appearing in it are not above 
-$\kappa$''; terms have to have a boxed type to be
+this term, and all levels appearing in it are not above
+$\kappa$''. Terms have to have a boxed type to be
 reinterpreted. In the notation for modality and general
 typing discipline for it, we largely follow Gratzer et
 al \cite{Gratzer2019} with a few important differences
@@ -167,22 +167,29 @@ $t$, $s$ : Term ::=
 Grammar rules given in figure \ref{mltt-r-grammar}
 reflect discussion above. Note that there is a type of
 models $\mathcal{M}$ which is annotated with a sequence
-of levels $\ell_0,\ldots,\ell_\kappa$: level $\ell_j$ is
-a level which types in $\mathcal{U}_j$ would have after
-interpretation in such a model. Typing rules are also a
-straightforward adaptation of a general recipe for
-bidirectional typing of dependently-typed systems
-\cite{Thiago2025} and are given in figures
-\ref{mltt-r-wf}-\ref{mltt-r-typing}. Important
-difference is that levels are always inferred since we
-do not have cumulativity of universes and do not have a
-lifting operator, thus we cannot check levels of
-$\Sigma$ and $\Pi$. Also note that we provide levels
-needed to check $t$ in typal interpretation $T^t$: this
-happens because $\mathcal{M}$ would be definitionally
-equal to some huge nested $\Sigma$-type, thus it would
-be intractable to \textit{match} on it if it were
-inferred from $t$ instead.
+of levels $\ell_0,\ldots,\ell_\kappa$: level $\ell_j$
+is a level which types in $\mathcal{U}_j$ would have
+after interpretation in such a model.
+
+Typing rules are also a straightforward adaptation of a
+general recipe for bidirectional typing of
+dependently-typed systems \cite{Thiago2025} and are
+given in figures \ref{mltt-r-wf}-\ref{mltt-r-typing};
+level placement rules are constructed in such a way
+that $\Gamma\vdash_\ell\mathrm{level}(T)=\kappa$ always
+implies $\kappa\leqslant\ell$.
+
+Important discrepancy from standard bidirectional
+recipe ``constructors are checked, eliminators are
+inferred'' is that levels of types are always inferred
+since we do not have cumulativity of universes and do
+not have a lifting operator, thus we cannot check
+levels of $\Sigma$ and $\Pi$. Also note that we provide
+levels needed to check $t$ in typal interpretation
+$T^t$: this happens because $\mathcal{M}$ would be
+definitionally equal to some huge nested $\Sigma$-type,
+thus it would be intractable to \textit{match} on it if
+it were inferred from $t$ instead.
 
 As already said, reinterpretation is constrained to act
 on boxed types; in addition, we require a non-locked
@@ -199,7 +206,12 @@ to the first lock. Effectively, this enforces a
 constraint that typing context never contains more than
 a single lock. Thus, for example, our $\Box_\ell$ is
 not a comonad, but axiom K from modal logic still
-holds:
+holds\footnote{Interestingly enough, a similar
+K-modality is first described by Birkedal and
+others in ``Modal dependent type theory and dependent
+right adjoints'' \cite{Birkedal2020}. Coincidentally,
+they refine typing judgements with universe levels,
+too! They have a single modality, though.}:
 \[
     \dfrac{\cdot\vdash_\ell\mathrm{level}(A,B)=\_}{
         \cdot\vdash_\kappa\lambda f x.[[f
@@ -818,7 +830,7 @@ functions is moved to supplementary materials.
 \label{MLTT-R-properties}
 
 Once again, we only try to make sure of the most
-essential properties: that computations do not diverge,
+essential properties: that computations are confluent,
 that types during computations are preserved, all
 computations terminate and that resulting type system
 is a conservative extension of MLTT.

@@ -1,9 +1,6 @@
 \section{Discussion \& related work}
 
-To the best of our knowledge, we didn't find any
-research which explores the topic at hand, but the idea
-is certainly in the air, as illustrated by the following
-brilliant papers.
+\subsection{What was done before us}
 
 Original work by Lambek \cite{Lambek1980} sets the tone
 of the future research, establishing correspondence
@@ -26,25 +23,6 @@ more flexible since his translation to categories
 requires desired category to only implement primitives
 actually used for translation of a particular term at
 hand.
-
-In a recent paper ``A Certifying Proof Assistant for
-Synthetic Mathematics in Lean'', Wojciech Nawrocki and
-others \cite{Nawrocki:Lean2026} adapt Conal's approach
-to Lean's system with dependent types, using
-Categories-with-Families to represent internal models
-and employing Lean's powerful metaprogramming facilities
-instead of a compiler plugin. In doing so, they are able
-to provide a framework for doing synthetic mathematics
-in Lean, extracting proofs done in MLTT applied to more
-specific categories. Thus our results in section
-\ref{MLTT-R-synthetic} are close to the results shown in
-their paper. To add to that, their work is already
-implemented in practical proof assistant. Yet, our type
-system involves no metaprogramming since
-reinterpretation is internal to it, and it handles
-conversion rule gracefully. In addition, the focus is a
-bit different, where we use reinterpretation to express
-other polymorphic features of a language.
 
 Conor McBride's ``Crude but effective stratification''
 \cite{McBride:Crude2011, McBride:Crude2012} (systemic
@@ -85,17 +63,42 @@ affected by the translation (section
 
 \subsection{What we could've done differently}
 
-\subsubsection{Modality of global elements}
+\subsubsection{Just use metaprogramming instead}
+
+In a recent paper ``A Certifying Proof Assistant for
+Synthetic Mathematics in Lean'', Wojciech Nawrocki and
+others \cite{Nawrocki:Lean2026} adapt \textit{Compiling
+to categories} approach \cite{Elliott:Compcat2017} to
+Lean's system with dependent types, using
+Categories-with-Families to represent internal models
+and employing Lean's powerful metaprogramming facilities
+instead of a compiler plugin. In doing so, they are able
+to provide a framework for doing synthetic mathematics
+in Lean, extracting proofs done in MLTT applied to more
+specific categories. Thus our results in section
+\ref{MLTT-R-synthetic} are close to the results shown in
+their paper. To add to that, their work is already
+implemented in practical proof assistant. Yet, our type
+system involves no metaprogramming since
+reinterpretation is internal to it, and it handles
+conversion rule. In addition, the focus is a bit
+different, where we use reinterpretation to express
+other polymorphic features of a language.
+
+\subsubsection{
+    Computational modality of global elements}
 \label{global-elements}
 
-One could hope to salvage a situation by providing a
-``modality of global elements'' which is a convenient
-relaxation of a notion of closed terms.
+Since we introduced a family of modalities of
+reinterpretable terms $\Box_\ell$ in section
+\ref{MLTT-R}, one could hope to allow computation in
+boxed terms. Generalizing a bit, the following
+definition will be useful further:
 
 \begin{definition}
     A dependently-typed system with a type of functions
-    $(\to)$ has a \textit{global elements modality}
-    $\Box$ if there is a one-hole term
+    $(\to)$ has a \textit{computational modality of
+    global elements} $\Box$ if there is a one-hole term
     $\mathrm{nec}\,\_$ and an atomic two-hole term
     $\mathrm{K}\,\_\,\_$ such that the following rules
     are admissible:
@@ -113,14 +116,17 @@ relaxation of a notion of closed terms.
     \end{mathpar}
     And, in addition, the following reduction is
     admissible: $K\,(\mathrm{nec}\,\lambda x.t)\,
-    (\mathrm{nec}\,s)\to^*
+    (\mathrm{nec}\,s)\leadsto^*
     \mathrm{nec}(t[x\coloneqq s])$.
 \end{definition}
 
-The intuition behind the reduction is that, if we apply
-a ``global function'' to a ``global argument'', we then
-should be able to ``inline'' this application, what this
-reduction precisely does.
+With an exception of a computational rule, these are
+exactly the properties of modalities $\Box_\ell$ from
+the original section \ref{MLTT-R}. The intuition behind
+the reduction is that, if we apply a ``global function''
+to a ``global argument'', we then should be able to
+``inline'' this application, what this reduction
+precisely does.
 
 Then, a corresponding weakening of computational
 reinterpretation can be defined as follows.
