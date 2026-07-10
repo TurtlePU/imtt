@@ -6,7 +6,7 @@ We start with a simpler language to iron out the details
 and actually figure out how to properly reinterpret
 terms internally before moving on to a dependently typed
 system. The simplest language for which we know a lot of
-interesting models is simply typed lambda calculus with
+interesting models is the simply typed lambda calculus with
 products, which we refer to as ``STLC'' throughout
 this paper; in this section, we'll present a language
 capable of interpreting STLC terms as constructions in
@@ -18,14 +18,14 @@ a function from $S$ to $T$ and $S\times T$ is a
 cartesian product, there is proof-theoretic semantics
 that relate terms of type $T$ to intuitionistic proofs
 of proposition $\llbracket T\rrbracket$, where $(\to)$
-is now understood to mean implication and $(\times)$ is
+is now understood to mean implication, and $(\times)$ is
 conjunction. This, of course, is a classic Curry-Howard
 correspondence \cite{ho80}; both set-theoretic and
 proof-theoretic semantics are generalized by a complete
 description of STLC models as given by Joachim Lambek
 \cite{Lambek1980}. According to this
 \textit{Curry-Howard-Lambek} correspondence, models
-of STLC are precisely cartesian closed categories (or
+of STLC are precisely the cartesian closed categories (or
 CCCs for short). Definitions vary; we're going to use
 the definition \ref{ccc}.
 
@@ -36,9 +36,9 @@ A cartesian closed category is the following datum:
     family of \textit{morphisms} $\mathrm{Hom}(S, T)$
     indexed by $S,T\in\mathrm{Ob}$, where
     $f\in\mathrm{Hom}(S,T)$ is denoted by $f:S\to T$. In
-    addition, $S$ is called \textit{source} of $f$,
-    while $T$ is \textit{target} of $f$, while both $S$
-    and $T$ together are referred to as \textit{ends}
+    addition, $S$ is called the \textit{source} of $f$,
+    and $T$ is the \textit{target} of $f$, while both $S$
+    and $T$ together are referred to as the \textit{ends}
     of $f$.
 \item For each $A\in\mathrm{Ob}$ there's an
     \textit{identity morphism} $\mathrm{id}_A: A\to A$;
@@ -95,15 +95,14 @@ product of interpretations of types from $\Gamma$:
 \]
 Unit type is now a terminal object; product of types is now a product of
 objects; arrow type is an exponential object. Equations
-in (2) are needed to validate structural properties of
+in (2) are needed to validate the structural properties of
 substitution; equations in (4) correspond to reductions
 of pairs; equation in (5) validates $\beta$-reduction.
 \textbf{Unique}ness properties correspond to
 $\eta$-equivalence.
 
 For example, in our language,
-$\llbracket t\rrbracket\,\mathcal{M}$ is an operator of
-reinterpretation of term $t$ in internal model
+$\llbracket t\rrbracket\,\mathcal{M}$ is the operator reinterpreting the term $t$ in an internal model
 $\mathcal{M}$. On a sample term
 \[
     \cdot\vdash\lambda f x y. (f x, y):
@@ -111,7 +110,7 @@ $\mathcal{M}$. On a sample term
 \]
 it computes like this:
 \begin{multline*}
-    \llbracket\lambda f x y. (f x, y))\rrbracket
+    \llbracket\lambda f x y. (f x, y))\rrbracket\,
     \mathcal{M}=\\=
     \mathtt{lam}\,(\mathtt{lam}\,(\mathtt{lam}\,(
         \mathtt{pair}\,
@@ -126,33 +125,33 @@ it computes like this:
 \end{multline*}
 
 Where $\mathtt{lam}$,\,$\mathtt{pair}$ and
-$\mathtt{eval}$ are correspondingly abstraction
-morphism, pairing morphism and evaluation morphism taken
+$\mathtt{eval}$ are the abstraction
+morphism, the pairing morphism, and the evaluation morphism taken
 from $\mathcal{M}$, defined in the same way as in the
 definition \ref{ccc}, translated into types of our
 system.
 
 Now, moving on to the actual design of our language. As
-discussed in section \ref{no-go-section}, for a
-non-dependent case we're now in, we're going to only
-interpret normal forms of closed terms. Among other
-things, it means that we actually don't need equations
+discussed in section \ref{no-go-section}, for the
+non-dependent case we are now dealing with, we will
+interpret only normal forms of closed terms. Among other
+things, this means that we actually don't need equations
 and \textbf{unique}nesses from definition \ref{ccc} to
 hold in our internal models! This approach doesn't break
 any of the metatheoretical properties considered in
 section \ref{HM-R-properties}. Additionally, for the
 sake of example, we're only going to consider models
-where objects are types. Then, internalization of a
+where objects are types. Then, the internalization of
 definition \ref{ccc} would require 1) type operators to
-define types of morphisms, products and exponential
+define types of morphisms, products, and exponential
 objects; 2) polymorphic functions to operationalize the
 $\forall\exists$ introductions of constructions in a
 model. Actually, we're going to get rid of type
-operators as well, since we can make do with just
+operators as well, since we can do with just
 types-in-a-context which are then substituted into
-definition of a model for checking term-level
+the definition of a model for checking term-level
 operations. This way, our language is a small extension
-to classic Hindley-Milner type system, hence the name
+of the classic Hindley-Milner type system, hence the name
 HM-R; grammar rules are collected in a figure
 \ref{hm-r-grammar}. You'll notice that, despite our
 description, grammar doesn't define a reinterpretation
@@ -204,8 +203,8 @@ grammar below. Metavariable $n$ denotes neutral terms:
 \label{hm-r-grammar}
 \end{figure}
 
-Thus, in order to define reinterpretation, it is enough
-to consider grammar forms of STLC:
+Thus, to define reinterpretation, it is enough
+to consider the grammar forms of STLC:
 
 \begin{definition}[Reinterpretation of terms in HM-R]
     \begin{align}{}
@@ -252,9 +251,9 @@ Here is our way to enforce a principle that \textit{only
 closed terms get interpreted}: once a term $s$ bound by
 a polymorphic let-binding
 $\mathtt{let}\,x=s\,\mathtt{in}\,t$ becomes closed and
-is brought into a normal form, only then it is
+is brought into normal form, only then is it
 substituted into $t$, and whenever it is substituted
-into $x^\mathcal{M}$, it then immediately gets
+into $x^\mathcal{M}$, it immediately gets
 reinterpreted. This operation is denoted by
 $t\llbracket x\coloneqq s\rrbracket$ in our computation
 rules given in figure \ref{hm-r-comp}. Once again, it
@@ -270,8 +269,8 @@ if let-bound terms were to contain variables coming
 from unapplied $\lambda$-abstractions. Our typing rules
 given in figure \ref{hm-r-typing} protect us from that,
 allowing to refer only to let-bound terms inside other
-let-bound terms. Again, aside from that and typing rule
-for universes, there's nothing different from usual
+let-bound terms. Again, aside from that and the typing rule
+for universes, there's nothing different from the usual
 declarative typing rules for a Hindley-Milner type
 system \cite{Clement:ML1986}.
 
@@ -315,9 +314,9 @@ system \cite{Clement:ML1986}.
 \label{hm-r-comp}
 \end{figure}
 
-To check models, we abuse our type system a bit in order
-to avoid adding type operators and complicate the type
-system: types of morphisms $C$, product objects $P$ and
+To check models, we abuse our type system a bit 
+to avoid adding type operators and complicating it:
+types of morphisms $C$, product objects $P$ and
 exponentials $E$ are specified as open monomorphic types
 which can use two type variables, $0$ and $1$. This fact
 is reflected in the syntax of a model using notation
@@ -325,17 +324,17 @@ $\Lambda 01.C$, $\Lambda 01.P$ and $\Lambda 01.E$
 respectively. $0$ and $1$ are then filled in by
 substitution when we need to type model operations
 (notation $T[S_1, S_2]$ is a shorthand for
-$T[0\coloneqq S_1,1\coloneqq S_2]$). Terminal object is
+$T[0\coloneqq S_1,1\coloneqq S_2]$). The terminal object is
 just a type named $TT$.
 
-To check reinterpretation, we need to define how model
+To check reinterpretation, we need to define how the model
 acts on monomorphic types. Since there's no computation
 on them, reinterpretation of types is once again defined
 as a recursive function on syntax:
 
 \begin{definition}[Reinterpretation of types in HM-R]
     Let $\mathcal{M}$ be a correct model and $\sigma$ be
-    a substitution of monomorphic types. Then,
+    a substitution of monomorphic types. Then, the
     interpretation of type in a model is the following
     function:
     \begin{align}{}
@@ -420,23 +419,23 @@ as a recursive function on syntax:
 \label{hm-r-typing}
 \end{figure}
 
-\subsection{Metatheoretical properties of HM-R}
+\subsection{Metatheoretic properties of HM-R}
 \label{HM-R-properties}
 
 Here we only study some basic properties of a system to
 make sure that everything works as expected:
 computations don't diverge; types are preserved by all
 computations; all of the types can be inferred if you
-wish to do so; everything terminates and, modulo
+wish to do so; everything terminates, and, modulo
 reduction of \texttt{let}-bindings, this is the same old
-STLC we started with. Proofs are mostly following
-standard techniques, since rules for reinterpretation
+STLC we started with. Proofs mostly follow
+standard techniques since the rules for reinterpretation
 are structured to directly plug into proofs of
-properties of STLC and Hindley-Milner type system.
+properties of the STLC and the Hindley-Milner type system.
 
 \begin{theorem}[Church-Rosser theorem for HM-R]
     Reflexive transitive closure of $(\to)$ has
-    Church-Rosser property.
+    the Church-Rosser property.
 \end{theorem}
 \begin{proof}
     Classic proof via parallel reduction relation
@@ -522,7 +521,7 @@ properties of STLC and Hindley-Milner type system.
 \end{theorem}
 \begin{proof}
     By Tait's method of logical relations. Let $SN$ be a
-    set of strongly normalizing terms which reduce to a
+    set of strongly normalizing terms that reduce to a
     value. Let there be the following relation
     $\mathcal{R}\subseteq
     \mathsf{PolyType}\times\mathsf{Term}$:
@@ -561,8 +560,8 @@ properties of STLC and Hindley-Milner type system.
 \begin{proof}
     Thanks to type preservation, normal form
     $\mathrm{nf}(t)$ is typable in HM-R. By definition,
-    it is a value, therefore it has no reinterpretation
-    subterms and let-bindings, hence typable in STLC.
+    it is a value; therefore, it has no reinterpretation
+    subterms and let-bindings, hence is typable in STLC.
 \end{proof}
 
 \begin{theorem}
@@ -570,15 +569,15 @@ properties of STLC and Hindley-Milner type system.
 \end{theorem}
 \begin{proof}
     It is enough to extend any unification-based type
-    inference algorithm for Hindley-Milner type system
+    inference algorithm for the Hindley-Milner type system
     to support models and reinterpretation.
     \begin{itemize}
         \item Since models are provided explicitly, it
             is enough to \textit{check} them.
         \item Since polymorphic functions do not depend
-            on local context, their type is fully
-            resolved when it's added to context.
-        \item Once model is checked in $x^\mathcal{M}$,
+            on the local context, their type is fully
+            resolved when it's added to the context.
+        \item Once a model is checked in $x^\mathcal{M}$,
             we can directly compute
             $\llbracket T\rrbracket^\mathcal{M}_{[
                 \vec{\alpha}\coloneqq\vec{\eta}]}$
@@ -588,12 +587,12 @@ properties of STLC and Hindley-Milner type system.
     \end{itemize}
 \end{proof}
 
-Thus, in this section we introduced a sound type system
-based on Hindley-Milner type system which is capable of
-interpreting its own closed terms in arbitrary
+Thus, in this section, we have introduced a sound type system
+based on the Hindley-Milner type system, which is capable of
+interpreting its own closed terms in an arbitrary
 ``cartesian closed category'' definable inside it. This
 system is not truly \textit{reflective} since models are
-not fully internal: they require special form of type
-operators to work which is not accessible to the rest of
-type system. To internalize model definition, we move on
-to dependently typed system in the next section.
+not fully internal; they require a special form of type
+operators to work, which is not accessible to the rest of
+the type system. To internalize model definition, we move on
+to a dependently typed system in the next section.
