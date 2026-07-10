@@ -591,12 +591,16 @@ $\Pi$- and $\Sigma$- types, natural numbers and identity
 types. Interpretation for $\Box_\ell$ is not needed
 since we succesfully prevented boxed types from
 appearing inside boxed terms via rigid \faLock-ing
-discipline. Thus, contexts which need to be interpreted
-are constructed via vanilla context extensions from
-empty context, and a usual CwF is enough for our
-purposes. Since actual internalized definition of our
-CwF largely repeats typing and computation rules from
-figures \ref{mltt-r-wf}-\ref{mltt-r-typing} and
+discipline\footnote{That's also the reason we dubbed
+this system \textit{almost} reflective, since its
+internal reinterpretation doesn't cover modalities and
+reinterpretation itself.}. Thus, contexts which need to
+be interpreted are constructed via vanilla context
+extensions from empty context, and a usual CwF is
+enough for our purposes. Since actual internalized
+definition of our CwF largely repeats typing and
+computation rules from figures
+\ref{mltt-r-wf}-\ref{mltt-r-typing} and
 \ref{mltt-r-typcomp}-\ref{mltt-r-comp} in internal
 language, we do not provide it here; to dive into
 details, you can refer to our supplementary materials.
