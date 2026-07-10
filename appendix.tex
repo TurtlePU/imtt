@@ -1,0 +1,162 @@
+\documentclass
+    [acmsmall,screen,review,anonymous,nonacm]{acmart}
+
+\title{Towards Type Systems That Reinterpret Themselves}
+\subtitle{(supplementary materials)}
+
+\begin{document}
+\maketitle
+
+\section{A type of internal models of MLTT-R}
+
+A comprehension $[x:A,y:B,z:C]$ denotes
+a right-nested $\Sigma$-type. $\{x:A\}\to B$ is a
+syntactic sugar meaning that argument $x$ is always
+inferred from $B$ rather than provided explicitly.
+$\{x\}\to B$ means that type of $x$ is inferred from
+$B$. Transports along previously introduced equalities
+are omitted. Since our language doesn't yet have
+$\eta$-equivalence, uniqueness properties are skipped.
+
+\[\mathtt{modelDef}(\ell_0,\ldots,\ell_\kappa)={[}\]
+
+\subsection{Base CwF part}
+
+\[\begin{array}{l}
+    \mathcal{C}:\mathcal{U}_{\max(\ell_0,\ldots,
+        \ell_\kappa)+1},\\
+    \triangleright:\mathcal{C}\to\mathcal{C}\to
+        \mathcal{U}_{\max(\ell_0,\ldots,\ell_\kappa)},\\
+    \mathrm{id}:\{\Gamma:\mathcal{C}\}\to
+        \Gamma\triangleright\Gamma,\\
+    \circ:\{\Gamma\,\Delta\,\Xi\}\to
+        (\Delta\triangleright\Xi)\to
+        (\Gamma\triangleright\Delta)\to
+        (\Gamma\triangleright\Xi),\\
+    \mathrm{id-}\circ:\{\Gamma,\Delta\}\to\{
+        \sigma:\Gamma\to\Delta\}\to
+        \mathrm{id}\circ\sigma=\sigma,\\
+    \circ\mathrm{-id}:\{\Gamma,\Delta\}\to\{
+        \sigma:\Gamma\to\Delta\}\to
+        \sigma\circ\mathrm{id}=\sigma,\\
+    \circ\mathrm{-assoc}:\{\rho\,\sigma\,\tau\}\to
+        \rho\circ(\sigma\circ\tau)=
+        (\rho\circ\sigma)\circ\tau,\\
+    \cdot:\mathcal{C},\\
+    !:\{\Gamma\}\to\Gamma\triangleright\cdot,\\
+\end{array}\]
+
+\subsection{Common part for each level j}
+
+\[\begin{array}{l}
+    \mathrm{Ty}_j:\mathcal{C}\to\mathcal{U}_{\ell_j+1},
+    \\
+    \_[\_]:\{\Gamma\,\Delta\}\to\mathrm{Ty}_j\Gamma\to
+        \Delta\triangleright\Gamma\to
+            \mathrm{Ty}_j\Delta,\\
+    \mathrm{sub/id}:\{T\}\to T[\mathrm{id}]=T,\\
+    \mathrm{sub/comp}:\{T\,\sigma\,\tau\}\to
+        T[\sigma\circ\tau]=T[\sigma][\tau],\\
+    \mathrm{Tm}_j:(\Gamma:\mathcal{C})\to
+        \mathrm{Ty}_j\,\Gamma\to\mathcal{U}_{\ell_j},\\
+    \_[\_]:\{\Gamma\,\Delta\,T\}\to
+        \mathrm{Tm}_j\,\Gamma\,T\to(\sigma:
+        \Delta\triangleright\Gamma)\to
+        \mathrm{Tm}_j\,\Delta\,T[\sigma],\\
+    \mathrm{sub/id}:\{T\}\to\{t:\mathrm{Tm}\_\,T\}\to
+        t[\mathrm{id}]=t,\\
+    \mathrm{sub/comp}:\{T\,\sigma\,\tau\}\to
+        \{t:\mathrm{Tm}_j\,\_\,T\}\to
+        t[\sigma\circ\tau]=t[\sigma][\tau],\\
+    (.):(\Gamma:\mathcal{C})\to\mathrm{Ty}_j\,\Gamma\to
+        \mathcal{C},\\
+    p:\{\Gamma\,T\}\to\Gamma.T\triangleright\Gamma,\\
+    q:\mathrm{Tm}\,\Gamma.T\,T[p],\\
+    \langle,\rangle:\{\Delta\,\Gamma\}\to
+        (\sigma:\Delta\triangleright\Gamma)\to
+        \mathrm{Tm}\,\Delta\,T[\sigma]\to
+        \Delta\triangleright\Gamma.T,\\
+    \mathrm{ext/l}:\{\sigma\,t\}\to
+        p\circ\langle\sigma, t\rangle=\sigma,\\
+    \mathrm{ext/r}:\{\sigma\,t\}\to
+        q[\langle \gamma, t\rangle]=t,\\
+    \mathrm{Nat}_j:\{\Gamma\}\to\mathrm{Ty}_j\,
+        \Gamma,\\
+    0:\{\Gamma\}\to\mathrm{Tm}_j\,\Gamma\,
+        \mathrm{Nat}_j,\\
+    S:\{\Gamma\}\to\mathrm{Tm}_j\,\Gamma\,
+        \mathrm{Nat}_j\to\mathrm{Tm}_j\,\Gamma
+            \,\mathrm{Nat}_j,\\
+    \mathrm{Id}:\{\Gamma\}\to(T:\mathrm{Ty}_j\,\Gamma)
+        \to\mathrm{Tm}_j\,\Gamma\,T
+        \to\mathrm{Tm}_j\,\Gamma\,T
+        \to\mathrm{Ty},\\
+    \mathrm{refl}:\{\Gamma\,T\}\to
+        \{t\,t':\mathrm{Tm}_j\,\Gamma\,T\}\to
+        t=t'\to\mathrm{Tm}_j\,\Gamma\,
+            (\mathrm{Id}\,T\,t\,t'),
+\end{array}\]
+
+\subsection{Common part for each j less then k}
+
+Here, definition of a model contains internalization of
+universes and of type family $\mathrm{El}$ at internal
+level $j+1$.
+
+\subsection{Common part for each i, j}
+
+Here, definition of a model contains eliminators for
+model of naturals and for model of an identity type;
+additionally, models of $\Pi$- and $\Sigma$- types for
+internal level $\max(i,j)$ are defined here.
+
+\subsection{End of definition of a model type}
+
+\[{]}\]
+
+\section{Parts of a definition of a displacement model}
+
+\[\begin{array}{ll}
+    \uparrow_\ell^\kappa\;=&[\\
+        &\mathcal{C}=\mathcal{U}_{\ell+\kappa},
+        \triangleright=(\to),
+        \mathrm{id}=\lambda x.x,
+        \circ=\lambda fgx.f(gx),
+        \mathrm{id-}\circ=\mathrm{refl},
+        \circ\mathrm{-id}=\mathrm{refl},\\
+        &\ldots,\\
+        &\mathrm{Ty}_j=\lambda\Gamma.\Gamma\to
+            \mathcal{U}_{j+\kappa},
+        \mathrm{Tm}_j=\lambda\Gamma\,f.
+            (\gamma:\Gamma)\to\,f\,\gamma,\\
+        &\ldots\\
+    &]
+\end{array}
+\]
+
+\section{Parts of a definition of a parametricity model}
+
+\[\begin{array}{ll}
+    \mathrm{Para}_\ell\;=&[\\
+        &\mathcal{C}=
+            (\Gamma\,\Gamma':\mathcal{U}_{\ell+1})
+            \times(\Gamma\to\Gamma'\to
+                \mathcal{U}_{\ell+1}),\\
+        &\triangleright=\lambda(\Gamma,\Gamma',Q)
+            (\Delta,\Delta',R).(f:\Gamma\to\Delta)
+                \times(f':\Gamma'\to\Delta')
+                \times((\gamma\,\gamma')\to
+                    Q\,\gamma\,\gamma'\to
+                    R\,(f\,\gamma)\,(f'\,\gamma')),\\
+        &\mathrm{id}=
+            (\lambda x.x,\lambda x.x,\lambda x.x),\\
+        &\circ=\lambda (f,f',q)(g,g',r)(x,x',s).
+            (f(g(x)), f'(g'(x')), q(r(s))),\\
+        &\mathrm{id-}\circ=\mathrm{refl},
+        \circ\mathrm{-id}=\mathrm{refl},\\
+        &\ldots,\\
+    &]
+\end{array}
+\]
+
+\end{document}
