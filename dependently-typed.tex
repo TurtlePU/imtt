@@ -84,11 +84,11 @@ deal with ``double reinterpretation'': cases like
 $\lambda x.\llbracket\llbracket x\rrbracket_1
 \rrbracket_2$ could be dealt with by \textit{merging}
 two models into a new one, a technique reminiscent of
-\textit{Collapsing towers of interpreters} (TODO: cite);
-it is not required in our system since the innermost
-reinterpretation is allowed to compute in this case. As
-for interpreting interpretation itself as in
-$\llbracket\lambda x.\llbracket x \rrbracket_1
+\textit{Collapsing towers of interpreters}
+\cite{Amin2017}; it is not required in our system since
+the innermost reinterpretation is allowed to compute in
+this case. As for interpreting interpretation itself as
+in $\llbracket\lambda x.\llbracket x \rrbracket_1
 \rrbracket_2$, we explicitly forbid such constructions
 by introducing a family of modalities $\Box_\kappa$
 meaning ``no interpretation was used in construction of
@@ -96,7 +96,7 @@ this term, and all levels appearing in it are not above
 $\kappa$''; terms have to have a boxed type to be
 reinterpreted. In the notation for modality and general
 typing discipline for it, we largely follow Gratzer et
-al (TODO: cite) with a few important differences
+al \cite{Gratzer2019} with a few important differences
 discussed later. We also use $\Box$ to relax a ban on
 computations inside reinterpretation by allowing
 ``splicing'' boxed expressions into other boxed
@@ -172,7 +172,7 @@ a level which types in $\mathcal{U}_j$ would have after
 interpretation in such a model. Typing rules are also a
 straightforward adaptation of a general recipe for
 bidirectional typing of dependently-typed systems
-(TODO: cite) and are given in figures
+\cite{Thiago2025} and are given in figures
 \ref{mltt-r-wf}-\ref{mltt-r-typing}. Important
 difference is that levels are always inferred since we
 do not have cumulativity of universes and do not have a
@@ -189,22 +189,23 @@ on boxed types; in addition, we require a non-locked
 context for reinterpretation. Together these constraints
 guarantee that, indeed, boxed terms do not contain
 reinterpretation subterms. An important departure from
-a system in (TODO: cite Gratzer), aside from adding a
-family of modalities, lies in the way context is locked
-in $[\_]_\text{\faLock}$ and unlocked in
-$[\_]_\text{\faUnlock}$: while locking, we require the
-outer context to be unlocked; while unlocking, instead
-of erasing all locks, we erase the context up to the
-first lock. Effectively, this enforces a constraint that
-typing context never contains more than a single lock.
-Thus, for example, our $\Box_\ell$ is not a comonad, but
-axiom K from modal logic still holds:
+$\mathrm{MLTT}\text{\faLock}$\cite{Gratzer2019}, aside
+from adding a family of modalities, lies in the way
+context is locked in $[\_]_\text{\faLock}$ and unlocked
+in $[\_]_\text{\faUnlock}$: while locking, we require
+the outer context to be unlocked; while unlocking,
+instead of erasing all locks, we erase the context up
+to the first lock. Effectively, this enforces a
+constraint that typing context never contains more than
+a single lock. Thus, for example, our $\Box_\ell$ is
+not a comonad, but axiom K from modal logic still
+holds:
 \[
     \dfrac{\cdot\vdash_\ell\mathrm{level}(A,B)=\_}{
         \cdot\vdash_\kappa\lambda f x.[[f
         ]_\text{\faUnlock}[x]_\text{\faUnlock}
-        ]_\text{\faLock}:\Box_\ell(A\to B)\to\Box_\ell A
-        \to\Box_\ell B
+        ]_\text{\faLock}:\Box_\ell(A\to B)\to
+            \Box_\ell A\to\Box_\ell B
     }(\ell\leqslant\kappa)
 \]
 In this way, unlocking truly gains the semantics of
@@ -586,7 +587,7 @@ CwF largely repeats typing and computation rules from
 figures \ref{mltt-r-wf}-\ref{mltt-r-typing} and
 \ref{mltt-r-typcomp}-\ref{mltt-r-comp} in internal
 language, we do not provide it here; to dive into
-details, you can refer to our APPENDIX (TODO).
+details, you can refer to our supplementary materials.
 
 Finally, on to computation rules as given in figures
 \ref{mltt-r-typcomp}-\ref{mltt-r-comp} (full typal
@@ -810,8 +811,8 @@ function would always produce the same output on the
 same input and is therefore well-defined. Once again,
 since interpretation functions directly translate
 bidirectional typing rules on terms into applications
-of models constructions, definition of interpretation
-functions is moved into appendix (TODO: cite).
+of model constructions, definition of interpretation
+functions is moved to supplementary materials.
 
 \subsection{Metatheoretical properties of MLTT-R}
 \label{MLTT-R-properties}
@@ -954,7 +955,7 @@ model; all other term interpretations are identical to
 the ones given in an identity model.
 
 Full definition of $\uparrow_\ell^\kappa$ is given in
-the appendix (TODO: ref).
+supplementary materials.
 
 \subsubsection{Internal external parametricity}
 \label{MLTT-R-parametricity}
@@ -975,7 +976,7 @@ dependently-typed systems dubbed <<external
 parametricity>>. Once again, this relational
 interpretation is definable in our system
 \textit{internally} with the help of a relational model
-$\mathrm{Para}_\ell:\mathcal{M}_1,\ldots,\ell+1$. The
+$\mathrm{Para}_\ell:\mathcal{M}_{1,\ldots,\ell+1}$. The
 shift by one level happens because type
 $T:\mathcal{U}_\ell$ in such a model is interpreted by
 a triple $(T_1\,T_2:\mathcal{U}_\ell)\times
@@ -986,8 +987,8 @@ highlighted by Altenkirch and others
 \cite{Altenkirch:Parametricity2024}, thus result of the
 interpretation is a proper proof of a free theorem.
 
-Full definition of $\mathrm{Para}_\ell$ is given in the
-appendix (TODO: cite).
+Full definition of $\mathrm{Para}_\ell$ is given in
+supplementary materials.
 
 \subsubsection{Synthetic mathematics}
 \label{MLTT-R-synthetic}
