@@ -1,0 +1,369 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{24}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{} and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showURL}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showURL #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[Abel et~al\mbox{.}(2007)]%
+        {ABEL200717}
+\bibfield{author}{\bibinfo{person}{Andreas Abel}, \bibinfo{person}{Klaus
+  Aehlig}, {and} \bibinfo{person}{Peter Dybjer}.}
+  \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{Normalization by Evaluation for Martin-Löf Type
+  Theory with One Universe}.
+\newblock \bibinfo{journal}{\emph{Electronic Notes in Theoretical Computer
+  Science}}  \bibinfo{volume}{173} (\bibinfo{year}{2007}),
+  \bibinfo{pages}{17--39}.
+\newblock
+\showISSN{1571-0661}
+\href{https://doi.org/10.1016/j.entcs.2007.02.025}{doi:\nolinkurl{10.1016/j.entcs.2007.02.025}}
+\newblock
+\shownote{Proceedings of the 23rd Conference on the Mathematical Foundations of
+  Programming Semantics (MFPS XXIII)}.
+
+
+\bibitem[Altenkirch et~al\mbox{.}(2024)]%
+        {Altenkirch:Parametricity2024}
+\bibfield{author}{\bibinfo{person}{Thorsten Altenkirch}, \bibinfo{person}{Yorgo
+  Chamoun}, \bibinfo{person}{Ambrus Kaposi}, {and} \bibinfo{person}{Michael
+  Shulman}.} \bibinfo{year}{2024}\natexlab{}.
+\newblock \showarticletitle{Internal Parametricity, without an Interval}.
+\newblock \bibinfo{journal}{\emph{Proc. ACM Program. Lang.}}
+  \bibinfo{volume}{8}, \bibinfo{number}{POPL}, Article \bibinfo{articleno}{78}
+  (\bibinfo{date}{Jan.} \bibinfo{year}{2024}), \bibinfo{numpages}{30}~pages.
+\newblock
+\href{https://doi.org/10.1145/3632920}{doi:\nolinkurl{10.1145/3632920}}
+
+
+\bibitem[Altenkirch and Rypacek(2012)]%
+        {altenkirch:groupoids}
+\bibfield{author}{\bibinfo{person}{Thorsten Altenkirch} {and}
+  \bibinfo{person}{Ondrej Rypacek}.} \bibinfo{year}{2012}\natexlab{}.
+\newblock \showarticletitle{{A Syntactical Approach to Weak omega-Groupoids}}.
+  In \bibinfo{booktitle}{\emph{Computer Science Logic (CSL'12) - 26th
+  International Workshop/21st Annual Conference of the EACSL}}
+  \emph{(\bibinfo{series}{Leibniz International Proceedings in Informatics
+  (LIPIcs)}, Vol.~\bibinfo{volume}{16})},
+  \bibfield{editor}{\bibinfo{person}{Patrick C\'{e}gielski} {and}
+  \bibinfo{person}{Arnaud Durand}} (Eds.). \bibinfo{publisher}{Schloss Dagstuhl
+  -- Leibniz-Zentrum f{\"u}r Informatik}, \bibinfo{address}{Dagstuhl, Germany},
+  \bibinfo{pages}{16--30}.
+\newblock
+\showISBNx{978-3-939897-42-2}
+\showISSN{1868-8969}
+\href{https://doi.org/10.4230/LIPIcs.CSL.2012.16}{doi:\nolinkurl{10.4230/LIPIcs.CSL.2012.16}}
+
+
+\bibitem[Amin and Rompf(2017)]%
+        {Amin2017}
+\bibfield{author}{\bibinfo{person}{Nada Amin} {and} \bibinfo{person}{Tiark
+  Rompf}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Collapsing towers of interpreters}.
+\newblock \bibinfo{journal}{\emph{Proc. ACM Program. Lang.}}
+  \bibinfo{volume}{2}, \bibinfo{number}{POPL}, Article \bibinfo{articleno}{52}
+  (\bibinfo{date}{Dec.} \bibinfo{year}{2017}), \bibinfo{numpages}{33}~pages.
+\newblock
+\href{https://doi.org/10.1145/3158140}{doi:\nolinkurl{10.1145/3158140}}
+
+
+\bibitem[Bernardy et~al\mbox{.}(2010)]%
+        {Bernardy:Parametricity2010}
+\bibfield{author}{\bibinfo{person}{Jean-Philippe Bernardy},
+  \bibinfo{person}{Patrik Jansson}, {and} \bibinfo{person}{Ross Paterson}.}
+  \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{Parametricity and dependent types}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 15th ACM SIGPLAN International
+  Conference on Functional Programming}} (Baltimore, Maryland, USA)
+  \emph{(\bibinfo{series}{ICFP '10})}. \bibinfo{publisher}{Association for
+  Computing Machinery}, \bibinfo{address}{New York, NY, USA},
+  \bibinfo{pages}{345–356}.
+\newblock
+\showISBNx{9781605587943}
+\href{https://doi.org/10.1145/1863543.1863592}{doi:\nolinkurl{10.1145/1863543.1863592}}
+
+
+\bibitem[Bezem et~al\mbox{.}(2021)]%
+        {bezem2021notegeneralizedalgebraictheories}
+\bibfield{author}{\bibinfo{person}{Marc Bezem}, \bibinfo{person}{Thierry
+  Coquand}, \bibinfo{person}{Peter Dybjer}, {and} \bibinfo{person}{Martín
+  Escardó}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \bibinfo{title}{A Note on Generalized Algebraic Theories and
+  Categories with Families}.
+\newblock
+\showeprint[arxiv]{2012.08370}~[math.CT]
+\urldef\tempurl%
+\url{https://arxiv.org/abs/2012.08370}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Birkedal et~al\mbox{.}(2020)]%
+        {Birkedal2020}
+\bibfield{author}{\bibinfo{person}{Lars Birkedal}, \bibinfo{person}{Ranald
+  Clouston}, \bibinfo{person}{Bassel Mannaa}, \bibinfo{person}{Rasmus
+  Ejlers~Møgelberg}, \bibinfo{person}{Andrew~M. Pitts}, {and}
+  \bibinfo{person}{Bas Spitters}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Modal dependent type theory and dependent right
+  adjoints}.
+\newblock \bibinfo{journal}{\emph{Mathematical Structures in Computer Science}}
+  \bibinfo{volume}{30}, \bibinfo{number}{2} (\bibinfo{year}{2020}),
+  \bibinfo{pages}{118–138}.
+\newblock
+\href{https://doi.org/10.1017/S0960129519000197}{doi:\nolinkurl{10.1017/S0960129519000197}}
+
+
+\bibitem[Castellan et~al\mbox{.}(2020)]%
+        {castellan2020cwf}
+\bibfield{author}{\bibinfo{person}{Simon Castellan}, \bibinfo{person}{Pierre
+  Clairambault}, {and} \bibinfo{person}{Peter Dybjer}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \bibinfo{title}{Categories with Families: Unityped, Simply Typed, and
+  Dependently Typed}.
+\newblock
+\showeprint[arxiv]{1904.00827}~[cs.LO]
+\urldef\tempurl%
+\url{https://arxiv.org/abs/1904.00827}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Cl\'{e}ment et~al\mbox{.}(1986)]%
+        {Clement:ML1986}
+\bibfield{author}{\bibinfo{person}{Dominique Cl\'{e}ment},
+  \bibinfo{person}{Thierry Despeyroux}, \bibinfo{person}{Gilles Kahn}, {and}
+  \bibinfo{person}{Jo\"{e}lle Despeyroux}.} \bibinfo{year}{1986}\natexlab{}.
+\newblock \showarticletitle{A simple applicative language: mini-ML}. In
+  \bibinfo{booktitle}{\emph{Proceedings of the 1986 ACM Conference on LISP and
+  Functional Programming}} (Cambridge, Massachusetts, USA)
+  \emph{(\bibinfo{series}{LFP '86})}. \bibinfo{publisher}{Association for
+  Computing Machinery}, \bibinfo{address}{New York, NY, USA},
+  \bibinfo{pages}{13–27}.
+\newblock
+\showISBNx{0897912004}
+\href{https://doi.org/10.1145/319838.319847}{doi:\nolinkurl{10.1145/319838.319847}}
+
+
+\bibitem[Elliott(2017)]%
+        {Elliott:Compcat2017}
+\bibfield{author}{\bibinfo{person}{Conal Elliott}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Compiling to categories}.
+\newblock \bibinfo{journal}{\emph{Proc. ACM Program. Lang.}}
+  \bibinfo{volume}{1}, \bibinfo{number}{ICFP}, Article \bibinfo{articleno}{27}
+  (\bibinfo{date}{Aug.} \bibinfo{year}{2017}), \bibinfo{numpages}{27}~pages.
+\newblock
+\href{https://doi.org/10.1145/3110271}{doi:\nolinkurl{10.1145/3110271}}
+
+
+\bibitem[Felicissimo(2025)]%
+        {Thiago2025}
+\bibfield{author}{\bibinfo{person}{Thiago Felicissimo}.}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Generic Bidirectional Typing for Dependent Type
+  Theories}.
+\newblock \bibinfo{journal}{\emph{ACM Trans. Program. Lang. Syst.}}
+  \bibinfo{volume}{47}, \bibinfo{number}{1}, Article \bibinfo{articleno}{2}
+  (\bibinfo{date}{April} \bibinfo{year}{2025}), \bibinfo{numpages}{42}~pages.
+\newblock
+\showISSN{0164-0925}
+\href{https://doi.org/10.1145/3715095}{doi:\nolinkurl{10.1145/3715095}}
+
+
+\bibitem[Gratzer et~al\mbox{.}(2019)]%
+        {Gratzer2019}
+\bibfield{author}{\bibinfo{person}{Daniel Gratzer}, \bibinfo{person}{Jonathan
+  Sterling}, {and} \bibinfo{person}{Lars Birkedal}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{Implementing a modal dependent type theory}.
+\newblock \bibinfo{journal}{\emph{Proc. ACM Program. Lang.}}
+  \bibinfo{volume}{3}, \bibinfo{number}{ICFP}, Article \bibinfo{articleno}{107}
+  (\bibinfo{date}{July} \bibinfo{year}{2019}), \bibinfo{numpages}{29}~pages.
+\newblock
+\href{https://doi.org/10.1145/3341711}{doi:\nolinkurl{10.1145/3341711}}
+
+
+\bibitem[Hofmann and Streicher(1994)]%
+        {HofmannStreicher-Thegroupoidmodelref}
+\bibfield{author}{\bibinfo{person}{Martin Hofmann} {and}
+  \bibinfo{person}{Thomas Streicher}.} \bibinfo{year}{1994}\natexlab{}.
+\newblock \showarticletitle{The groupoid model refutes uniqueness of identity
+  proofs}. In \bibinfo{booktitle}{\emph{Proceedings of the Ninth Annual IEEE
+  Symp. on Logic in Computer Science, {LICS} 1994}} (Paris, France),
+  \bibfield{editor}{\bibinfo{person}{Samson Abramsky}} (Ed.).
+  \bibinfo{publisher}{IEEE Computer Society Press}, \bibinfo{pages}{208--212}.
+\newblock
+
+
+\bibitem[Hou~(Favonia) et~al\mbox{.}(2023)]%
+        {Favonia:Displacement2023}
+\bibfield{author}{\bibinfo{person}{Kuen-Bang Hou~(Favonia)},
+  \bibinfo{person}{Carlo Angiuli}, {and} \bibinfo{person}{Reed Mullanix}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \showarticletitle{An Order-Theoretic Analysis of Universe
+  Polymorphism}.
+\newblock \bibinfo{journal}{\emph{Proc. ACM Program. Lang.}}
+  \bibinfo{volume}{7}, \bibinfo{number}{POPL}, Article \bibinfo{articleno}{57}
+  (\bibinfo{date}{Jan.} \bibinfo{year}{2023}), \bibinfo{numpages}{27}~pages.
+\newblock
+\href{https://doi.org/10.1145/3571250}{doi:\nolinkurl{10.1145/3571250}}
+
+
+\bibitem[Howard(1980)]%
+        {ho80}
+\bibfield{author}{\bibinfo{person}{W. Howard}.}
+  \bibinfo{year}{1980}\natexlab{}.
+\newblock \showarticletitle{The Formulae-as-Types Notion of Construction}.
+\newblock In \bibinfo{booktitle}{\emph{To H. B. Curry: Essays on Combinatory
+  Logic, Lambda Calculus and Formalism}},
+  \bibfield{editor}{\bibinfo{person}{J.~Seldin} {and}
+  \bibinfo{person}{J.~Hindley}} (Eds.). \bibinfo{publisher}{Academic Press},
+  \bibinfo{pages}{479--490}.
+\newblock
+
+
+\bibitem[Kolomatskaia and Shulman(2025)]%
+        {Kolomatskaia_Shulman_2025}
+\bibfield{author}{\bibinfo{person}{Astra Kolomatskaia} {and}
+  \bibinfo{person}{Michael Shulman}.} \bibinfo{year}{2025}\natexlab{}.
+\newblock \showarticletitle{Displayed type theory and semi-simplicial types}.
+\newblock \bibinfo{journal}{\emph{Mathematical Structures in Computer Science}}
+   \bibinfo{volume}{35} (\bibinfo{year}{2025}), \bibinfo{pages}{e34}.
+\newblock
+\href{https://doi.org/10.1017/S096012952510025X}{doi:\nolinkurl{10.1017/S096012952510025X}}
+
+
+\bibitem[Lambek(1980)]%
+        {Lambek1980}
+\bibfield{author}{\bibinfo{person}{Joachim Lambek}.}
+  \bibinfo{year}{1980}\natexlab{}.
+\newblock \showarticletitle{From $\lambda$-calculus to cartesian closed
+  categories}.
+\newblock In \bibinfo{booktitle}{\emph{To {H}. {B}. {C}urry: {E}ssays on
+  {C}ombinatory {L}ogic, {L}ambda-{C}alculus and {F}ormalism}},
+  \bibfield{editor}{\bibinfo{person}{J.~P. Seldin} {and} \bibinfo{person}{J.~R.
+  Hindley}} (Eds.). \bibinfo{publisher}{Academic Press},
+  \bibinfo{address}{London}, \bibinfo{pages}{375--402}.
+\newblock
+
+
+\bibitem[McBride(2011)]%
+        {McBride:Crude2011}
+\bibfield{author}{\bibinfo{person}{Conor McBride}.}
+  \bibinfo{year}{2011}\natexlab{}.
+\newblock \bibinfo{title}{Crude but Effective Stratification}.
+\newblock
+\urldef\tempurl%
+\url{https://mazzo.li/epilogue/index.html%3Fp=857&cpage=1.html}
+\showURL{%
+\tempurl}
+
+
+\bibitem[McBride(2012)]%
+        {McBride:Crude2012}
+\bibfield{author}{\bibinfo{person}{Conor McBride}.}
+  \bibinfo{year}{2012}\natexlab{}.
+\newblock \bibinfo{title}{Crude but Effective Stratification}.
+\newblock
+\urldef\tempurl%
+\url{https://personal.cis.strath.ac.uk/conor.mcbride/Crude.pdf}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Nawrocki et~al\mbox{.}(2026)]%
+        {Nawrocki:Lean2026}
+\bibfield{author}{\bibinfo{person}{Wojciech Nawrocki}, \bibinfo{person}{Joseph
+  Hua}, \bibinfo{person}{Mario Carneiro}, \bibinfo{person}{Yiming Xu},
+  \bibinfo{person}{Spencer Woolfson}, \bibinfo{person}{Shuge Rong},
+  \bibinfo{person}{Sina Hazratpour}, {and} \bibinfo{person}{Steve Awodey}.}
+  \bibinfo{year}{2026}\natexlab{}.
+\newblock \showarticletitle{A Certifying Proof Assistant for Synthetic
+  Mathematics in Lean}. In \bibinfo{booktitle}{\emph{Proceedings of the 15th
+  ACM SIGPLAN International Conference on Certified Programs and Proofs}}
+  (Rennes, France) \emph{(\bibinfo{series}{CPP '26})}.
+  \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{88–103}.
+\newblock
+\showISBNx{9798400723414}
+\href{https://doi.org/10.1145/3779031.3779087}{doi:\nolinkurl{10.1145/3779031.3779087}}
+
+
+\bibitem[Reynolds(1983)]%
+        {reynolds1983types}
+\bibfield{author}{\bibinfo{person}{John~C Reynolds}.}
+  \bibinfo{year}{1983}\natexlab{}.
+\newblock \showarticletitle{Types, abstraction and parametric polymorphism}. In
+  \bibinfo{booktitle}{\emph{Information Processing 83}},
+  \bibfield{editor}{\bibinfo{person}{R.~E.~A. Mason}} (Ed.). North-Holland,
+  \bibinfo{pages}{513--523}.
+\newblock
+
+
+\bibitem[Richards(2025)]%
+        {CRproof}
+\bibfield{author}{\bibinfo{person}{Gregor Richards}.}
+  \bibinfo{year}{2025}\natexlab{}.
+\newblock \bibinfo{title}{Proof of the Church-Rosser Theorem}.
+\newblock
+\urldef\tempurl%
+\url{https://student.cs.uwaterloo.ca/~cs442/W25/extras/c-r-thm-proof.pdf}
+\showURL{%
+\tempurl}
+
+
+\bibitem[Shulman(2026)]%
+        {shulman2026}
+\bibfield{author}{\bibinfo{person}{Michael Shulman}.}
+  \bibinfo{year}{2026}\natexlab{}.
+\newblock \bibinfo{title}{Modal datatypes and codatatypes}.
+\newblock
+\urldef\tempurl%
+\url{https://gwaithimirdain.github.io/2026/06/02/modal-data-and-codata.html}
+\showURL{%
+\tempurl}
+
+
+\bibitem[{Univalent Foundations Program}(2013)]%
+        {hottbook}
+\bibfield{author}{\bibinfo{person}{The {Univalent Foundations Program}}.}
+  \bibinfo{year}{2013}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Homotopy Type Theory: Univalent Foundations
+  of Mathematics}}.
+\newblock \bibinfo{publisher}{\url{https://homotopytypetheory.org/book}},
+  \bibinfo{address}{Institute for Advanced Study}.
+\newblock
+
+
+\end{thebibliography}
