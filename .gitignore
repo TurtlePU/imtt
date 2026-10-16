@@ -1,4 +1,2 @@
 _build
-_minted
 *.synctex.gz
-**/dist-newstyle
