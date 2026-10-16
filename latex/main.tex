@@ -1,5 +1,4 @@
-\documentclass
-    [acmsmall,screen,review,anonymous,nonacm]{acmart}
+\documentclass{article}
 
 \usepackage{
     amsmath,fontawesome,graphicx,mathpartir,mathtools,
@@ -10,6 +9,10 @@
 \newunicodechar{∷}{$\dblcolon$}
 
 \title{Towards Type Systems That Reinterpret Themselves}
+
+\begin{document}
+
+\maketitle
 
 \begin{abstract}
 We advocate that type systems should be able to
@@ -24,9 +27,6 @@ and MLTT-R, prove their basic properties and show
 several examples of useful internal models.
 \end{abstract}
 
-\begin{document}
-
-\maketitle
 
 \input{intro.tex}
 \input{nogo.tex}
@@ -35,7 +35,6 @@ several examples of useful internal models.
 \input{discussion.tex}
 \input{conclusion.tex}
 
-\bibliographystyle{ACM-Reference-Format}
 \bibliography{bibliography}
 
 \end{document}
