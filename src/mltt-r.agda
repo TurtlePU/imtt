@@ -130,7 +130,8 @@ renameᵗᴵ m (Jᵗ T i t) =
     Jᵗ (renameᵀᶜ (wkᵐ (wkᵐ m)) T) (renameᵗᴵ m i) (renameᵗᶜ m t)
 renameᵗᴵ m (t as T) = renameᵗᶜ m t as renameᵀᶜ m T
 renameᵗᴵ ([ f ]ᵐ _) (🔓 t) = 🔓(renameᵗᴵ (uncᵐ f) t)
-renameᵗᴵ (uncᵐ f) (⟦ t ⟧ᵗ Ls ℓ m) = ⟦ renameᵗᴵ ([ f ]ᵐ λ ()) t ⟧ᵗ Ls ℓ (renameᵗᶜ ? m)
+renameᵗᴵ (uncᵐ f) (⟦ t ⟧ᵗ Ls ℓ m) =
+    ⟦ renameᵗᴵ ([ f ]ᵐ λ ()) t ⟧ᵗ Ls ℓ (renameᵗᶜ (uncᵐ f) m)
 
 ↑ᵐ : ∀ {w} → Map w (nxt w)
 ↑ᵐ {just _ , _} = [ (λ z → z) ]ᵐ suc
@@ -141,6 +142,9 @@ renameᵗᴵ (uncᵐ f) (⟦ t ⟧ᵗ Ls ℓ m) = ⟦ renameᵗᴵ ([ f ]ᵐ λ 
 
 ↑ᵗᶜ : ∀ {w} → Termᶜ w → Termᶜ (nxt w)
 ↑ᵗᶜ = renameᵗᶜ ↑ᵐ
+
+↑ᵗᴵ : ∀ {w} → Termᴵ w → Termᴵ (nxt w)
+↑ᵗᴵ = renameᵗᴵ ↑ᵐ
 
 infixl 5 _,x:_
 data Ctx : 𝓦 → Set where
@@ -218,7 +222,8 @@ replaceᵗᴵ s (Jᵗ T i t) =
     Jᵗ (replaceᵀᶜ (wkˢ (wkˢ s)) T) (replaceᵗᴵ s i) (replaceᵗᶜ s t)
 replaceᵗᴵ s (t as T) = replaceᵗᶜ s t as replaceᵀᶜ s T
 replaceᵗᴵ ([ f ]ˢ _) (🔓 t) = 🔓(replaceᵗᴵ (uncˢ f) t)
-replaceᵗᴵ (uncˢ f) (⟦ t ⟧ᵗ Ls ℓ m) = ⟦ replaceᵗᴵ ([ f ]ˢ λ ()) t ⟧ᵗ Ls ℓ (replaceᵗᶜ ? m)
+replaceᵗᴵ (uncˢ f) (⟦ t ⟧ᵗ Ls ℓ m) =
+    ⟦ replaceᵗᴵ ([ f ]ˢ λ ()) t ⟧ᵗ Ls ℓ (replaceᵗᶜ (uncˢ f) m)
 
 ty : ∀ {w} → 𝓛 → Termᶜ w → Typeᶜ w
 ty ℓ t = convᵀ (El (t as 𝓤ᵀ ℓ))
@@ -248,13 +253,15 @@ lkp Ls i all =
 𝓜 : ∀ {w} → Levels → Typeᶜ w
 𝓜 = ?
 
-infix 4 _⊢_ _⊢_≥ℓ_ _⊢ℓ_^_≡_ _⊢_^_∋_ _⊢_^_∈_ _⊢_∋_≡β_ _⊢_<:_
-data _⊢_≥ℓ_ : ∀ {w} → Ctx w → 𝓛 → Typeᶜ w → Set
-data _⊢ℓ_^_≡_ : ∀ {w} → Ctx w → Typeᴵ w → (ℓ : 𝓛) → 𝔹 ℓ → Set
-data _⊢_^_∋_ : ∀ {w} → Ctx w → Typeᶜ w → 𝓛 → Termᶜ w → Set
-data _⊢_^_∈_ : ∀ {w} → Ctx w → Termᴵ w → 𝓛 → Typeᶜ w → Set
-data _⊢_∋_≡β_ {w} (Γ : Ctx w) (T : Typeᶜ w) (t₁ t₂ : Termᶜ w) : Set where
-data _⊢_<:_ {w} (Γ : Ctx w) (T U : Typeᶜ w) : Set where
+infix 4 _⊢_ _⊢_≥ℓ_ _⊢ℓ_^_≡_ _⊢_^_∋_ _⊢_^_∈_ _⊢_≡β_ _⊢_∋_≡β_ _⊢_≡β_∈_ _⊢_<:_
+data _⊢_≥ℓ_ : ∀ {w} (Γ : Ctx w) (ℓ : 𝓛) (T : Typeᶜ w) → Set
+data _⊢ℓ_^_≡_ : ∀ {w} (Γ : Ctx w) (T : Typeᴵ w) (ℓ : 𝓛) (κ : 𝔹 ℓ) → Set
+data _⊢_^_∋_ : ∀ {w} (Γ : Ctx w) (T : Typeᶜ w) (ℓ : 𝓛) (t : Termᶜ w) → Set
+data _⊢_^_∈_ : ∀ {w} (Γ : Ctx w) (t : Termᴵ w) (ℓ : 𝓛) (T : Typeᶜ w) → Set
+data _⊢_≡β_ : ∀ {w} (Γ : Ctx w) (T T' : Typeᶜ w) → Set
+data _⊢_∋_≡β_ : ∀ {w} (Γ : Ctx w) (T : Typeᶜ w) (t₁ t₂ : Termᶜ w) → Set
+data _⊢_≡β_∈_ : ∀ {w} (Γ : Ctx w) (t₁ t₂ : Termᴵ w) (T : Typeᶜ w) → Set
+data _⊢_<:_ : ∀ {w} (Γ : Ctx w) (T U : Typeᶜ w) → Set
 
 data _⊢_ (ℓ : 𝓛) : ∀ {w} → Ctx w → Set where
     WF-Nil : ℓ ⊢ ε
@@ -311,10 +318,14 @@ data _⊢ℓ_^_≡_ where
        {-----------------------------------------------} (H : ℓ ≥∀ Ls) →
                Γ ⊢ℓ ⟦ T ⟧ᵀ Ls m ^ ℓ ≡ lkp Ls κ H
 
-infixl 20 _[x:=_]ᵀ
+infixl 20 _[x:=_]ᵀ _[x:=_]ᵗ
 _[x:=_]ᵀ : ∀ {w} → Typeᶜ (nxt w) → Termᴵ w → Typeᶜ w
 _[x:=_]ᵀ {nothing , _} T t = replaceᵀᶜ (uncˢ λ { zero → t ; (suc i) → ` i }) T
 _[x:=_]ᵀ {just _ , _} T t = replaceᵀᶜ ([ `_ ]ˢ λ { zero → t ; (suc i) → ` i }) T
+
+_[x:=_]ᵗ : ∀ {w} → Termᶜ (nxt w) → Termᴵ w → Termᶜ w
+_[x:=_]ᵗ {nothing , _} t u = replaceᵗᶜ (uncˢ λ { zero → u ; (suc i) → ` i }) t
+_[x:=_]ᵗ {just _ , _} t u = replaceᵗᶜ ([ `_ ]ˢ λ { zero → u ; (suc i) → ` i }) t
 
 data _⊢_^_∋_ where
     Check-Uni : ∀ {w j κ ℓ} {Γ : Ctx w} →
@@ -392,17 +403,24 @@ Sᵗᴵ t = Sᵗ (convᵗ t) as ℕᵀ
 ↓ : ∀ {m n} → Typeᶜ ([ m ] 0) → Typeᶜ ([ m ] n)
 ↓ = renameᵀᶜ ([ (λ z → z) ]ᵐ λ ())
 
+base : ∀ {w} → Typeᶜ (nxt w) → Typeᶜ w
+base T = T [x:= 0ᵗ as ℕᵀ ]ᵀ
+
+step : ∀ {w} → Typeᶜ (nxt w) → Typeᶜ w
+step T = Πᵀ ℕᵀ (T ⇒ T [ zero := Sᵗᴵ (` zero) ])
+
+idCon : ∀ {w} → Ctx w → Typeᶜ w → Termᶜ w → Ctx (nxt (nxt w))
+idCon Γ T t₁ = Γ ,x: T ,x: Idᵀ (↑ᵀᶜ T) (↑ᵗᶜ t₁) (convᵗ (` zero))
+
 data _⊢_^_∈_ where
     Infer-Var : ∀ {w ℓ i} {Γ : Ctx w} →
                ℓ ⊢ Γ →
         --------------------
         Γ ⊢ ` i ^ ℓ ∈ Γ !! i
     Infer-Ind : ∀ {w ℓ T n z s} {Γ : Ctx w} →
-        Γ ,x: ℕᵀ ⊢ ℓ ≥ℓ T →
-        Γ ⊢ n ^ ℓ ∈ ℕᵀ →
-        Γ ⊢ T [x:= 0ᵗ as ℕᵀ ]ᵀ ^ ℓ ∋ z →
-        Γ ⊢ Πᵀ ℕᵀ (T ⇒ T [ zero := Sᵗᴵ (` zero) ]) ^ ℓ ∋ s →
-        ----------------------------------------------------
+        Γ ,x: ℕᵀ ⊢ ℓ ≥ℓ T → Γ ⊢ n ^ ℓ ∈ ℕᵀ →
+        Γ ⊢ base T ^ ℓ ∋ z → Γ ⊢ step T ^ ℓ ∋ s →
+        ------------------------------------------
         Γ ⊢ ind T on n ⟨ z , s ⟩ ^ ℓ ∈ T [x:= n ]ᵀ
     Infer-Proj₁ : ∀ {w ℓ t T U} {Γ : Ctx w} →
         Γ ⊢ t ^ ℓ ∈ Σᵀ T U →
@@ -417,8 +435,7 @@ data _⊢_^_∈_ where
         ------------------------------------
           Γ ⊢ t $ u ^ ℓ ∈ T [x:= u as U ]ᵀ
     Infer-J : ∀ {w ℓ T t₁ t₂ U i u} {Γ : Ctx w} →
-        Γ ⊢ i ^ ℓ ∈ Idᵀ T t₁ t₂ →
-        Γ ,x: T ,x: Idᵀ (↑ᵀᶜ T) (↑ᵗᶜ t₁) (convᵗ (` zero)) ⊢ ℓ ≥ℓ U →
+        Γ ⊢ i ^ ℓ ∈ Idᵀ T t₁ t₂ → idCon Γ T t₁ ⊢ ℓ ≥ℓ U →
         Γ ⊢ U [x:= ↑ᵗᶜ t₁ as ↑ᵀᶜ T ]ᵀ [x:= rflᵗ as Idᵀ T t₁ t₁ ]ᵀ ^ ℓ ∋ u →
         -------------------------------------------------------------------
         Γ ⊢ Jᵗ U i u ^ ℓ ∈ U [x:= ↑ᵗᶜ t₂ as ↑ᵀᶜ T ]ᵀ [x:= i ]ᵀ
@@ -431,7 +448,116 @@ data _⊢_^_∈_ where
         ------------------------
            Γ ⊢ 🔓 t ^ ℓ ∈ ↓ T
     Infer-Interp : ∀ {n Ls κ ℓ t T m} {Γ : Ctx (unc n)} →
-        Γ [ ℓ ]🔒 ⊢ t ^ lb Ls ∈ T → Γ [ ℓ ]🔒 ⊢ κ ≥ℓ T →
-        -- FIXME: add check for m
-        {- -} (ℓ ≥∀ Ls × lb Ls ≥ κ) →
+        Γ [ ℓ ]🔒 ⊢ t ^ lb Ls ∈ T →
+        Γ [ ℓ ]🔒 ⊢ κ ≥ℓ T →
+        Γ ⊢ 𝓜 Ls ^ ℓ ∋ m →
+       {------------------------------------------------} (ℓ ≥∀ Ls × lb Ls ≥ κ) →
         Γ ⊢ ⟦ t ⟧ᵗ Ls κ m ^ ℓ ∈ convᵀ (⟦ T at κ ⟧ᵀ Ls m)
+
+data _⊢_≡β_ where -- TODO: finish definition
+
+data _⊢_∋_≡β_ where
+    Cong-Id : ∀ {w ℓ t t' t₁ t₁' t₂ t₂'} {Γ : Ctx w} →
+        Γ ⊢ 𝓤ᵀ ℓ ∋ t ≡β t' → Γ ⊢ ty ℓ t ∋ t₁ ≡β t₁' → Γ ⊢ ty ℓ t ∋ t₂ ≡β t₂' →
+        ----------------------------------------------------------------------
+                     Γ ⊢ 𝓤ᵀ ℓ ∋ Idᵗ t t₁ t₂ ≡β Idᵗ t' t₁' t₂'
+    Cong-Suc : ∀ {w n n'} {Γ : Ctx w} →
+          Γ ⊢ ℕᵀ ∋ n ≡β n' →
+        ----------------------
+        Γ ⊢ ℕᵀ ∋ Sᵗ n ≡β Sᵗ n'
+    Cong-Sigma : ∀ {w ℓ t t' u u'} {Γ : Ctx w} →
+        Γ ⊢ 𝓤ᵀ ℓ ∋ t ≡β t' → Γ ,x: ty ℓ t ⊢ 𝓤ᵀ ℓ ∋ u ≡β u' →
+        ----------------------------------------------------
+                   Γ ⊢ 𝓤ᵀ ℓ ∋ Πᵗ t u ≡β Σᵗ t' u'
+    Cong-Pi : ∀ {w ℓ t t' u u'} {Γ : Ctx w} →
+        Γ ⊢ 𝓤ᵀ ℓ ∋ t ≡β t' → Γ ,x: ty ℓ t ⊢ 𝓤ᵀ ℓ ∋ u ≡β u' →
+        ----------------------------------------------------
+                   Γ ⊢ 𝓤ᵀ ℓ ∋ Πᵗ t u ≡β Πᵗ t' u'
+    Cong-Pair : ∀ {w T U t t' u u'} {Γ : Ctx w} →
+        Γ ⊢ T ∋ t ≡β t' → Γ ⊢ U [x:= t as T ]ᵀ ∋ u ≡β u' →
+        --------------------------------------------------
+              Γ ⊢ Σᵀ T U ∋ ⟨ t , u ⟩ ≡β ⟨ t' , u' ⟩
+    Pair-Eta : ∀ {w T U t} {Γ : Ctx w} →
+        -------------------------------------------------------
+        Γ ⊢ Σᵀ T U ∋ convᵗ t ≡β ⟨ convᵗ (π₁ t) , convᵗ (π₂ t) ⟩
+    Cong-Abs : ∀ {w U T t t'} {Γ : Ctx w} →
+         Γ ,x: U ⊢ T ∋ t ≡β t' →
+        --------------------------
+        Γ ⊢ Πᵀ U T ∋ λᵗ t ≡β λᵗ t'
+    Abs-Eta : ∀ {w U T t} {Γ : Ctx w} →
+        Γ ⊢ Πᵀ U T ∋ convᵗ t ≡β λᵗ (convᵗ (↑ᵗᴵ t $ convᵗ (` zero)))
+    Cong-Conv : ∀ {w T T' t t'} {Γ : Ctx w} →
+        Γ ⊢ t ≡β t' ∈ T' → Γ ⊢ T' <: T →
+        --------------------------------
+          Γ ⊢ T ∋ convᵗ t ≡β convᵗ t'
+    Conv-As : ∀ {w T T' t} {Γ : Ctx w} →
+               Γ ⊢ T' <: T →
+        ----------------------------
+        Γ ⊢ T ∋ convᵗ (t as T') ≡β t
+    Check-Refl : ∀ {w T t} {Γ : Ctx w} →
+        --------------
+        Γ ⊢ T ∋ t ≡β t
+    Check-Sym : ∀ {w T t t'} {Γ : Ctx w} →
+        Γ ⊢ T ∋ t' ≡β t →
+        -----------------
+         Γ ⊢ T ∋ t ≡β t'
+    Check-Trans : ∀ {w T t u v} {Γ : Ctx w} →
+        Γ ⊢ T ∋ t ≡β u → Γ ⊢ T ∋ u ≡β v →
+        ---------------------------------
+                 Γ ⊢ T ∋ t ≡β v
+-- TODO: add eta-rule for locks?
+
+data _⊢_≡β_∈_ where
+    Cong-Ind : ∀ {w T T' n n' z z' s s'} {Γ : Ctx w} →
+        Γ ,x: ℕᵀ ⊢ T ≡β T' → Γ ⊢ n ≡β n' ∈ ℕᵀ →
+        Γ ⊢ base T ∋ z ≡β z' → Γ ⊢ step T ∋ s ≡β s' →
+        ------------------------------------------------------------------
+        Γ ⊢ ind T on n ⟨ z , s ⟩ ≡β ind T' on n' ⟨ z' , s' ⟩ ∈ T [x:= n ]ᵀ
+    Ind-Zero : ∀ {w T z s} {Γ : Ctx w} →
+        Γ ⊢ ind T on (0ᵗ as ℕᵀ) ⟨ z , s ⟩ ≡β z as base T ∈ base T
+    Ind-Step : ∀ {w T n z s} {Γ : Ctx w} →
+        Γ ⊢ ind T on (Sᵗ n as ℕᵀ) ⟨ z , s ⟩ ≡β ((s as step T) $ n) $
+            convᵗ (ind T on (n as ℕᵀ) ⟨ z , s ⟩) ∈ T [x:= Sᵗ n as ℕᵀ ]ᵀ
+    Cong-Proj₁ : ∀ {w t t' T U} {Γ : Ctx w} →
+        Γ ⊢ t ≡β t' ∈ Σᵀ T U → 
+        ----------------------
+        Γ ⊢ π₁ t ≡β π₁ t' ∈ T
+    Proj₁-β : ∀ {w t u T U} {Γ : Ctx w} →
+        Γ ⊢ π₁ (⟨ t , u ⟩ as Σᵀ T U) ≡β t as T ∈ T
+    Cong-Proj₂ : ∀ {w t t' T U} {Γ : Ctx w} →
+              Γ ⊢ t ≡β t' ∈ Σᵀ T U →
+        ----------------------------------
+        Γ ⊢ π₂ t ≡β π₂ t' ∈ U [x:= π₁ t ]ᵀ
+    Proj₂-β : ∀ {w t u T U} {Γ : Ctx w} →
+        Γ ⊢ π₂ (⟨ t , u ⟩ as Σᵀ T U) ≡β u as (U [x:= t as T ]ᵀ)
+            ∈ U [x:= t as T ]ᵀ
+    Cong-App : ∀ {w t t' u u' U T} {Γ : Ctx w} →
+        Γ ⊢ t ≡β t' ∈ Πᵀ U T → Γ ⊢ U ∋ u ≡β u' →
+        ----------------------------------------
+        Γ ⊢ t $ u ≡β t' $ u' ∈ T [x:= u as U ]ᵀ
+    β : ∀ {w t u T U} {Γ : Ctx w} →
+        Γ ⊢ (λᵗ u as Πᵀ T U) $ t ≡β (u [x:= t as T ]ᵗ) as (U [x:= t as T ]ᵀ)
+            ∈ U [x:= t as T ]ᵀ
+    Cong-J : ∀ {w} {T T' U u₁ u₂ i i' t t'} {Γ : Ctx w} →
+        idCon Γ U u₁ ⊢ T ≡β T' → Γ ⊢ i ≡β i' ∈ Idᵀ U u₁ u₂ →
+        Γ ⊢ T [x:= ↑ᵗᶜ u₁ as ↑ᵀᶜ U ]ᵀ [x:= rflᵗ as Idᵀ U u₁ u₁ ]ᵀ ∋ t ≡β t' →
+        Γ ⊢ Jᵗ T i t ≡β Jᵗ T' i' t' ∈ T [x:= ↑ᵗᶜ u₂ as ↑ᵀᶜ U ]ᵀ [x:= i ]ᵀ
+    J-refl : ∀ {w T U u₁ u₂ t} {Γ : Ctx w} →
+        Γ ⊢ Jᵗ T (rflᵗ as Idᵀ U u₁ u₂) t ≡β
+        t as (T [x:= ↑ᵗᶜ u₁ as ↑ᵀᶜ U ]ᵀ [x:= rflᵗ as Idᵀ U u₁ u₁ ]ᵀ)
+        ∈ T [x:= ↑ᵗᶜ u₁ as ↑ᵀᶜ U ]ᵀ [x:= rflᵗ as Idᵀ U u₁ u₁ ]ᵀ
+    Cong-As : ∀ {w} {t t' T T'} {Γ : Ctx w} →
+        Γ ⊢ T ∋ t ≡β t' → Γ ⊢ T ≡β T' →
+        -------------------------------
+          Γ ⊢ t as T ≡β t' as T' ∈ T
+    As-Conv : ∀ {w} {t T} {Γ : Ctx w} →
+        ---------------------------
+        Γ ⊢ (convᵗ t) as T ≡β t ∈ T
+-- TODO: add rule for interpretation
+-- TODO: add rules for equiv closure
+-- TODO: rules for lock reduction?
+--    ⟦_⟧ᵗ :
+--        ∀ {n} (t : Termᴵ ([ n ] 0)) (Ls : Levels) (ℓ : 𝓛) (m : Termᶜ (unc n)) →
+--        Termᴵ (unc n)
+
+data _⊢_<:_ where -- TODO: finish definition
