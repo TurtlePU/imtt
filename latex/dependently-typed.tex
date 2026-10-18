@@ -110,52 +110,52 @@ interpretation.
 $\Gamma$ : Context ::=
     | $\cdot$ : empty context
     | $\Gamma,x\,\colon T$ : variable extension
-    | $\Gamma.\,{}_\ell\text{\faLock}$ : context locking
+    | $\Gamma.\,{}_\ell\text{\faLock}$
+    : context locking
     ;;
 $T$, $S$ : Type ::=
     | $\mathcal{U}_\ell$ : universe
     | $\mathrm{El}(t)$ : universal type family
-    | $\mathrm{Nat}_\ell$ : natural number type
+    | $\mathrm{Nat}$ : natural number type
     | $(x\,\colon S)\times T$ : $\Sigma$-type
     | $(x\,\colon S)\to T$ : $\Pi$-type
     | $t_1=_T t_2$ : identity type
     | $\Box_\ell\,T$ : type of reinterpretable terms
-    | $\llbracket T\rrbracket_{\ell_0,\ldots,
-        \ell_j}^{\kappa_0,\ldots,\kappa_j}\,t$
+    | $t\,\llbracket\Gamma\vdash T\rrbracket$
         : typal reinterpretation
     ;;
 $\ell$, $\kappa$, $j$ : Level :in: $\mathbb{N}$
     : finite levels ;;
-$t$, $s$ : Term ::=
+$t$, $s$, $t'$ : Term ::=
     | $x$ // $y$ // $z$ // \texttt{m} // $\ldots$
         : variables
     | $\mathtt{U}_\ell$ : code of a universe
-    | $\mathtt{Nat}_\ell$
+    | $\mathtt{Nat}$
         : code of a natural number type
-    | $0_\ell$ : zero
+    | $0$ : zero
     | $\mathrm{S}\,t$ : successor
     | $\mathrm{natind}_{x.T}\,t\,\{s_0,s_S\}$
         : induction
     | $\mathtt{Sigma}(x\,\colon s)t$
         : code of a $\Sigma$-type
-    | $(s, t\,\colon x.T)$ : pairing
+    | $(s, t)$ : pairing
     | $\pi_1\,t$ // $\pi_2\,t$ : projections
     | $\mathtt{Pi}(x\,\colon s)t$
         : code of a $\Pi$-type
-    | $\lambda(x\,\colon S).\,t$ : abstraction
+    | $\lambda x.\,t$ : abstraction
     | $t\,s$ : application
-    | $\mathtt{Id}\,t\,t_1\,t_2$
+    | $\mathtt{Id}\,s\,t\,t'$
         : code of an identity type
-    | $\mathrm{refl}\,t$ : reflexivity
+    | $\mathrm{refl}$ : reflexivity
     | $\mathrm{J}_{xy.S}\,t\,s$
         : J rule (elimination of equality type)
     | $\mathtt{Box}_\ell\,t$ : code of a box type
-    | $[t]_\text{\faLock}^\ell$ : locking
+    | $[t]_\text{\faLock}$ : locking
     | $[t]_\text{\faUnlock}$ : unlocking
-    | $\llbracket t
-        \rrbracket_{\ell_0,\ldots,\ell_j}^{
-        \kappa_0,\ldots,\kappa_j}$
+    | $s\,\llbracket\Gamma\vdash t\rrbracket$
         : internal interpretation
+    | $t\meet{s}{\Gamma} t'$
+        : equality witness synthesis
     | $t\,\colon T$ : ascription
     ;;
 \end{bnf}

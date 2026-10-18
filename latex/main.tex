@@ -9,6 +9,10 @@
     mathtools,minted,simplebnf,stmaryrd,xcolor
 }
 
+\newcommand{\meet}[2]
+{\rangle\joinrel\joinrel\overset{#1}{
+    \underset{#2}{\sim}}\joinrel\joinrel\langle}
+
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}
 \theoremstyle{definition}
