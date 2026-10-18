@@ -114,15 +114,14 @@ $\Gamma$ : Context ::=
     ;;
 $T$, $S$ : Type ::=
     | $\mathcal{U}_\ell$ : universe
-    | $\mathrm{El}_\ell(t)$ : universal type family
+    | $\mathrm{El}(t)$ : universal type family
     | $\mathrm{Nat}_\ell$ : natural number type
     | $(x\,\colon S)\times T$ : $\Sigma$-type
     | $(x\,\colon S)\to T$ : $\Pi$-type
     | $t_1=_T t_2$ : identity type
-    | $\Box_\kappa\,T$ : type of reinterpretable terms
-    | $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa}$
-        : type of models
-    | $T^t_{\ell_,\ldots,\ell_\kappa}$
+    | $\Box_\ell\,T$ : type of reinterpretable terms
+    | $\llbracket T\rrbracket_{\ell_0,\ldots,
+        \ell_j}^{\kappa_0,\ldots,\kappa_j}\,t$
         : typal reinterpretation
     ;;
 $\ell$, $\kappa$, $j$ : Level :in: $\mathbb{N}$
@@ -133,34 +132,34 @@ $t$, $s$ : Term ::=
     | $\mathtt{U}_\ell$ : code of a universe
     | $\mathtt{Nat}_\ell$
         : code of a natural number type
-    | $0$ : zero
+    | $0_\ell$ : zero
     | $\mathrm{S}\,t$ : successor
     | $\mathrm{natind}_{x.T}\,t\,\{s_0,s_S\}$
         : induction
     | $\mathtt{Sigma}(x\,\colon s)t$
         : code of a $\Sigma$-type
-    | $(s, t)$ : pairing
+    | $(s, t\,\colon x.T)$ : pairing
     | $\pi_1\,t$ // $\pi_2\,t$ : projections
     | $\mathtt{Pi}(x\,\colon s)t$
         : code of a $\Pi$-type
-    | $\lambda x.\,t$ : abstraction
+    | $\lambda(x\,\colon S).\,t$ : abstraction
     | $t\,s$ : application
     | $\mathtt{Id}\,t\,t_1\,t_2$
         : code of an identity type
-    | $\mathrm{refl}$ : reflexivity
+    | $\mathrm{refl}\,t$ : reflexivity
     | $\mathrm{J}_{xy.S}\,t\,s$
         : J rule (elimination of equality type)
-    | $\mathtt{Box}_\kappa\,t$ : code of a box type
-    | $[t]_\text{\faLock}$ : locking
+    | $\mathtt{Box}_\ell\,t$ : code of a box type
+    | $[t]_\text{\faLock}^\ell$ : locking
     | $[t]_\text{\faUnlock}$ : unlocking
     | $\llbracket t
-        \rrbracket^{\ell_0,\ldots,\ell_\kappa}$
+        \rrbracket_{\ell_0,\ldots,\ell_j}^{
+        \kappa_0,\ldots,\kappa_j}$
         : internal interpretation
     | $t\,\colon T$ : ascription
     ;;
 \end{bnf}
 \caption{MLTT-R grammar}
-\Description{}
 \label{mltt-r-grammar}
 \end{figure}
 
@@ -216,7 +215,7 @@ too! They have a single modality, though.}:
     \dfrac{\cdot\vdash_\ell\mathrm{level}(A,B)=\_}{
         \cdot\vdash_\kappa\lambda f x.[[f
         ]_\text{\faUnlock}[x]_\text{\faUnlock}
-        ]_\text{\faLock}:\Box_\ell(A\to B)\to
+        ]_\text{\faLock}^\ell:\Box_\ell(A\to B)\to
             \Box_\ell A\to\Box_\ell B
     }(\ell\leqslant\kappa)
 \]
@@ -299,7 +298,6 @@ boxed values from the ``outer world''.
 \end{mathpar}
 \caption{
     Context well-formedness \& level placement rules}
-\Description{}
 \label{mltt-r-wf}
 \end{figure}
 
@@ -451,7 +449,6 @@ boxed values from the ``outer world''.
     }{\Gamma\vdash_\ell t\Leftarrow T}
 \end{mathpar}
 \caption{Bidirectional term typing rules}
-\Description{}
 \label{mltt-r-typing}
 \end{figure}
 
@@ -683,7 +680,6 @@ variant is spelled out in discussion, see section
         t.\mathrm{Tm}(t.\cdot, T_t^\cdot)}
 \end{mathpar}
 \caption{MLTT-R typal computation rules}
-\Description{}
 \label{mltt-r-typcomp}
 \end{figure}
 
@@ -780,7 +776,6 @@ variant is spelled out in discussion, see section
     \Leftarrow T}\,\mathtt{m}}
 \end{mathpar}
 \caption{MLTT-R term computation rules}
-\Description{}
 \label{mltt-r-comp}
 \end{figure}
 

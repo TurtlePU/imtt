@@ -1,14 +1,36 @@
 \documentclass{article}
+\usepackage[T1]{fontenc}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{bibliography.bib}
 
 \usepackage{
-    amsmath,fontawesome,graphicx,mathpartir,mathtools,
-    minted,newunicodechar,simplebnf,xcolor
+    amsmath,amssymb,fontawesome,graphicx,mathpartir,
+    mathtools,minted,simplebnf,stmaryrd,xcolor
 }
 
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\usepackage{newunicodechar}
 \newunicodechar{∀}{$\forall$}
 \newunicodechar{∷}{$\dblcolon$}
 
+\usepackage{authblk,orcidlink}
+
 \title{Towards Type Systems That Reinterpret Themselves}
+
+\author[ ]{Pavel Sokolov\raisebox{-0.45ex}{\scriptsize\orcidlink{0009-0001-6922-2870}}\kern-0.4em\textsuperscript{1} \guilsinglleft\protect\href{mailto:ppsokolov@hse.ru}{\texttt{ppsokolov@hse.ru}}\guilsinglright
+\authorcr
+Alexander Kuklev\raisebox{-0.45ex}{\scriptsize\orcidlink{0009-0004-1019-4205}}\kern-0.4em\textsuperscript{2} \guilsinglleft\protect\href{mailto:a@kuklev.com}{\texttt{a@kuklev.com}}\guilsinglright}
+
+\affil[1]{\small HSE University, Laboratory of
+Theoretical Computer Science}
+
+\affil[2]{Radboud Univ. Nijmegen, Department of
+Software Science}
 
 \begin{document}
 
@@ -27,14 +49,14 @@ and MLTT-R, prove their basic properties and show
 several examples of useful internal models.
 \end{abstract}
 
-
 \input{intro.tex}
 \input{nogo.tex}
 \input{simply-typed.tex}
 \input{dependently-typed.tex}
 \input{discussion.tex}
 \input{conclusion.tex}
-
-\bibliography{bibliography}
+\printbibliography
+\appendix
+\input{appendix.tex}
 
 \end{document}
