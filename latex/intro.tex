@@ -1,124 +1,103 @@
 \section{Introduction}
 
-Consider the following well-known function that maps
-over the elements of a list, written in Agda:
+An idea that a ``type theory should eat itself'' is a
+well-established concept in study of dependent type
+theory. Under this guise, if a type theory is presented
+as a ``full-scale system for constructive mathematics``
+[CITE], then it should be capable of proving its own
+metatheoretical properties. For example, in a paper
+bearing the same name [CITE], the author presents a
+normalizer for type theory written in Agda [CITE].
 
-\begin{minted}{agda}
-map : ∀ {A B : Set} → (A → B) → List A → List B
-map f [] = []
-map f (x ∷ xs) = f x ∷ map f xs
-\end{minted}
+Of course, G\"odel's incompleteness theorems [CITE]
+still apply in a constructive context, so na\"ively
+proving self-consistency of a type system supporting
+primitive recursion is out of question. What is usually
+proven instead is that a particular implementation of a
+type theory inside itself is sound assuming the
+consistency of the theory, so no paradox arises [CITE]
+[CITE]; this is still useful because it leads to the
+phenomena of \emph{certified proof assistants}.
 
-Enjoying both composability of this function and the
-simplicity of its type, we would like to reuse its
-definition as much as possible. Up to a certain level,
-we would surely be able to do so: after all,
-\texttt{map} is polymorphic in source and target types,
-so we can instantiate it with whatever types we want.
-However, if we were to find a magic lamp with a
-type-theoretical djinn inside, we would ask him to grant
-us three wishes:
+Another possible approach is to work in a two-level type
+theory [CITE]. As the name implies, such a theory
+consists of two levels: the lower \emph{object} level is
+the main type theory, and a higher \emph{meta} level is
+used to internalize statements about object level which
+are external to it. A classical example given in the
+cited paper is a construction of a \emph{semisimplicial
+type of level $n$} for each external $n\in\mathbb{N}$;
+object level here is homotopy type theory (HoTT) with
+univalence axiom (UA) [CITE] and meta level is
+Martin-L\"of type theory (MLTT) with uniqueness of
+identity proofs (UIP) [CITE]; in usual type theory,
+these two axioms are mutually exclusive, but the trick
+is that an object-level equality becomes a different
+type when viewed from meta level, so UA and UIP apply to
+different notions of ``equality'', keeping the system
+consistent (and sound with existing models of HoTT
+[CITE]).
 
-\begin{enumerate}
-    \item Reuse \texttt{map} at higher universe levels,
-        e.g., given a \textit{type operator}, map over
-        \textit{list of types}:
-        \[
-            (\mathtt{Set}\to\mathtt{Set})\to
-            \mathtt{List}\,\mathtt{Set}\to
-            \mathtt{List}\,\mathtt{Set}
-        \]
-    \item Automagically obtain a proof of the free
-        theorem for \texttt{map} -- that is, some term
-        of type
-        \begin{multline*}
-            \forall A\,A'\,(Q:A\to A'\to\mathtt{Prop}),
-            \forall B\,B'\,(R:B\to B'\to\mathtt{Prop}),
-            \\
-            \forall f\,f',\left(
-                \forall x\,x',Q\,x\,x'\to
-                R(f x)\left(f' x'\right)
-            \right)\to\\
-            \forall
-                (\mathtt{xs}:\mathtt{List}\,A)
-                (\mathtt{xs}':\mathtt{List}\,A'),
-            Q^*\,\mathtt{xs}\,\mathtt{xs}'\to
-            R^*(\mathtt{map}\,f\,\mathtt{xs})
-                (\mathtt{map}\,f'\,\mathtt{xs}');
-        \end{multline*}
-    \item Given groupoids $A$ and $B$ and a functor
-        $f: A \to B$, construct a functor
-        $\mathtt{map}\;f$ between groupoids
-        $\mathtt{List}\,A$ and $\mathtt{List}\,B$.
-\end{enumerate}
+We aim to generalize this construction in the following
+way. It can be said that an object level has a fixed
+\emph{interpretation} in a meta-level; what if the
+system allowed to vary the interpretation? In other
+words, what if the system included a generic
+interpretation operator denoted $m\llbracket t
+\rrbracket$, where $t$ is a term which is being
+interpreted, and $m$ is a model definable inside the
+system? (We will call such systems \emph{reflective}.)
 
-The first wish is, of course, granted by adjusting the
-definition and making it level-polymorphic. While the
-theorem in the second wish already holds in systems
-with parametricity, obtaining a proof \textit{inside}
-the system without human input is only possible in type
-systems where parametricity is internalized \cite{
-Bernardy:Parametricity2010,
-Altenkirch:Parametricity2024}. The last wish currently
-has to be fulfilled manually (or with some
-metaprogramming involved \cite{Nawrocki:Lean2026}),
-albeit with a couple of list inductions: some to define
-a groupoid instance for \texttt{List} and a few more to
-prove the functoriality of \texttt{map}.
-
-We suggest a different approach. Before tweaking the
-definition of \texttt{map}, let's first remember all of
-the metatheoretic power our type system already has.
-The abovementioned parametricity of polymorphic definitions
-is the first result that comes to mind; note that it is
-obtained by specifying a \textit{relational
-interpretation} of the typing judgment
-\cite{reynolds1983types}. And indeed, some of the most
-interesting metatheoretic results can be expressed by
-constructing a certain \textit{model} of a type system:
-synthetic results in homotopy theory are based on
-($(\infty, 1)$-)groupoid model of (homotopy) type theory
-\cite{HofmannStreicher-Thegroupoidmodelref,
-altenkirch:groupoids}; McBride's usage of displacement
-for universe polymorphism \cite{McBride:Crude2011,
-McBride:Crude2012} can be viewed as constructing a model
-of a type system in higher universes of itself and then
-interpreting displaced constructions in it. Then, all of
-our wishes listed above could be granted by constructing
-a suitable model of a type system \textit{inside} itself
-(hence we call these \textit{internal models}) and then
-instantiating \texttt{map} in it. Throughout the paper,
-we'll call type systems with self-reinterpretation
-capabilities \textit{reflective}.
+Turns out, we would get quite a few useful
+metatheoretical results about object-level theory for
+free; in particular, Wadler's parametricity theorem
+[CITE] (for its formulation in dependently typed
+context, see [CITE] and [CITE]) about object-level
+theory would be provable on the meta-level by means of
+specifying a relational model; a fraction of displayed
+type theory [CITE] can be obtained via similar
+translation of a type into a unary predicate. Another
+fun consequence is that object-level theory would get
+universe polymorphism via displacements as described by
+Conor Titania McBride [CITE] and Favonia [CITE]; we
+suspect that there might be other useful applications of
+internal interpretation.
 
 \subsection{Contributions}
 
+So the goal is to construct type systems with
+        such interpretation present as ; we will call type system with such
+interpretation capabilities \emph{reflective}.
 \begin{itemize}
-    \item Our main goal is to construct an implementable
-        reflective dependently typed system. The main
-        difficulty in doing so arises from a certain
-        no-go result discussed in section
-        \ref{no-go-section}, which forces us to limit the
-        power of reinterpretation in order to keep type
-        checking decidable.
+    \item So our main goal is to construct an
+        implementable reflective type system. The main
+        difficulty in constructing such a system arises
+        from a certain no-go result discussed in
+        Section~\ref{no-go-section}, which forces us to
+        limit the power of reinterpretation in order to
+        keep type checking decidable.
     \item For ease of presentation, we first offer a
-        reflective type system based on the Hindley-Milner
-        type system called HM-R (section \ref{HM-R}).
-        We prove that HM-R is sound, conservative with
-        respect to simply-typed lambda calculus, and that
-        global type inference is decidable (section
+        reflective type system based on the
+        Hindley-Milner type system, where object level
+        is simply-typed lambda calculus with product
+        types (STLC), called $\SSTLC$
+        (Section~\ref{HM-R}). We prove that it is
+        conservative with respect to STLC (hence
+        strongly normalizing and sound), and that global
+        type inference is decidable (section
         \ref{HM-R-properties}).
     \item Building upon the insights gathered from
-        developing HM-R, we are finally equipped to dive
-        into the reflective version of Martin-L\"of type
-        theory dubbed MLTT-R (section \ref{MLTT-R}). We
-        prove soundness and conservativity of MLTT-R as
-        well (section \ref{MLTT-R-properties}).
+        developing $\SSTLC$, we are finally equipped to
+        dive into the reflective version of two-level
+        type theory, where object level is vanilla MLTT,
+        dubbed $\twoLTT$ (Section~\ref{MLTT-R}). We
+        prove soundness and conservativity of it as well
+        (Section~\ref{MLTT-R-properties}).
     \item As intended, by virtue of reinterpretation,
-        MLTT-R incorporates both a restricted form of
+        $\twoLTT$ incorporates both a restricted form of
         universe polymorphism and external
-        parametricity. And, of course, you can use
-        MLTT-R as a system for synthetic mathematics
-        with internal reuse of synthetic results
-        (section \ref{MLTT-R-applications}).
+        parametricity. And, of course, you can use it as
+        a system for synthetic mathematics with internal
+        reuse of synthetic results
+        (Section~\ref{MLTT-R-applications}).
 \end{itemize}

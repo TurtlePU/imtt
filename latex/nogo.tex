@@ -2,8 +2,8 @@
 \label{no-go-section}
 
 So we want to build a reflective type system. That is,
-a system where a user is able to both define a model of a
-system internally and apply it to well-typed terms to
+a system where a user is able to both define a model of
+a system internally and apply it to well-typed terms to
 get their internal interpretations. Naturally, we would
 like user-defined models to respect definitional
 equalities of a system; in a dependently typed system,
@@ -24,8 +24,8 @@ First, a couple of definitions. We're going to work
 within a classical type-theoretical framework, which
 introduces a sort of contexts $\Gamma$, terms $t,t'$ and
 types $T$ linked by the typing relation
-$\Gamma\vdash t:T$; computation is specified by a one-step
-reduction relation $t\leadsto t'$ on terms.
+$\Gamma\vdash t:T$; computation is specified by a
+one-step reduction relation $t\leadsto t'$ on terms.
 
 \begin{definition}
     [Na\"ive computational reinterpretation]
@@ -95,12 +95,12 @@ The proof is by direct example:
     both terms reduce to.
 \end{proof}
 
-Fundamentally, the proof above exploits the openness of the
-original term; if we restrict reinterpretation to
+Fundamentally, the proof above exploits the openness of
+the original term; if we restrict reinterpretation to
 compute on closed terms only, we can arrive at a sound
 system without requiring definitional equalities in
 models, as exemplified by our non-dependently typed
-system HM-R described in section \ref{HM-R}. For
+system $\SSTLC$ described in Section~\ref{HM-R}. For
 a dependently typed system, however, our no-go theorem
 leaves us with three options:
 
@@ -114,8 +114,8 @@ leaves us with three options:
         axioms.
     \item Do not reduce open terms under
         reinterpretation at all, performing the
-        reinterpretation as-is. To simplify the result of
-        reinterpretation, one can rewrite it with
+        reinterpretation as-is. To simplify the result
+        of reinterpretation, one can rewrite it with
         equalities present in the model.
 \end{enumerate}
 
@@ -145,8 +145,8 @@ suited for practical dependently-typed systems since it
 properly computes on open terms. In addition, it doesn't
 restrict the class of possible models while at the same
 time providing the benefits of the first approach: if
-a model is such that the equations hold definitionally, no
-rewriting on the result of reinterpretation is needed to
-reduce it. The only downside is that, possibly,
+a model is such that the equations hold definitionally,
+no rewriting on the result of reinterpretation is needed
+to reduce it. The only downside is that, possibly,
 reductions \textit{after} interpretation are more costly
 than the ones we could perform \textit{before} it.

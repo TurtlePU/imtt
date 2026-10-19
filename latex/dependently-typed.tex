@@ -421,9 +421,11 @@ boxed values from the ``outer world''.
             \ell'_0,\ldots,\ell'_k}\\
         \Gamma.{}_\ell\text{\faLock}\vdash_\kappa
             t\Rightarrow T\\
+        \Gamma.{}_\ell\text{\faLock}\vdash_\kappa
+            T:j
     }{\Gamma\vdash_\ell s \llbracket t\rrbracket
     \Rightarrow s \llbracket T\rrbracket
-    }
+    }(j\leqslant\kappa)
     \and
     \inferrule[Infer-Ascr]{
         \Gamma\vdash_\ell T:\kappa\\

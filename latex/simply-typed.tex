@@ -1,45 +1,52 @@
 \section{
-    Almost simply typed almost reflective language: HM-R
+    Almost simply typed almost reflective language:
+    \texorpdfstring{$\SSTLC$}{[[S]]TLC}
 }\label{HM-R}
 
 We start with a simpler language to iron out the details
 and actually figure out how to properly reinterpret
 terms internally before moving on to a dependently typed
 system. The simplest language for which we know a lot of
-interesting models is the simply typed lambda calculus with
-products, which we refer to as ``STLC'' throughout
+interesting models is the simply typed lambda calculus
+with products, which we refer to as ``STLC'' throughout
 this paper; in this section, we'll present a language
 capable of interpreting STLC terms as constructions in
 STLC models that can be defined in our language.
 
-So, what are the models of STLC? In addition to the usual
-set-theoretic semantics where $S\to T$ is interpreted as
-a function from $S$ to $T$ and $S\times T$ is a
-cartesian product, there is proof-theoretic semantics
-that relate terms of type $T$ to intuitionistic proofs
-of proposition $\llbracket T\rrbracket$, where $(\to)$
-is now understood to mean implication, and $(\times)$ is
+So, what are the models of STLC? In addition to the
+usual set-theoretic semantics where $S\to T$ is
+interpreted as a function from $S$ to $T$ and
+$S\times T$ is a cartesian product, there is
+proof-theoretic semantics that relate terms of type $T$
+to intuitionistic proofs of proposition
+$\llbracket T\rrbracket$, where $(\to)$ is now
+understood to mean implication, and $(\times)$ is
 conjunction. This, of course, is a classic Curry-Howard
 correspondence \cite{ho80}; both set-theoretic and
 proof-theoretic semantics are generalized by a complete
 description of STLC models as given by Joachim Lambek
 \cite{Lambek1980}. According to this
 \textit{Curry-Howard-Lambek} correspondence, models
-of STLC are precisely the cartesian closed categories (or
-CCCs for short). Definitions vary; we're going to use
-the definition \ref{ccc}.
+of STLC are precisely the cartesian closed categories
+(or CCCs for short). Definitions vary; we're going to
+use the definition \ref{ccc}.
 
 \begin{definition}[Cartesian closed category]\label{ccc}
 A cartesian closed category is the following datum:
 \begin{enumerate}
-\item A set of \textit{objects} $\mathrm{Ob}$ and a
-    family of \textit{morphisms} $\mathrm{Hom}(S, T)$
-    indexed by $S,T\in\mathrm{Ob}$, where
-    $f\in\mathrm{Hom}(S,T)$ is denoted by $f:S\to T$. In
-    addition, $S$ is called the \textit{source} of $f$,
-    and $T$ is the \textit{target} of $f$, while both $S$
-    and $T$ together are referred to as the \textit{ends}
-    of $f$.
+\item A class\footnote{Objects do not necessarily form a
+    set: for example, one might want to have a category
+    of sets where morphisms are functions between them.
+    To deal with sizing issues, pick appropriate
+    set-theoretical foundations you are most comfortable
+    with (NBG, MK, ZFC/S or something else); this detail
+    is not important in our development} of
+    \textit{objects} $\mathrm{Ob}$ and a family of
+    \textit{morphisms} $\mathrm{Hom}(S, T)$ indexed by
+    $S,T\in\mathrm{Ob}$, where $f\in\mathrm{Hom}(S,T)$
+    is denoted by $f:S\to T$. In addition, $S$ is called
+    the \textit{source} of $f$, and $T$ is the
+    \textit{target} of $f$.
 \item For each $A\in\mathrm{Ob}$ there's an
     \textit{identity morphism} $\mathrm{id}_A: A\to A$;
     for each $f:A\to B$ and $g:B\to C$, there's their
@@ -51,7 +58,7 @@ A cartesian closed category is the following datum:
         \mathrm{id}\circ f = f = f\circ\mathrm{id} & &
         (f \circ g) \circ h = f \circ (g \circ h)
     \end{align*}
-    for arbitrary morphisms $f,g,h$ with matching ends.
+    whenever all compositions are well-defined.
 \item There's a \textit{terminal object}
     $\top\in\mathrm{Ob}$ such that for each
     $A\in\mathrm{Ob}$ there's a \textbf{unique} morphism
@@ -93,25 +100,24 @@ product of interpretations of types from $\Gamma$:
     \times\llbracket B\rrbracket)
     \times\llbracket C\rrbracket.
 \]
-Unit type is now a terminal object; product of types is now a product of
-objects; arrow type is an exponential object. Equations
-in (2) are needed to validate the structural properties of
-substitution; equations in (4) correspond to reductions
-of pairs; equation in (5) validates $\beta$-reduction.
-\textbf{Unique}ness properties correspond to
-$\eta$-equivalence.
+Unit type is now a terminal object; product of types is
+now a product of objects; arrow type is an exponential
+object. Equations in (2) are needed to validate the
+structural properties of substitution; equations in (4)
+correspond to reductions of pairs; equation in (5)
+validates $\beta$-reduction. \textbf{Unique}ness
+properties correspond to $\eta$-equivalence.
 
-For example, in our language,
-$\llbracket t\rrbracket\,\mathcal{M}$ is the operator reinterpreting the term $t$ in an internal model
-$\mathcal{M}$. On a sample term
+For example, in our language, $m\,\llbracket t
+\rrbracket$ is the operator interpreting the term $t$ in
+an internal model $m$. On a sample term
 \[
     \cdot\vdash\lambda f x y. (f x, y):
         (A\to B)\to A\to C\to B\times C
 \]
 it computes like this:
 \begin{multline*}
-    \llbracket\lambda f x y. (f x, y))\rrbracket\,
-    \mathcal{M}=\\=
+    m\,\llbracket\lambda f x y. (f x, y))\rrbracket=\\=
     \mathtt{lam}\,(\mathtt{lam}\,(\mathtt{lam}\,(
         \mathtt{pair}\,
             (\mathtt{eval}\,\circ\,\mathtt{pair}\,
@@ -125,21 +131,20 @@ it computes like this:
 \end{multline*}
 
 Where $\mathtt{lam}$,\,$\mathtt{pair}$ and
-$\mathtt{eval}$ are the abstraction
-morphism, the pairing morphism, and the evaluation morphism taken
-from $\mathcal{M}$, defined in the same way as in the
-definition \ref{ccc}, translated into types of our
-system.
+$\mathtt{eval}$ are the abstraction morphism, the
+pairing morphism, and the evaluation morphism taken from
+$m$, defined in the same way as in the definition
+\ref{ccc}, translated into types of our system.
 
 Now, moving on to the actual design of our language. As
-discussed in section \ref{no-go-section}, for the
+discussed in Section~\ref{no-go-section}, for the
 non-dependent case we are now dealing with, we will
 interpret only normal forms of closed terms. Among other
 things, this means that we actually don't need equations
-and \textbf{unique}nesses from definition \ref{ccc} to
+and \textbf{unique}nesses from Definition~\ref{ccc} to
 hold in our internal models! This approach doesn't break
 any of the metatheoretical properties considered in
-section \ref{HM-R-properties}. Additionally, for the
+Section~\ref{HM-R-properties}. Additionally, for the
 sake of example, we're only going to consider models
 where objects are types. Then, the internalization of
 definition \ref{ccc} would require 1) type operators to
@@ -151,14 +156,17 @@ operators as well, since we can do with just
 types-in-a-context which are then substituted into
 the definition of a model for checking term-level
 operations. This way, our language is a small extension
-of the classic Hindley-Milner type system, hence the name
-HM-R; grammar rules are collected in a figure
-\ref{hm-r-grammar}. You'll notice that, despite our
-description, grammar doesn't define a reinterpretation
-operator $\llbracket t\rrbracket\,\mathcal{M}$ for
-arbitrary term $t$; instead, only variables get to be
-reinterpreted. In this system, reinterpretation is
-nothing but a total function on closed values.
+of the classic Hindley-Milner type system; grammar rules
+are collected in a figure \ref{hm-r-grammar}. You'll
+notice that, despite our initial description, grammar
+doesn't define a reinterpretation operator
+$m\llbracket t\rrbracket$ for arbitrary term $t$;
+instead, only variables (denoted by a metavariable $x$)
+get to be reinterpreted. In this system,
+reinterpretation is nothing but a total function on
+closed values which is called whenever a value is
+substituted into such an $x$ (so, in a way, this is
+similar to hereditary substitution [CITE]).
 
 \begin{definition}[Values of HM-R]
 Values are denoted by metavariables $u,v$ in the BNF
@@ -192,58 +200,58 @@ grammar below. Metavariable $n$ denotes neutral terms:
     | $t\,s$ : application
     | \texttt{let}\,$x=s$\,\texttt{in}\,$t$
         : polymorphic binding
-    | $x^\mathcal{M}$ : reinterpretation
+    | $m\llbracket x\rrbracket$ : reinterpretation
     ;;
-    $\mathcal{M}$ : \textsf{Model} ::=
+    $m$ : \textsf{Model} ::=
     | $\langle T, t, \ldots \rangle$
         : model def. (see typing rules)
 \end{bnf}
-\caption{HM-R terms and values}
+\caption{$\SSTLC$ terms and values}
 \label{hm-r-grammar}
 \end{figure}
 
-Thus, to define reinterpretation, it is enough
-to consider STLC terms:
+Thus, to define interpretation, it is enough to consider
+STLC terms:
 
-\begin{definition}[Reinterpretation of terms in HM-R]
+\begin{definition}[Interpretation of terms in $\SSTLC$]
+    Given a model $m$, a list of variables $\gamma$ and
+    a term $t$, interpretation of a term $m\llbracket
+    \gamma\vdash t\rrbracket$ is a recursive function
+    defined by the following equations:
     \begin{align}{}
-        \llbracket()\rrbracket^\mathcal{M}/\gamma &=
-            \mathtt{cnst}
+        m\llbracket\gamma\vdash()\rrbracket&=
+        \mathtt{cnst}
         \\
-        \llbracket(s,t)\rrbracket^\mathcal{M}/\gamma &=
-            \mathtt{pair}
-                \,\llbracket s\rrbracket^\mathcal{M}/
-                    \gamma
-                \,\llbracket t\rrbracket^\mathcal{M}/
-                    \gamma
+        m\llbracket\gamma\vdash(s,t)\rrbracket&=
+        \mathtt{pair}
+        \,m\llbracket\gamma\vdash s\rrbracket
+        \,m\llbracket\gamma\vdash t\rrbracket
         \\
-        \llbracket\pi_i\,t\rrbracket^\mathcal{M}/\gamma
-            &=\mathtt{comp}\,\mathtt{proj}_i\,\llbracket
-                t\rrbracket^\mathcal{M}/\gamma
+        m\llbracket\gamma\vdash\pi_i\,t\rrbracket&=
+        \mathtt{comp}\,\mathtt{proj}_i\,
+        m\llbracket\gamma\vdash t\rrbracket
         \\
-        \llbracket x\rrbracket^\mathcal{M}/\gamma &=
-            \gamma\,x
+        m\llbracket\gamma\vdash x\rrbracket&=\gamma[x]
         \\
-        \llbracket\lambda x.t\rrbracket^\mathcal{M}/
-            \gamma &= \mathtt{lam}\,\llbracket t
-            \rrbracket^\mathcal{M}/\left[
-                \vec{y}\coloneqq\mathtt{comp}\,
-                    \mathtt{proj}_1(\gamma\,\vec{y}),\;
-                x\coloneqq\mathtt{proj}_2
-            \right]
+        m\llbracket\gamma\vdash\lambda x.t\rrbracket&=
+        \mathtt{lam}\,
+        m\llbracket(\gamma,x)\vdash t\rrbracket
         \\
-        \llbracket t\,s\rrbracket^\mathcal{M}/\gamma &=
-            \mathtt{comp}\,\mathtt{eval}\,\left(
-                \mathtt{pair}
-                \,\llbracket t\rrbracket^\mathcal{M}/
-                    \gamma
-                \,\llbracket s\rrbracket^\mathcal{M}/
-                    \gamma
-            \right)
+        m\llbracket\gamma\vdash t\,s\rrbracket&=
+        \mathtt{comp}\,\mathtt{eval}\,\left(
+        \mathtt{pair}
+        \,m\llbracket\gamma\vdash t\rrbracket
+        \,m\llbracket\gamma\vdash s\rrbracket
+        \right)
     \end{align}
     where model operations \texttt{cnst},\,\texttt{pair}
-    and others are taken from $\mathcal{M}$ and
-    $\gamma$ is a substitution.
+    and others are taken from $m$ and $\gamma[x]$ is
+    also defined by equations:
+    \begin{align}
+        (\gamma,x)[x] &= \mathtt{proj}_2 \\
+        (\gamma,y)[x] &= \mathtt{comp}\,\gamma[x]\,
+        \mathtt{proj}_1
+    \end{align}
 \end{definition}
 
 Here is our way to enforce a principle that \textit{only
@@ -252,21 +260,21 @@ a polymorphic let-binding
 $\mathtt{let}\,x=s\,\mathtt{in}\,t$ becomes closed and
 is brought into normal form, only then is it
 substituted into $t$, and whenever it is substituted
-into $x^\mathcal{M}$, it immediately gets
-reinterpreted. This operation is denoted by
-$t\llbracket x\coloneqq s\rrbracket$ in our computation
-rules given in figure \ref{hm-r-comp}. Once again, it
-acts like a regular substitution in all cases except for
-variables under reinterpretation:
+into $m\llbracket x\rrbracket$, it immediately gets
+reinterpreted. This operation is, as noted before,
+similar to hereditary substitution; it is denoted by
+$t[s//x]$ in our computation rules given in figure
+\ref{hm-r-comp}. So it acts like a regular substitution
+in all cases except for variables under
+reinterpretation:
 \[
-    \left(x^\mathcal{M}\right)\llbracket x\coloneqq s
-    \rrbracket = s^\mathcal{M}/\varepsilon
-    \quad\text{($\varepsilon$ is an empty substitution)}
+    m\llbracket x\rrbracket[s//x] =
+    m\llbracket()\vdash s\rrbracket
 \]
 One can easily notice that computation would get stuck
 if let-bound terms were to contain variables coming
 from unapplied $\lambda$-abstractions. Our typing rules
-given in figure \ref{hm-r-typing} protect us from that,
+given in Figure~\ref{hm-r-typing} protect us from that,
 allowing to refer only to let-bound terms inside other
 let-bound terms. Again, aside from that and the typing rule
 for universes, there's nothing different from the usual
@@ -330,20 +338,21 @@ acts on monomorphic types. Since there's no computation
 on them, reinterpretation of types is once again defined
 as a recursive function on syntax:
 
-\begin{definition}[Reinterpretation of types in HM-R]
-    Let $\mathcal{M}$ be a correct model and $\sigma$ be
-    a substitution of monomorphic types. Then, the
+\begin{definition}[Interpretation of types in HM-R]
+    Let $m$ be a correct model and $\sigma$ be a
+    substitution of monomorphic types. Then, the
     interpretation of type in a model is the following
     function:
     \begin{align}{}
-    \llbracket T\rrbracket^\mathcal{M}_\sigma &=
-        C[TT,T^\mathcal{M}_\sigma] \\
-    \alpha^\mathcal{M}_\sigma &= \sigma\alpha \\
-    \top^\mathcal{M}_\sigma &= TT \\
-    (S\times T)^\mathcal{M}_\sigma &=
-        P[S^\mathcal{M}_\sigma,T^\mathcal{M}_\sigma] \\
-    (S\to T)^\mathcal{M}_\sigma &=
-        E[S^\mathcal{M}_\sigma,T^\mathcal{M}_\sigma].
+        m\llbracket\sigma\vdash\alpha\rrbracket&=
+            \sigma\alpha \\
+        m\llbracket\sigma\vdash\top\rrbracket&=TT \\
+        m\llbracket\sigma\vdash(S\times T)\rrbracket&=
+            P[m\llbracket\sigma\vdash S\rrbracket,
+            m\llbracket\sigma\vdash T\rrbracket] \\
+        m\llbracket\sigma\vdash S\to T\rrbracket&=
+            E[m\llbracket\sigma\vdash S\rrbracket,
+            m\llbracket\sigma\vdash T\rrbracket].
     \end{align}
 \end{definition}
 
@@ -370,19 +379,19 @@ as a recursive function on syntax:
         {\Gamma\vdash t\,s:T}
     \and
     \inferrule{
-        \forall\Gamma\vdash s:S\\
+        \Gamma\vdash s:S\\
         \mathrm{fv}(S)=\vec{\alpha}\\
-        \forall\Gamma,x:\forall\vec{\alpha}.S,
-        \Delta\vdash t:T
-    }{\forall\Gamma,\Delta\vdash
+        \Gamma,x:\forall\vec{\alpha}.S\,|\,\Delta
+        \vdash t:T
+    }{\Gamma\,|\,\Delta\vdash
         \mathtt{let}\,x=s\,\mathtt{in}\,t:T}
     \and
     \inferrule{
-        x:\forall\vec{\alpha}.T\in\forall\Gamma\\
-        \mathcal{M}\,\mathrm{model}
-    }{\forall\Gamma,\Delta\vdash x^\mathcal{M}
-        :\llbracket T\rrbracket^\mathcal{M}_{
-            \left[\vec{\alpha}\coloneqq\vec{S}\right]}}
+        \Gamma\vdash m\,\mathrm{model}\\
+        \Gamma\vdash x:\forall\vec{\alpha}.T\\
+        \sigma=\left[\vec{\alpha}\coloneqq\vec{S}\right]
+    }{\Gamma\vdash m\llbracket x\rrbracket
+        :C_m[TT_m, m\llbracket\sigma\vdash T\rrbracket]}
     \and
     \inferrule{
         \mathrm{fv}(C)\cup\mathrm{fv}(P)\cup

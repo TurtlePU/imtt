@@ -23,9 +23,12 @@
 \newunicodechar{∀}{$\forall$}
 \newunicodechar{∷}{$\dblcolon$}
 
+\newcommand{\SSTLC}{\llbracket\mathsf{S}\rrbracket\mathsf{TLC}}
+\newcommand{\twoLTT}{\llbracket 2\rrbracket\mathsf{LTT}}
+
 \usepackage{authblk,orcidlink}
 
-\title{Towards Type Systems That Reinterpret Themselves}
+\title{Towards Type Systems That Interpret Themselves}
 
 \author[ ]{Pavel Sokolov\raisebox{-0.45ex}{\scriptsize\orcidlink{0009-0001-6922-2870}}\kern-0.4em\textsuperscript{1} \guilsinglleft\protect\href{mailto:ppsokolov@hse.ru}{\texttt{ppsokolov@hse.ru}}\guilsinglright
 \authorcr
@@ -42,16 +45,19 @@ Software Science}
 \maketitle
 
 \begin{abstract}
-We advocate that type systems should be able to
-reinterpret their own terms in any internal model of
-themselves: equipped with a single tool of
-reinterpretation, you can express a variety of features,
-such as universe polymorphism, external parametricity,
-ability to do synthetic mathematics internally and more.
-To this end, we explore limits of self-reinterpretation
-and present two type systems capable of it, namely HM-R
-and MLTT-R, prove their basic properties and show
-several examples of useful internal models.
+    We search for type systems capable of ``eating
+    itself'' in the sense that their own metatheoretical
+    properties could be stated and proven inside it. In
+    this particular instance, we study consequences of
+    introducing an interpretation operator $m\llbracket
+    t\rrbracket$ which allows instantiation of a closed
+    term $t$ as a construction inside a model $m$
+    definable internally. Our main result is a design of
+    a two-level type theory with interpretation,
+    $\llbracket 2\rrbracket\mathrm{LTT}$, where
+    intrepretation can be used to provide a limited form
+    of universe polymorphism, prove external
+    parametricity and do some synthetic mathematics.
 \end{abstract}
 
 \input{intro.tex}
