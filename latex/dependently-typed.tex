@@ -116,21 +116,21 @@ $\Gamma$ : Context ::=
 $T$, $S$ : Type ::=
     | $\mathcal{U}_\ell$ : universe
     | $\mathrm{El}(t)$ : universal type family
-    | $\mathrm{Nat}$ : natural number type
+    | $\mathrm{Nat}_\ell$ : natural number type
     | $(x\,\colon S)\times T$ : $\Sigma$-type
     | $(x\,\colon S)\to T$ : $\Pi$-type
     | $t_1=_T t_2$ : identity type
-    | $\Box_\ell\,T$ : type of reinterpretable terms
-    | $t\,\llbracket\Gamma\vdash T\rrbracket$
-        : typal reinterpretation
+    | $\Box_\ell\,T$ : type of interpretable terms
+    | $t\,\llbracket T\rrbracket$
+        : interpretation of types
     ;;
 $\ell$, $\kappa$, $j$ : Level :in: $\mathbb{N}$
-    : finite levels ;;
-$t$, $s$, $t'$ : Term ::=
-    | $x$ // $y$ // $z$ // \texttt{m} // $\ldots$
+    : universe levels ;;
+$t$, $s$ : Term ::=
+    | $x$ // $y$ // $z$ // $\ldots$
         : variables
     | $\mathtt{U}_\ell$ : code of a universe
-    | $\mathtt{Nat}$
+    | $\mathtt{Nat}_\ell$
         : code of a natural number type
     | $0$ : zero
     | $\mathrm{S}\,t$ : successor
@@ -144,18 +144,16 @@ $t$, $s$, $t'$ : Term ::=
         : code of a $\Pi$-type
     | $\lambda x.\,t$ : abstraction
     | $t\,s$ : application
-    | $\mathtt{Id}\,s\,t\,t'$
+    | $\mathtt{Id}\,t\,t_1\,t_2$
         : code of an identity type
     | $\mathrm{refl}$ : reflexivity
     | $\mathrm{J}_{xy.S}\,t\,s$
-        : J rule (elimination of equality type)
+        : equality elimination
     | $\mathtt{Box}_\ell\,t$ : code of a box type
     | $[t]_\text{\faLock}$ : locking
     | $[t]_\text{\faUnlock}$ : unlocking
-    | $s\,\llbracket\Gamma\vdash t\rrbracket$
-        : internal interpretation
-    | $t\meet{s}{\Gamma} t'$
-        : equality witness synthesis
+    | $t\,\llbracket s\rrbracket$
+        : interpretation of terms
     | $t\,\colon T$ : ascription
     ;;
 \end{bnf}
@@ -195,7 +193,7 @@ on boxed types; in addition, we require a non-locked
 context for reinterpretation. Together these constraints
 guarantee that, indeed, boxed terms do not contain
 reinterpretation subterms. An important departure from
-$\mathrm{MLTT}\text{\faLock}$\cite{Gratzer2019}, aside
+$\mathrm{MLTT}_\text{\faLock}$\cite{Gratzer2019}, aside
 from adding a family of modalities, lies in the way
 context is locked in $[\_]_\text{\faLock}$ and unlocked
 in $[\_]_\text{\faUnlock}$: while locking, we require
@@ -212,12 +210,13 @@ right adjoints'' \cite{Birkedal2020}. Coincidentally,
 they refine typing judgements with universe levels,
 too! They have a single modality, though.}:
 \[
-    \dfrac{\cdot\vdash_\ell\mathrm{level}(A,B)=\_}{
+    \dfrac{\cdot\vdash_\ell A:\ell_A
+    \quad\cdot\vdash_\ell B:\ell_B}{
         \cdot\vdash_\kappa\lambda f x.[[f
         ]_\text{\faUnlock}[x]_\text{\faUnlock}
-        ]_\text{\faLock}^\ell:\Box_\ell(A\to B)\to
+        ]_\text{\faLock}:\Box_\ell(A\to B)\to
             \Box_\ell A\to\Box_\ell B
-    }(\ell\leqslant\kappa)
+    }(\ell_A\sqcup\ell_B\leqslant\ell)
 \]
 In this way, unlocking truly gains the semantics of
 ``splicing'' in the sense that it can only contain
@@ -230,8 +229,8 @@ boxed values from the ``outer world''.
     \and
     \inferrule[WF-Var]{
         \Gamma\vdash_\ell\\
-        \Gamma\vdash_\ell\mathrm{level}(T)=\kappa
-    }{\Gamma,x:T\vdash_\ell}
+        \Gamma\vdash_\ell T:\kappa
+    }{\Gamma,x:T\vdash_\ell}(\kappa\leqslant\ell)
     \and
     \inferrule[WF-Lock]{
         \Gamma\vdash_\ell\\
@@ -239,62 +238,47 @@ boxed values from the ``outer world''.
     }{\Gamma.\,{}_\ell\text{\faLock}\vdash_\kappa}
     \and
     \inferrule[Level-El]
-        {\Gamma\vdash_\ell t\Leftarrow
+        {\Gamma\vdash_\ell t\Rightarrow
             \mathcal{U}_\kappa}
-        {\Gamma\vdash_\ell\mathrm{level}(
-            \mathrm{El}_\kappa(t)) = \kappa}
+        {\Gamma\vdash_\ell\mathrm{El}(t):\kappa}
+        (\kappa+1\leqslant\ell)
     \and
-    \inferrule[Level-Uni]{\Gamma\vdash_\ell}{
-        \Gamma\vdash_\ell
-            \mathrm{level}(\mathcal{U}_\kappa) =
-                \kappa+1
-    }(\kappa+1\leqslant\ell)
+    \inferrule[Level-Uni]{\Gamma\vdash_\ell}
+        {\Gamma\vdash_\ell\mathcal{U}_\kappa:\kappa+1}
     \and
-    \inferrule[Level-Nat]{\Gamma\vdash_\ell}{
-        \Gamma\vdash_\ell\mathrm{level}(
-            \mathrm{Nat}_\kappa) = \kappa
-    }(\kappa\leqslant\ell)
+    \inferrule[Level-Nat]{\Gamma\vdash_\ell}
+        {\Gamma\vdash_\ell\mathrm{Nat}_\kappa:\kappa}
     \and
-    \inferrule[Level-Sigma, Level-Pi]{
-        \Gamma\vdash_\ell\mathrm{level}(S) =
-            \kappa \\
-        \Gamma,x:S\vdash_\ell\mathrm{level}(T) =
-            j
-    }{
-        \Gamma\vdash_\ell
-            \mathrm{level}((x:S)\times T)=
-            \mathrm{level}((x:S)\to T)=
-            \max(\kappa,j)
-    }
+    \inferrule[Level-Sigma]{
+        \Gamma\vdash_\ell S:j \\
+        \Gamma,x:S\vdash_\ell T:\kappa
+    }{\Gamma\vdash_\ell(x:S)\times T:j\sqcup\kappa}
+    \and
+    \inferrule[Level-Pi]{
+        \Gamma\vdash_\ell S:j \\
+        \Gamma,x:S\vdash_\ell T:\kappa
+    }{\Gamma\vdash_\ell(x:S)\to T:j\sqcup\kappa}
     \and
     \inferrule[Level-Id]{
-        \Gamma\vdash_\ell\mathrm{level}(T)=\kappa \\
-        \Gamma\vdash_\ell t_1,t_2\Leftarrow T
-    }{\Gamma\vdash_\ell\mathrm{level}(t_1=_T t_2)=
-        \kappa}
+        \Gamma\vdash_\ell T:\kappa \\
+        \Gamma\vdash_\ell t_1\Leftarrow T \\
+        \Gamma\vdash_\ell t_2\Leftarrow T
+    }{\Gamma\vdash_\ell t_1=_T t_2:\kappa}
     \and
     \inferrule[Level-Box]{
         \text{\faLock}\not\in\Gamma\\
-        \Gamma.\,{}_\ell\text{\faLock}\vdash_\kappa
-            \mathrm{level}(T)=j
-    }{\Gamma\vdash_\ell\mathrm{level}(\Box_\kappa\,T)
-            =\kappa}(\kappa\leqslant\ell)
-    \and
-    \inferrule[Level-Model]{\Gamma\vdash_\ell}{
-        \Gamma\vdash_\ell\mathrm{level}\left(
-            \mathcal{M}_{\ell_0,\ldots,\ell_\kappa}
-        \right)=j
-    }(j=\max(\ell_0,\ldots,\ell_\kappa)+2\leqslant\ell)
+        \Gamma.\,{}_\ell\text{\faLock}\vdash_\kappa T:j
+    }{\Gamma\vdash_\ell\Box_\kappa\,T:\kappa}
+    (j\leqslant\kappa)
     \and
     \inferrule[Level-TyInterp]{
-        \Gamma\vdash_\ell t\Leftarrow\mathcal{M}_{
-            \ell_0,\ldots,\ell_\kappa}\\
+        \Gamma\vdash_\ell t\Rightarrow\mathcal{M}_{
+            \ell_0,\ldots,\ell_\kappa}^{
+            \ell'_0,\ldots,\ell'_\kappa}\\
         \text{\faLock}\not\in\Gamma\\
-        \Gamma.{}_\ell\text{\faLock}\vdash_\kappa
-            \mathrm{level}(T)=j
-        }{\Gamma\vdash_\ell\mathrm{level}\left(
-            T^t_{\ell_0,\ldots,\ell_\kappa}\right) =
-                \ell_j}
+        \Gamma.{}_\ell\text{\faLock}\vdash_\kappa T:j
+    }{\Gamma\vdash_\ell t\llbracket T\rrbracket:\ell_j}
+    (j\leqslant\kappa)
 \end{mathpar}
 \caption{
     Context well-formedness \& level placement rules}
@@ -307,14 +291,15 @@ boxed values from the ``outer world''.
     \inferrule[Infer-Uni]{\Gamma\vdash_\ell}{
         \Gamma\vdash_\ell\mathtt{U}_\kappa\Rightarrow
             \mathcal{U}_{\kappa+1}
-    }(\kappa+1\leqslant\ell)
+    }
     \and
     \inferrule[Infer-Nat]{\Gamma\vdash_\ell}{
         \Gamma\vdash_\ell\mathtt{Nat}_\kappa\Rightarrow
-            \mathcal{U}_\kappa}(\kappa\leqslant\ell)
+            \mathcal{U}_\kappa}
     \and
     \inferrule[Check-Zero]{\Gamma\vdash_\ell}{
-        \Gamma\vdash_\ell 0\Leftarrow\mathrm{Nat}_\kappa
+        \Gamma\vdash_\ell 0\Leftarrow
+            \mathrm{Nat}_\kappa
     }
     \and
     \inferrule[Check-Succ]
@@ -326,8 +311,7 @@ boxed values from the ``outer world''.
     \inferrule[Infer-NatInd]{
         \Gamma\vdash_\ell t\Rightarrow
             \mathrm{Nat}_\kappa\\
-        \Gamma,x:\mathrm{Nat}_\kappa\vdash_\ell
-            \mathrm{level}(T)=\_\\
+        \Gamma,x:\mathrm{Nat}_\kappa\vdash_\ell T:j\\
         \Gamma\vdash_\ell s_0\Leftarrow
             T[x\coloneqq 0:\mathrm{Nat}_\kappa]\\
         \Gamma\vdash_\ell s_S\Leftarrow
@@ -337,15 +321,16 @@ boxed values from the ``outer world''.
                     \mathrm{Nat}_\kappa]
     }{\Gamma\vdash_\ell
         \mathrm{natind}_{x.T}\,t\,\{s_0,s_S\}
-        \Rightarrow T[x\coloneqq t]}
+        \Rightarrow T[x\coloneqq t]
+    }(j\leqslant\ell)
     \and
     \inferrule[Infer-Sigma]{
         \Gamma\vdash_\ell s\Rightarrow
-            \mathcal{U}_\kappa\\
-        \Gamma,x:\mathrm{El}_\kappa(s)\vdash_\ell t
-            \Rightarrow\mathcal{U}_j
+            \mathcal{U}_j\\
+        \Gamma,x:\mathrm{El}(s)\vdash_\ell t
+            \Rightarrow\mathcal{U}_\kappa
     }{\Gamma\vdash_\ell\mathtt{Sigma}(x:s)t\Rightarrow
-        \mathcal{U}_{\max(\kappa,j)}}
+        \mathcal{U}_{j\sqcup\kappa}}
     \and
     \inferrule[Check-Pair]{
         \Gamma\vdash_\ell s\Leftarrow S\\
@@ -363,11 +348,11 @@ boxed values from the ``outer world''.
     \and
     \inferrule[Infer-Pi]{
         \Gamma\vdash_\ell s\Rightarrow
-            \mathcal{U}_\kappa\\
-        \Gamma,x:\mathrm{El}_\kappa(s)\vdash_\ell t
-            \Rightarrow\mathcal{U}_j
+            \mathcal{U}_j\\
+        \Gamma,x:\mathrm{El}(s)\vdash_\ell t
+            \Rightarrow\mathcal{U}_\kappa
     }{\Gamma\vdash_\ell\mathtt{Pi}(x:s)t\Rightarrow
-        \mathcal{U}_{\max(\kappa,j)}}
+        \mathcal{U}_{j\sqcup\kappa}}
     \and
     \inferrule[Check-Abs]
         {\Gamma,x:S\vdash_\ell t\Leftarrow T}
@@ -383,25 +368,24 @@ boxed values from the ``outer world''.
     \inferrule[Infer-Id]{
         \Gamma\vdash_\ell t\Rightarrow
             \mathcal{U}_\kappa\\
-        \Gamma\vdash_\ell t_1,t_2\Leftarrow
-            \mathrm{El}_\kappa(t)
+        \Gamma\vdash_\ell t_1\Leftarrow\mathrm{El}(t)
+        \\\Gamma\vdash_\ell t_2\Leftarrow\mathrm{El}(t)
     }{\Gamma\vdash_\ell\mathtt{Id}\,t\,t_1\,t_2
         \Rightarrow\mathcal{U}_\kappa}
     \and
-    \inferrule[Check-Refl]
-        {\Gamma\vdash_\ell t_1\equiv t_2:T}
+    \inferrule[Check-Refl]{t_1\equiv t_2}
         {\Gamma\vdash_\ell\mathrm{refl}\Leftarrow
             t_1=_T t_2}
     \and
     \inferrule[Infer-J]{
         \Gamma\vdash_\ell t\Rightarrow t_1=_T t_2\\
-        \Gamma,x:T,y:t_1=_T x\vdash_\ell
-            \mathrm{level}(S)=\_\\
+        \Gamma,x:T,y:t_1=_T x\vdash_\ell S:\kappa\\\\
         \Gamma\vdash_\ell s\Leftarrow
             S[x\coloneqq t_1:T,
                 y\coloneqq\mathrm{refl}:t_1=_T t_1]
     }{\Gamma\vdash_\ell\mathrm{J}_{xy.S}\,t\,s
-        \Rightarrow S[x\coloneqq t_2:T, y\coloneqq t]}
+        \Rightarrow S[x\coloneqq t_2:T, y\coloneqq t]
+    }(\kappa\leqslant\ell)
     \and
     \inferrule[Infer-Var]{
         \text{\faLock}\not\in\Delta\\
@@ -413,7 +397,8 @@ boxed values from the ``outer world''.
         \Gamma.\,{}_\ell\text{\faLock}\vdash_\kappa t
             \Rightarrow\mathcal{U}_j
     }{\Gamma\vdash_\ell\mathtt{Box}_\kappa\,t
-        \Rightarrow\mathcal{U}_j}
+        \Rightarrow\mathcal{U}_\kappa}
+    (j\leqslant\kappa)
     \and
     \inferrule[Check-Lock]{
         \text{\faLock}\not\in\Gamma\\
@@ -426,26 +411,28 @@ boxed values from the ``outer world''.
         \text{\faLock}\not\in\Delta\\
         \Gamma\vdash_\kappa t\Rightarrow\Box_j T
     }{\Gamma.{}_\kappa\text{\faLock},\Delta
-        \vdash_\ell[t]_\text{\faUnlock}\Rightarrow T}
+        \vdash_\ell[t]_\text{\faUnlock}\Rightarrow T
+    }(j\leqslant\ell)
     \and
     \inferrule[Infer-Interp]{
-        \Gamma\vdash_\ell t\Rightarrow\Box_\kappa T\\
-        \text{\faLock}\not\in\Gamma
-    }{\Gamma\vdash_\ell \llbracket t\rrbracket^{
-        \ell_0,\ldots,\ell_\kappa}\Rightarrow
-        \left(\mathtt{m}:\mathcal{M}_{
-            \ell_0,\ldots,\ell_\kappa}\right)\to
-        T^\mathtt{m}
+        \text{\faLock}\not\in\Gamma\\
+        \Gamma\vdash_\ell s\Rightarrow\mathcal{M}_{
+            \ell_0,\ldots,\ell_k}^{
+            \ell'_0,\ldots,\ell'_k}\\
+        \Gamma.{}_\ell\text{\faLock}\vdash_\kappa
+            t\Rightarrow T\\
+    }{\Gamma\vdash_\ell s \llbracket t\rrbracket
+    \Rightarrow s \llbracket T\rrbracket
     }
     \and
     \inferrule[Infer-Ascr]{
-        \Gamma\vdash_\ell\mathrm{level}(T)=\_\\
+        \Gamma\vdash_\ell T:\kappa\\
         \Gamma\vdash_\ell t\Leftarrow T
     }{\Gamma\vdash_\ell t:T\Rightarrow T}
+    (\kappa\leqslant\ell)
     \and
     \inferrule[Check-Inferred]{
-        \Gamma\vdash_\ell t\Rightarrow S\\
-        \Gamma\vdash_\ell S\equiv T
+        \Gamma\vdash_\ell t\Rightarrow S\\ S\equiv T
     }{\Gamma\vdash_\ell t\Leftarrow T}
 \end{mathpar}
 \caption{Bidirectional term typing rules}
