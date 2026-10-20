@@ -10,15 +10,15 @@ equalities of a system; in a dependently typed system,
 this could be naturally achieved by using an identity
 type to spell out corresponding equalities inside a
 model. Then, it would be nice if, before interpreting
-a term, the system would first bring it to normal form to
+a term, the system first brought it to normal form to
 get rid of the artifacts of the construction in the
 result of the interpretation. Finally, in a dependently
 typed system, it is natural to expect reductions of open
 terms, so we would like our interpretation to compute on
 open terms.
 
-The theorem proven below asserts that we cannot have all
-three in a single system.
+The theorem proven below asserts that it is impossible
+to have all three in a single system.
 
 First, a couple of definitions. We're going to work
 within a classical type-theoretical framework, which
@@ -102,12 +102,12 @@ system without requiring definitional equalities in
 models, as exemplified by our non-dependently typed
 system $\SSTLC$ described in Section~\ref{SSTLC}. And
 this, actually, is a well-known setup: under the same
-conditions (no dependent types + computation on closed
+conditions (no dependent types and computation on closed
 terms), self-interpreter for System~F$\omega$ was
 developed \cite{brown2016breaking}.
 
-For a dependently typed system, however, our no-go
-theorem leaves us with three options:
+However, for a dependently typed system, our no-go
+theorem leaves us with three options.
 
 \begin{enumerate}
     \item Restrict models to those where equalities hold

@@ -8,11 +8,11 @@ Coverage and exclusions are recorded in [review/COVERAGE.json](review/COVERAGE.j
 
 ## latex/appendix.tex:314-314 · appendix-L314-S2-P1 · Suggested by Grazie
 
-- [ ] $\mathrm{step}_m$ maps the contracted redex to the corresponding model equation — $\Pi$-$\beta$, $\Sigma$-$\beta_i$, $\mathrm{Nat}$-$\beta_{0/\mathrm S}$, $\mathrm{Id}$-$\beta$, the $\mathrm{El}$-equations, $\mathrm{refl}$ for $(t:T)\leadsto t$ — composed with $\mathrm{sub}_m$ where the redex substitutes, and placed under the surrounding term formers by $\mathrm{ap}$ (interpretation of a former is a meta-level function of the interpretations of its immediate subterms, so congruence is $\mathrm{ap}$). Termination: the argument of the recursive call is strictly closer to `{++the ++}`normal form, and $a,b$ are MLTT terms, hence strongly normalising; well-definedness: convertible normal MLTT terms are $\alpha$-equal (confluence; no $\eta$).
+- [x] $\mathrm{step}_m$ maps the contracted redex to the corresponding model equation — $\Pi$-$\beta$, $\Sigma$-$\beta_i$, $\mathrm{Nat}$-$\beta_{0/\mathrm S}$, $\mathrm{Id}$-$\beta$, the $\mathrm{El}$-equations, $\mathrm{refl}$ for $(t:T)\leadsto t$ — composed with $\mathrm{sub}_m$ where the redex substitutes, and placed under the surrounding term formers by $\mathrm{ap}$ (interpretation of a former is a meta-level function of the interpretations of its immediate subterms, so congruence is $\mathrm{ap}$). Termination: the argument of the recursive call is strictly closer to `{++the ++}`normal form, and $a,b$ are MLTT terms, hence strongly normalising; well-definedness: convertible normal MLTT terms are $\alpha$-equal (confluence; no $\eta$).
 
 ## latex/conclusion.tex:3-11 · conclusion-L3-S2-P2 · Suggested by Grazie
 
-- [ ] In retrospect, we managed to define two
+- [x] In retrospect, we managed to define two
 self-interpreting type systems, $\SSTLC$ and $\twoLTT$,
 meaning that they have a notion of their own ``internal
 models'' which they then can use to reinterpret their
@@ -24,7 +24,7 @@ we have the following plans:
 
 ## latex/conclusion.tex:53-57 · conclusion-L53 · Suggested by DeepL Write
 
-- [ ]     \item At some `{~~moment~>point,~~}` we `{~~would have~>will need~~}` to `{~~pay~>conduct~~}` due
+- [x]     \item At some `{~~moment~>point,~~}` we `{~~would have~>will need~~}` to `{~~pay~>conduct~~}` due
         `{~~diligence: provide~>diligence by providing~~}` mechanized proofs of
         `{++the ++}`metatheoretical properties of `{~~systems and~>the systems, as well as~~}` an
         implementation of $\twoLTT$ `{~~in~>within~~}` a practical proof
@@ -32,7 +32,7 @@ we have the following plans:
 
 ## latex/dependently-typed.tex:22-27 · dependently-typed-L22-S1-P1 · Suggested by Grazie
 
-- [ ]     \item If we na\"{\i}vely adopt an approach to
+- [x]     \item If we na\"{\i}vely adopt an approach to
         typing of models from Section~\ref{SSTLC}, `{--in
         order--}` to specify a model, we would need to
         specify countably many models, one per each
@@ -41,7 +41,7 @@ we have the following plans:
 
 ## latex/dependently-typed.tex:69-80 · dependently-typed-L69-S1-P3 · Suggested by Grazie
 
-- [ ] To interpret the conversion rule, we start by first
+- [x] To interpret the conversion rule, we start by first
 pinpointing the locations where the conversion rule is
 actually used; `{--in order--}` to do this ergonomically, we
 use bidirectional type checking. At the moment of
@@ -56,11 +56,11 @@ scrutinee.
 
 ## latex/dependently-typed.tex:496-496 · dependently-typed-L496 · Suggested by DeepL Write
 
-- [ ]         `{++This applies ++}`whenever all compositions are well-defined.
+- [x]         `{++This applies ++}`whenever all compositions are well-defined.
 
 ## latex/dependently-typed.tex:611-619 · dependently-typed-L611-S3-P1 · Suggested by Grazie
 
-- [ ] Finally, on to computation rules as given in
+- [x] Finally, on to computation rules as given in
 Figures~\ref{twoltt-typcomp}-\ref{twoltt-comp}.
 Mostly they are standard MLTT computation rules for
 bidirectional typing (without $\eta$-equality for now).
@@ -72,7 +72,7 @@ Section~\ref{global-elements}).
 
 ## latex/dependently-typed.tex:984-989 · dependently-typed-L984-S2-P1 · Suggested by Grazie
 
-- [ ]     Take a universe at an appropriate level as a type of
+- [x]     Take a universe at an appropriate level as a type of
     contexts; $\mathrm{Ty}_\ell(\Gamma)=
     \Gamma\to\mathcal{U}_\ell$;
     $\mathrm{Tm}_\ell(\Gamma, T)=(\gamma:\Gamma)\to
@@ -81,7 +81,7 @@ Section~\ref{global-elements}).
 
 ## latex/discussion.tex:12-25 · discussion-L12-S4-P2 · Suggested by Grazie
 
-- [ ] Conal Elliott's ``Compiling to Categories''
+- [x] Conal Elliott's ``Compiling to Categories''
 \cite{Elliott:Compcat2017} shows how to interpret (some
 subset of) Haskell in arbitrary \texttt{Category}
 (again, definable in Haskell) via GHC compiler plugin.
@@ -98,29 +98,29 @@ hand.
 
 ## latex/discussion.tex:117-120 · discussion-L117 · Suggested by DeepL Write
 
-- [ ]     `{~~And, in~>In~~}` addition, the following reduction is
+- [x]     `{~~And, in~>In~~}` addition, the following reduction is
     admissible: $K\,(\mathrm{nec}\,\lambda x.t)\,
     (\mathrm{nec}\,s)\leadsto^*
     \mathrm{nec}(t[s/x])$.
 
 ## latex/discussion.tex:131-132 · discussion-L131 · Suggested by DeepL Write
 
-- [ ] `{~~Then, a~>The~~}` corresponding weakening of computational
+- [x] `{~~Then, a~>The~~}` corresponding weakening of computational
 reinterpretation can `{++then ++}`be defined as `{~~follows.~>follows:~~}`
 
 ## latex/discussion.tex:206-207 · discussion-L206 · Suggested by DeepL Write
 
-- [ ] Another benefit of modal computational reinterpretation
+- [-] Another benefit of modal computational reinterpretation
 is `{++its ability to exhibit ++}`the following property:
 
 ## latex/discussion.tex:228-229 · discussion-L228-S1-P1 · Suggested by Grazie
 
-- [ ] `{~~But,~>But~~}` again, it all comes down to defining the type of
+- [x] `{~~But,~>But~~}` again, it all comes down to defining the type of
 \textit{definitional} internal models.
 
 ## latex/discussion.tex:233-257 · discussion-L233-S3-P1 · Suggested by Grazie
 
-- [ ] In Section~\ref{twoLTT}, we introduced our
+- [x] In Section~\ref{twoLTT}, we introduced our
 ``reinterpretable terms'' modality in a very
 constraining way specifically so that we wouldn't have
 to provide interpretation of this modality inside
@@ -148,7 +148,7 @@ for now.
 
 ## latex/intro.tex:62-79 · intro-L62-S1-P1 · Suggested by Grazie
 
-- [ ] Turns out, we would get quite a few useful
+- [x] Turns out, we would get quite a few useful
 metatheoretical results about object-level theory for
 free; in particular, Wadler's parametricity theorem
 \cite{wadler1989theorems,reynolds1983types} (for its
@@ -169,7 +169,7 @@ interpretation.
 
 ## latex/intro.tex:84-90 · intro-L84-S2-P1 · Suggested by Grazie
 
-- [ ]     \item So our main goal is to construct an
+- [x]     \item So our main goal is to construct an
         implementable reflective type system. The main
         difficulty in constructing such a system arises
         from a certain no-go result discussed in
@@ -179,7 +179,7 @@ interpretation.
 
 ## latex/intro.tex:101-107 · intro-L101-S2-P1 · Suggested by Grazie
 
-- [ ]     \item Building upon the insights gathered from
+- [x]     \item Building upon the insights gathered from
         developing $\SSTLC$, we are finally equipped to
         dive into the reflective version of two-level
         type theory, where object level is vanilla MLTT,
@@ -189,7 +189,7 @@ interpretation.
 
 ## latex/nogo.tex:4-18 · nogo-L4-S4-P2 · Suggested by Grazie
 
-- [ ] So we want to build a reflective type system. That is,
+- [x] So we want to build a reflective type system. That is,
 a system where a user is able to both define a model of
 a system internally and apply it to well-typed terms to
 get their internal interpretations. Naturally, we would
@@ -207,12 +207,12 @@ open terms.
 
 ## latex/nogo.tex:20-21 · nogo-L20 · Suggested by DeepL Write
 
-- [ ] The theorem proven below asserts that `{~~we cannot~>it is impossible to~~}` have all
+- [x] The theorem proven below asserts that `{~~we cannot~>it is impossible to~~}` have all
 three in a single system.
 
 ## latex/nogo.tex:98-107 · nogo-L98-S2-P1 · Suggested by Grazie
 
-- [ ] Fundamentally, the proof above exploits the openness of
+- [x] Fundamentally, the proof above exploits the openness of
 the original term; if we restrict interpretation to
 compute on closed terms only, we can arrive at a sound
 system without requiring definitional equalities in
@@ -225,12 +225,12 @@ developed \cite{brown2016breaking}.
 
 ## latex/nogo.tex:109-110 · nogo-L109 · Suggested by DeepL Write
 
-- [ ] `{~~For~>However, for~~}` a dependently typed system, `{--however,--}` our no-go
+- [x] `{~~For~>However, for~~}` a dependently typed system, `{--however,--}` our no-go
 theorem leaves us with three `{~~options:~>options.~~}`
 
 ## latex/simply-typed.tex:16-32 · simply-typed-L16-S2-P2 · Suggested by Grazie
 
-- [ ] So, what are the models of STLC? In addition to the
+- [x] So, what are the models of STLC? In addition to the
 usual set-theoretic semantics where $S\to T$ is
 interpreted as a function from $S$ to $T$ and
 $S\times T$ is a cartesian product, there `{~~is~>are~~}`
@@ -250,18 +250,18 @@ use the definition \ref{ccc}.
 
 ## latex/simply-typed.tex:61-61 · simply-typed-L61 · Suggested by DeepL Write
 
-- [ ]     `{++This applies ++}`whenever all compositions are well-defined.
+- [x]     `{++This applies ++}`whenever all compositions are well-defined.
 
 ## latex/simply-typed.tex:349-352 · simply-typed-L349 · Suggested by DeepL Write
 
-- [ ] `{~~To~>In order to~~}` check reinterpretation, we `{++first ++}`need to define how the
+- [x] `{~~To~>In order to~~}` check reinterpretation, we `{++first ++}`need to define how the
 model acts on monomorphic types. `{~~Since there's~>As there is~~}` no
 computation on them, reinterpretation of types is `{++defined ++}`once
 again `{--defined--}` as a recursive function on `{~~syntax:~>syntax.~~}`
 
 ## latex/simply-typed.tex:450-460 · simply-typed-L450-S1-P1 · Suggested by Grazie
 
-- [ ] Here we only study some basic properties of a system to
+- [x] Here we only study some basic properties of a system to
 make sure that everything works as expected:
 computations are confluent; types are preserved by all
 computations; all `{--of--}` the types can be inferred if you
@@ -275,10 +275,10 @@ system.
 
 ## latex/simply-typed.tex:467-469 · simply-typed-L467 · Suggested by DeepL Write
 
-- [ ]     `{~~Classic~>The classic~~}` proof `{~~via~>uses the~~}` parallel reduction relation
+- [x]     `{~~Classic~>The classic~~}` proof `{~~via~>uses the~~}` parallel reduction relation
     \cite{takahashi1995parallel,barendregt1984lambda}.
     Parallel reduction is defined `{~~as:~>as follows:~~}`
 
 ## latex/simply-typed.tex:543-543 · simply-typed-L543 · Suggested by DeepL Write
 
-- [ ]     `{~~By~>This is achieved through~~}` structural induction on terms and $(\leadsto)$.
+- [-]     `{~~By~>This is achieved through~~}` structural induction on terms and $(\leadsto)$.

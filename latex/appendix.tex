@@ -311,7 +311,7 @@ The superscript $(\_)^{\mathrm{sub}}$ is a transport along the \emph{substitutio
 \mathrm{sym}\,\mathrm{eq}_m(\Delta; b, a) & a \text{ normal}, b \text{ not}.
 \end{cases}
 \]
-$\mathrm{step}_m$ maps the contracted redex to the corresponding model equation — $\Pi$-$\beta$, $\Sigma$-$\beta_i$, $\mathrm{Nat}$-$\beta_{0/\mathrm S}$, $\mathrm{Id}$-$\beta$, the $\mathrm{El}$-equations, $\mathrm{refl}$ for $(t:T)\leadsto t$ — composed with $\mathrm{sub}_m$ where the redex substitutes, and placed under the surrounding term formers by $\mathrm{ap}$ (interpretation of a former is a meta-level function of the interpretations of its immediate subterms, so congruence is $\mathrm{ap}$). Termination: the argument of the recursive call is strictly closer to normal form, and $a,b$ are MLTT terms, hence strongly normalising; well-definedness: convertible normal MLTT terms are $\alpha$-equal (confluence; no $\eta$).
+$\mathrm{step}_m$ maps the contracted redex to the corresponding model equation — $\Pi$-$\beta$, $\Sigma$-$\beta_i$, $\mathrm{Nat}$-$\beta_{0/\mathrm S}$, $\mathrm{Id}$-$\beta$, the $\mathrm{El}$-equations, $\mathrm{refl}$ for $(t:T)\leadsto t$ — composed with $\mathrm{sub}_m$ where the redex substitutes, and placed under the surrounding term formers by $\mathrm{ap}$ (interpretation of a former is a meta-level function of the interpretations of its immediate subterms, so congruence is $\mathrm{ap}$). Termination: the argument of the recursive call is strictly closer to the normal form, and $a,b$ are MLTT terms, hence strongly normalising; well-definedness: convertible normal MLTT terms are $\alpha$-equal (confluence; no $\eta$).
 
 Note a nice property: under the identity model
 $I_\ell$ all equations used by $\mathrm{step}_m$ and

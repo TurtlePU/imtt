@@ -20,8 +20,8 @@ a truly reflective system:
 
 \begin{enumerate}
     \item If we na\"{\i}vely adopt an approach to
-        typing of models from Section~\ref{SSTLC}, in
-        order to specify a model, we would need to
+        typing of models from Section~\ref{SSTLC}, to
+        specify a model, we would need to
         specify countably many models, one per each
         universe. And even if we did, to which universe
         does the type of models belong?
@@ -68,7 +68,7 @@ typing judgements.
 
 To interpret the conversion rule, we start by first
 pinpointing the locations where the conversion rule is
-actually used; in order to do this ergonomically, we
+actually used; to do this ergonomically, we
 use bidirectional type checking. At the moment of
 conversion, interpretation has enough information to
 know both $T$ and $T'$; thus we can translate a chain
@@ -493,7 +493,8 @@ self-containment reasons.}:
             & &
             (f \circ g) \circ h = f \circ (g \circ h)
         \end{align*}
-        whenever all compositions are well-defined.
+        This applies whenever all compositions are
+        well-defined.
 \end{enumerate}
 \end{definition}
 
@@ -613,7 +614,7 @@ Figures~\ref{twoltt-typcomp}-\ref{twoltt-comp}.
 Mostly they are standard MLTT computation rules for
 bidirectional typing (without $\eta$-equality for now).
 Importantly enough, we \textbf{do not compute inside
-locked terms and inside boxed types} in order to not
+locked terms and inside boxed types} to not
 stumble into a variant of our no-go theorem \ref{no-go}
 again (modal variant is spelled out in discussion, see
 Section~\ref{global-elements}).
@@ -985,7 +986,7 @@ is a conservative extension of MLTT.
     contexts; $\mathrm{Ty}_\ell(\Gamma)=
     \Gamma\to\mathcal{U}_\ell$;
     $\mathrm{Tm}_\ell(\Gamma, T)=(\gamma:\Gamma)\to
-    T\,\gamma$. Define all of the remaining term
+    T\,\gamma$. Define all the remaining term
     interpretations to reinterpret to the same terms.
 \end{proof}
 

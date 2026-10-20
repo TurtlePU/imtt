@@ -21,7 +21,7 @@ limited to) universe polymorphism, external
 parametricity and more. However, Conal's approach is
 more flexible since his translation to categories
 requires the desired category to only implement primitives
-actually used for translation of a particular term at
+actually used to translate a particular term at
 hand.
 
 Conor McBride's ``Crude but effective stratification''
@@ -114,7 +114,7 @@ definition will be useful further:
         \Gamma\vdash t:\Box\,S
     }{\Gamma\vdash K\,f\,t:\Box\,T}
     \end{mathpar}
-    And, in addition, the following reduction is
+    In addition, the following reduction is
     admissible: $K\,(\mathrm{nec}\,\lambda x.t)\,
     (\mathrm{nec}\,s)\leadsto^*
     \mathrm{nec}(t[s/x])$.
@@ -128,8 +128,8 @@ to a ``global argument'', we then should be able to
 ``inline'' this application, what this reduction
 precisely does.
 
-Then, a corresponding weakening of computational
-reinterpretation can be defined as follows.
+The corresponding weakening of computational
+reinterpretation can then be defined as follows:
 
 \begin{definition}[Modal computational reinterpretation]
     We call a type operator $F[\_]$ a modal
@@ -225,7 +225,7 @@ modality $\Box$ instead of using a family of modalities
 $\Box_\ell$: level of type under box would tell how many
 universe models we need to provide.
 
-But, again, it all comes down to defining the type of
+But again, it all comes down to defining the type of
 \textit{definitional} internal models.
 
 \subsubsection{Interpreting interpretation}
@@ -237,7 +237,7 @@ to provide interpretation of this modality inside
 internal models. Once again, the problem is with terms
 that try to interpret variables from CwF context;
 the simplest example is $\llbracket \lambda x.\llbracket x
-\rrbracket_1\rrbracket_2$. In order to be able to
+\rrbracket_1\rrbracket_2$. To be able to
 interpret such a term, we would have to define \textit{
 what reinterpretation operator means inside an internal
 model}. This quickly gets out of hand: rather than just

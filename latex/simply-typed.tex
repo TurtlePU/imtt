@@ -16,7 +16,7 @@ STLC models that can be defined in our language.
 So, what are the models of STLC? In addition to the
 usual set-theoretic semantics where $S\to T$ is
 interpreted as a function from $S$ to $T$ and
-$S\times T$ is a cartesian product, there is
+$S\times T$ is a cartesian product, there are
 proof-theoretic semantics that relate terms of type $T$
 to intuitionistic proofs of proposition
 $\llbracket T\rrbracket$, where $(\to)$ is now
@@ -58,7 +58,7 @@ A cartesian closed category is the following datum:
         \mathrm{id}\circ f = f = f\circ\mathrm{id} & &
         (f \circ g) \circ h = f \circ (g \circ h)
     \end{align*}
-    whenever all compositions are well-defined.
+    This applies whenever all compositions are well-defined.
 \item There's a \textit{terminal object}
     $\top\in\mathrm{Ob}$ such that for each
     $A\in\mathrm{Ob}$ there's a \textbf{unique} morphism
@@ -346,10 +346,10 @@ substitution when we need to type model operations
 $T[S_1/0, S_2/1]$). The terminal object is
 just a type named $TT$.
 
-To check reinterpretation, we need to define how the
-model acts on monomorphic types. Since there's no
-computation on them, reinterpretation of types is once
-again defined as a recursive function on syntax:
+In order to check reinterpretation, we first need to
+define how the model acts on monomorphic types. As there
+is no computation on them, reinterpretation of types is
+defined once again as a recursive function on syntax.
 
 \begin{definition}[Interpretation of types in $\SSTLC$]
     Let $m$ be a correct model and $\sigma$ be a
@@ -450,7 +450,7 @@ again defined as a recursive function on syntax:
 Here we only study some basic properties of a system to
 make sure that everything works as expected:
 computations are confluent; types are preserved by all
-computations; all of the types can be inferred if you
+computations; all the types can be inferred if you
 wish to do so; everything terminates, and, modulo
 reduction of \texttt{let}-bindings, this is the same old
 STLC we started with. Proofs mostly follow
@@ -466,7 +466,7 @@ system.
 \begin{proof}
     Classic proof via parallel reduction relation
     \cite{takahashi1995parallel,barendregt1984lambda}.
-    Parallel reduction is defined as:
+    Parallel reduction is defined as follows:
     \begin{mathpar}
         \inferrule{}{t\rightrightarrows t}
         \and
