@@ -17,10 +17,9 @@ $\eta$-equivalence, uniqueness properties are skipped.
 \subsection{Base CwF part}
 
 \[\begin{array}{l}
-    \mathcal{C}:\mathcal{U}_{\max(\ell'_0,\ldots,
-        \ell'_\kappa)},\\
-    \triangleright:\mathcal{C}\to\mathcal{C}\to
-        \mathcal{U}_{\max(\ell_0,\ldots,\ell_\kappa)},\\
+    \mathcal{C}_j:\mathcal{U}_{\ell'_j},\\
+    \triangleright:\mathcal{C}_j\to\mathcal{C}_\kappa\to
+        \mathcal{U}_{\ell'_j\sqcup\ell'_\kappa},\\
     \mathrm{id}:\{\Gamma:\mathcal{C}\}\to
         \Gamma\triangleright\Gamma,\\
     \circ:\{\Gamma\,\Delta\,\Xi\}\to
@@ -36,7 +35,7 @@ $\eta$-equivalence, uniqueness properties are skipped.
     \circ\mathrm{-assoc}:\{\rho\,\sigma\,\tau\}\to
         \rho\circ(\sigma\circ\tau)=
         (\rho\circ\sigma)\circ\tau,\\
-    \cdot:\mathcal{C},\\
+    \cdot:\mathcal{C}_0,\\
     !:\{\Gamma\}\to\Gamma\triangleright\cdot,\\
 \end{array}\]
 
@@ -44,7 +43,8 @@ $\eta$-equivalence, uniqueness properties are skipped.
 \texorpdfstring{$j$}{j}}
 
 \[\begin{array}{l}
-    \mathrm{Ty}_j:\mathcal{C}\to\mathcal{U}_{\ell'_j},
+    \mathrm{Ty}_{j,k}:\mathcal{C}_k\to
+        \mathcal{U}_{\ell'_k\sqcup\ell'_j},
     \\
     \_[\_]:\{\Gamma\,\Delta\}\to\mathrm{Ty}_j\Gamma\to
         \Delta\triangleright\Gamma\to
@@ -52,8 +52,9 @@ $\eta$-equivalence, uniqueness properties are skipped.
     \mathrm{sub/id}:\{T\}\to T[\mathrm{id}]=T,\\
     \mathrm{sub/comp}:\{T\,\sigma\,\tau\}\to
         T[\sigma\circ\tau]=T[\sigma][\tau],\\
-    \mathrm{Tm}_j:(\Gamma:\mathcal{C})\to
-        \mathrm{Ty}_j\,\Gamma\to\mathcal{U}_{\ell_j},\\
+    \mathrm{Tm}_{j,k}:(\Gamma:\mathcal{C}_k)\to
+        \mathrm{Ty}_{j,k}\,\Gamma\to\mathcal{U}_{
+            \ell'_k\sqcup\ell_j},\\
     \_[\_]:\{\Gamma\,\Delta\,T\}\to
         \mathrm{Tm}_j\,\Gamma\,T\to(\sigma:
         \Delta\triangleright\Gamma)\to
@@ -63,8 +64,8 @@ $\eta$-equivalence, uniqueness properties are skipped.
     \mathrm{sub/comp}:\{T\,\sigma\,\tau\}\to
         \{t:\mathrm{Tm}_j\,\_\,T\}\to
         t[\sigma\circ\tau]=t[\sigma][\tau],\\
-    (.):(\Gamma:\mathcal{C})\to\mathrm{Ty}_j\,\Gamma\to
-        \mathcal{C},\\
+    (.):(\Gamma:\mathcal{C}_k)\to\mathrm{Ty}_j\,
+        \Gamma\to\mathcal{C}_{k\sqcup j},\\
     p:\{\Gamma\,T\}\to\Gamma.T\triangleright\Gamma,\\
     q:\mathrm{Tm}\,\Gamma.T\,T[p],\\
     \langle,\rangle:\{\Delta\,\Gamma\}\to
@@ -388,3 +389,7 @@ vanish and $I_\ell\llbracket\Delta\vdash t\Leftarrow T
 \;]
 \end{array}
 \]
+
+Note. For equations to truly be provable by reflexivity,
+we need $\eta$-expansion which is currently missing in
+our system.
