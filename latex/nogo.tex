@@ -9,7 +9,7 @@ like user-defined models to respect definitional
 equalities of a system; in a dependently typed system,
 this could be naturally achieved by using an identity
 type to spell out corresponding equalities inside a
-model. Then, it would be nice if, before reinterpreting
+model. Then, it would be nice if, before interpreting
 a term, system would first bring it to normal form to
 get rid of the artifacts of the construction in the
 result of the interpretation. Finally, in a dependently
@@ -28,40 +28,40 @@ $\Gamma\vdash t:T$; computation is specified by a
 one-step reduction relation $t\leadsto t'$ on terms.
 
 \begin{definition}
-    [Na\"ive computational reinterpretation]
+    [Na\"ive computational interpretation]
     We call a type operator $F[\_]$ a na\"ive
-    computational reinterpretation of types if it
+    computational interpretation of types if it
     respects computation on types (that is, if there is
     a reduction relation on types $(\leadsto)$ and
     $T\leadsto T'$, then $F[T]\leadsto^* F[T']$), and
     computes as a primitive recursive function on normal
     forms of types. Analogously, term with a hole
     $\llbracket\_\rrbracket$ is a na\"ive
-    computational reinterpretation of terms if it
+    computational interpretation of terms if it
     respects computation on terms, computes as a
     primitive recursive function on normal forms of
     terms and, if $\Gamma\vdash t:T$, then
     $\Gamma\vdash\llbracket t\rrbracket:F[T]$.
 \end{definition}
 
-\begin{theorem}[No-go theorem of naive reinterpretation]
+\begin{theorem}[No-go theorem of naive interpretation]
 \label{no-go}
     In a confluent type system with a type of functions
-    and na\"{\i}ve computational reinterpretation, if
+    and na\"{\i}ve computational interpretation, if
     reduction commutes with substitution, for arbitrary
     well-typed $s$ and $t$ there exists $u$ such that:
     \[
         \mathtt{app}\llbracket\lambda x.t\rrbracket
         \llbracket s \rrbracket \leadsto^* u\;
         \text{\reflectbox{$\leadsto^*$}}\;
-        \llbracket t[x\coloneqq s] \rrbracket
+        \llbracket t[s/x] \rrbracket
     \]
     where $\mathtt{app}$ is how $\llbracket\_\rrbracket$
     acts on applications.
 \end{theorem}
 
 Therefore, $\mathtt{app}\llbracket\lambda x.t\rrbracket
-\llbracket s \rrbracket$ and $\llbracket t[x\coloneqq s]
+\llbracket s \rrbracket$ and $\llbracket t[s/x]
 \rrbracket$ are definitionally equivalent, which forces
 beta-reductions in a model to hold definitionally rather
 than propositionally, directly contradicting our desired
@@ -86,9 +86,9 @@ The proof is by direct example:
 
     On the other hand, if we perform substitution first,
     we would get $\Gamma\vdash\llbracket(\lambda x.t)s
-    \rrbracket:F[T]$. Since na\"{\i}ve reinterpretation
+    \rrbracket:F[T]$. Since na\"{\i}ve interpretation
     respects reduction, this reduces to
-    $\llbracket t[x\coloneqq s] \rrbracket$.
+    $\llbracket t[s/x] \rrbracket$.
 
     Since reduction commutes with substitution and
     system is confluent, there should be such $u$ that
@@ -96,26 +96,26 @@ The proof is by direct example:
 \end{proof}
 
 Fundamentally, the proof above exploits the openness of
-the original term; if we restrict reinterpretation to
+the original term; if we restrict interpretation to
 compute on closed terms only, we can arrive at a sound
 system without requiring definitional equalities in
 models, as exemplified by our non-dependently typed
-system $\SSTLC$ described in Section~\ref{HM-R}. For
+system $\SSTLC$ described in Section~\ref{SSTLC}. For
 a dependently typed system, however, our no-go theorem
 leaves us with three options:
 
 \begin{enumerate}
     \item Restrict models to those where equalities hold
         definitionally rather than propositionally.
-    \item Do not proceed with reinterpretation unless
+    \item Do not proceed with interpretation unless
         the term is closed. To allow reasoning on open
         terms, equations describing the behavior of
         interpretation are exposed as propositional
         axioms.
     \item Do not reduce open terms under
-        reinterpretation at all, performing the
-        reinterpretation as-is. To simplify the result
-        of reinterpretation, one can rewrite it with
+        interpretation at all, performing the
+        interpretation as-is. To simplify the result
+        of interpretation, one can rewrite it with
         equalities present in the model.
 \end{enumerate}
 
@@ -123,7 +123,7 @@ If you view existing work on displacement
 \cite{McBride:Crude2011, McBride:Crude2012}, internal
 parametricity \cite{Altenkirch:Parametricity2024} and
 displayed type theory \cite{Kolomatskaia_Shulman_2025}
-through the lens of reinterpretation inside a fixed
+through the lens of interpretation inside a fixed
 model (or family of models), you'll see that
 corresponding models indeed validate equalities
 definitionally; thus it seems that the first approach
@@ -146,7 +146,7 @@ properly computes on open terms. In addition, it doesn't
 restrict the class of possible models while at the same
 time providing the benefits of the first approach: if
 a model is such that the equations hold definitionally,
-no rewriting on the result of reinterpretation is needed
+no rewriting on the result of interpretation is needed
 to reduce it. The only downside is that, possibly,
 reductions \textit{after} interpretation are more costly
 than the ones we could perform \textit{before} it.

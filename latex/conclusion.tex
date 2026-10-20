@@ -1,7 +1,7 @@
 \section{Conclusions and further work}
 
 In retrospect, we managed to define two
-self-interpreting type systems, STLC-R and MLTT-R,
+self-interpreting type systems, $\SSTLC$ and $\twoLTT$,
 meaning that they have a notion of their own ``internal
 models'' which they then can use to reinterpret their
 own terms inside such models. In doing so, such type
@@ -12,14 +12,14 @@ we have the following plans:
 
 \begin{itemize}
     \item We might try making locking discipline in
-        section \ref{MLTT-R} more flexible, allowing
+        Section~\ref{SSTLC} more flexible, allowing
         more than one lock in a context. Most likely,
         this would require us to incorporate modalities
         in the definition of an ``internal model'' type
         and bring us closer to the truly reflective
         system.
     \item While our technique to reinterpret conversion
-        rule in section \ref{MLTT-R} works, a current
+        rule in Section~\ref{twoLTT} works, a current
         approach to equality witness extraction is a
         \textit{hack}. A proper solution would require
         to specify withess extraction as a redex and,
@@ -46,13 +46,13 @@ we have the following plans:
         \cite{Elliott:Compcat2017} and closer to
         \textit{actual} type system for synthetic
         mathematics.
-    \item It would be nice to make equality in MLTT-R
+    \item It would be nice to make equality in $\twoLTT$
         more extensional, most probably by making type
         system closer to Homotopy type theory
         \cite{hottbook}.
     \item At some moment we would have to pay due
         diligence: provide mechanized proofs of
         metatheoretical properties of systems and an
-        implementation of MLTT-R in a practical proof
+        implementation of $\twoLTT$ in a practical proof
         assistant.
 \end{itemize}

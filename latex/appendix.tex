@@ -1,4 +1,8 @@
-\section{A type of internal models of MLTT-R}
+\section{A type of internal models of
+\texorpdfstring{$\twoLTT$}{[[2]]LTT}}
+\label{twoltt-internal-model-def}
+
+TODO: finish
 
 A comprehension $[x:A,y:B,z:C]$ denotes
 a right-nested $\Sigma$-type. $\{x:A\}\to B$ is a
@@ -9,13 +13,14 @@ $B$. Transports along previously introduced equalities
 are omitted. Since our language doesn't yet have
 $\eta$-equivalence, uniqueness properties are skipped.
 
-\[\mathtt{modelDef}(\ell_0,\ldots,\ell_\kappa)={[}\]
+\[\mathcal{M}_{\ell_0,\ldots,\ell_\kappa}^{
+    \ell'_0,\ldots,\ell'_\kappa}={[}\]
 
 \subsection{Base CwF part}
 
 \[\begin{array}{l}
-    \mathcal{C}:\mathcal{U}_{\max(\ell_0,\ldots,
-        \ell_\kappa)+1},\\
+    \mathcal{C}:\mathcal{U}_{\max(\ell'_0,\ldots,
+        \ell'_\kappa)},\\
     \triangleright:\mathcal{C}\to\mathcal{C}\to
         \mathcal{U}_{\max(\ell_0,\ldots,\ell_\kappa)},\\
     \mathrm{id}:\{\Gamma:\mathcal{C}\}\to
@@ -40,7 +45,7 @@ $\eta$-equivalence, uniqueness properties are skipped.
 \subsection{Common part for each level j}
 
 \[\begin{array}{l}
-    \mathrm{Ty}_j:\mathcal{C}\to\mathcal{U}_{\ell_j+1},
+    \mathrm{Ty}_j:\mathcal{C}\to\mathcal{U}_{\ell'_j},
     \\
     \_[\_]:\{\Gamma\,\Delta\}\to\mathrm{Ty}_j\Gamma\to
         \Delta\triangleright\Gamma\to
@@ -106,6 +111,9 @@ internal level $\max(i,j)$ are defined here.
 \[{]}\]
 
 \section{Parts of a definition of a displacement model}
+\label{twoltt-displacement-model-def}
+
+TODO: finish
 
 \[\begin{array}{ll}
     \uparrow_\ell^\kappa\;=&[\\
@@ -126,6 +134,9 @@ internal level $\max(i,j)$ are defined here.
 \]
 
 \section{Parts of a definition of a parametricity model}
+\label{twoltt-parametricity-model-def}
+
+TODO: finish
 
 \[\begin{array}{ll}
     \mathrm{Para}_\ell\;=&[\\

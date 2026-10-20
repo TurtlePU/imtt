@@ -65,9 +65,6 @@ internal interpretation.
 
 \subsection{Contributions}
 
-So the goal is to construct type systems with
-        such interpretation present as ; we will call type system with such
-interpretation capabilities \emph{reflective}.
 \begin{itemize}
     \item So our main goal is to construct an
         implementable reflective type system. The main
@@ -81,23 +78,23 @@ interpretation capabilities \emph{reflective}.
         Hindley-Milner type system, where object level
         is simply-typed lambda calculus with product
         types (STLC), called $\SSTLC$
-        (Section~\ref{HM-R}). We prove that it is
+        (Section~\ref{SSTLC}). We prove that it is
         conservative with respect to STLC (hence
         strongly normalizing and sound), and that global
-        type inference is decidable (section
-        \ref{HM-R-properties}).
+        type inference is decidable
+        (Section~\ref{SSTLC-properties}).
     \item Building upon the insights gathered from
         developing $\SSTLC$, we are finally equipped to
         dive into the reflective version of two-level
         type theory, where object level is vanilla MLTT,
-        dubbed $\twoLTT$ (Section~\ref{MLTT-R}). We
+        dubbed $\twoLTT$ (Section~\ref{twoLTT}). We
         prove soundness and conservativity of it as well
-        (Section~\ref{MLTT-R-properties}).
+        (Section~\ref{twoLTT-properties}).
     \item As intended, by virtue of reinterpretation,
         $\twoLTT$ incorporates both a restricted form of
         universe polymorphism and external
         parametricity. And, of course, you can use it as
         a system for synthetic mathematics with internal
         reuse of synthetic results
-        (Section~\ref{MLTT-R-applications}).
+        (Section~\ref{twoLTT-applications}).
 \end{itemize}

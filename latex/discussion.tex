@@ -35,8 +35,8 @@ term by adding a constant shift $s$. From the point of
 view advocated by this paper, you can see it as an act
 of reinterpreting an expression in an internal model of
 type system where universe at level $i$ is interpreted
-as a universe at level $i+s$ (section
-\ref{MLTT-R-displacement}).
+as a universe at level $i+s$
+(Section~\ref{twoLTT-displacement}).
 
 In ``Parametricity and Dependent Types'' by
 Jean-Philippe Bernardy, Patrik Jansson and Ross Paterson
@@ -58,8 +58,8 @@ system with \textit{computational properties of higher
 observational type theory}. We sidestep the issue with
 context since reinterpretation is applied only to terms
 whose context is also <<reinterpretable>> and is not
-affected by the translation (section
-\ref{MLTT-R-parametricity}).
+affected by the translation
+(Section~\ref{twoLTT-parametricity}).
 
 \subsection{What we could've done differently}
 
@@ -75,8 +75,8 @@ and employing Lean's powerful metaprogramming facilities
 instead of a compiler plugin. In doing so, they are able
 to provide a framework for doing synthetic mathematics
 in Lean, extracting proofs done in MLTT applied to more
-specific categories. Thus our results in section
-\ref{MLTT-R-synthetic} are close to the results shown in
+specific categories. Thus our results in
+Section~\ref{twoLTT-synthetic} are close to the results shown in
 their paper. To add to that, their work is already
 implemented in practical proof assistant. Yet, our type
 system involves no metaprogramming since
@@ -90,8 +90,8 @@ other polymorphic features of a language.
 \label{global-elements}
 
 Since we introduced a family of modalities of
-reinterpretable terms $\Box_\ell$ in section
-\ref{MLTT-R}, one could hope to allow computation in
+reinterpretable terms $\Box_\ell$ in
+Section~\ref{twoLTT}, one could hope to allow computation in
 boxed terms. Generalizing a bit, the following
 definition will be useful further:
 
@@ -117,12 +117,12 @@ definition will be useful further:
     And, in addition, the following reduction is
     admissible: $K\,(\mathrm{nec}\,\lambda x.t)\,
     (\mathrm{nec}\,s)\leadsto^*
-    \mathrm{nec}(t[x\coloneqq s])$.
+    \mathrm{nec}(t[s/x])$.
 \end{definition}
 
 With an exception of a computational rule, these are
 exactly the properties of modalities $\Box_\ell$ from
-the original section \ref{MLTT-R}. The intuition behind
+the original Section~\ref{twoLTT}. The intuition behind
 the reduction is that, if we apply a ``global function''
 to a ``global argument'', we then should be able to
 ``inline'' this application, what this reduction
@@ -160,7 +160,7 @@ na\"{\i}ve version \ref{no-go} which holds in this case:
     \[
         \mathtt{app}\llbracket\mathrm{nec}\,\lambda x.t
         \rrbracket\llbracket\mathrm{nec}\,s\rrbracket
-        \equiv\llbracket\mathrm{nec}(t[x\coloneqq s])
+        \equiv\llbracket\mathrm{nec}(t[s/x])
         \rrbracket
     \]
     where $\equiv$ is definitional equality and
@@ -191,7 +191,7 @@ na\"{\i}ve version \ref{no-go} which holds in this case:
     (\mathrm{nec}\,\lambda x.t)(\mathrm{nec}\,s)
     \rrbracket:F[T]$. Since modal reinterpretation
     respects reduction, this reduces to
-    $\llbracket\mathrm{nec}(t[x\coloneqq s])\rrbracket$.
+    $\llbracket\mathrm{nec}(t[s/x])\rrbracket$.
 
     In a confluent type system with functions,
     multi-step reduction commutes with substitution,
@@ -207,7 +207,7 @@ Another benefit of modal computational reinterpretation
 is the following property:
 
 \begin{theorem}[Collapse of computational modalities]
-    The following implication about MLTT-R is true:
+    The following implication about $\twoLTT$ is true:
     \[\dfrac{
         \exists\kappa:
         \Gamma.\,{}_\ell\text{\faLock}\vdash_\kappa
@@ -228,9 +228,9 @@ universe models do we need to provide.
 But, again, it all comes down to defining the type of
 \textit{definitional} internal models.
 
-\subsubsection{Reinterpreting reinterpretation}
+\subsubsection{Interpreting interpretation}
 
-In section \ref{MLTT-R}, we introduced our
+In Section~\ref{twoLTT}, we introduced our
 ``reinterpretable terms'' modality in a very
 constraining way specifically so that we wouldn't have
 to provide interpretation of this modality inside

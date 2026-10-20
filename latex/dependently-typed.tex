@@ -1,30 +1,30 @@
 \section{Almost reflective dependently typed language:
-    MLTT-R}
-\label{MLTT-R}
+    \texorpdfstring{$\twoLTT$}{[[2]]LTT}}
+\label{twoLTT}
 
-Now we are ready to take on the main challenge: design a
-minimal dependently typed reflective language, and
+Now we are ready to take on the main challenge: design
+a minimal dependently typed reflective language, and
 provide internal models of itself to yield universe
 polymorphism, external parametricity and do synthetic
 mathematics inside it. As a starting point, we take
 Martin-L\"of type theory with $\Pi-$,$\Sigma-$,
 $\mathrm{Id}-$ types, natural number type and infinite
 non-cumulative hierarchy of universes. As discussed in
-section \ref{no-go-section}, the best practical solution
-to reinterpretation here would be to forbid reductions
-under it and reinterpret terms as-is, and constrain
-models using $\mathrm{Id}$-types. Still, in comparison
-to non-dependently typed case, there are infinitely more
-problems to solve if we want to define a truly
-reflective system:
+Section~\ref{no-go-section}, the best practical
+solution to reinterpretation here would be to forbid
+reductions under it and reinterpret terms as-is, and
+constrain models using $\mathrm{Id}$-types. Still, in
+comparison to non-dependently typed case, there are
+infinitely more problems to solve if we want to define
+a truly reflective system:
 
 \begin{enumerate}
-    \item If we na\"{\i}vely adopt an approach to typing
-        of models from section \ref{HM-R}, in order to
-        specify a model, we would need to specify
-        countably many models, one per each universe.
-        And even if we did, to which universe does the
-        type of models belong?
+    \item If we na\"{\i}vely adopt an approach to
+        typing of models from Section~\ref{SSTLC}, in
+        order to specify a model, we would need to
+        specify countably many models, one per each
+        universe. And even if we did, to which universe
+        does the type of models belong?
     \item Now that we have computations in types, we
         have to deal with conversion rule under
         reinterpretation:
@@ -38,17 +38,17 @@ reflective system:
         \]
         The problem is that, after interpretation,
         $\llbracket T \rrbracket$ is only
-        \textit{propositionally} equal to $\llbracket T'
-        \rrbracket$.
+        \textit{propositionally} equal to $\llbracket
+        T'\rrbracket$.
     \item If we want a truly reflective system, we need
-        to know what to do with \textit{reinterpretation
-        of reinterpretation}:
+        to know what to do with
+        \textit{reinterpretation of reinterpretation}:
         \[
-            \lambda x.\llbracket\llbracket x\rrbracket_1
-            \rrbracket_2
+            \lambda x.\llbracket\llbracket x
+            \rrbracket_1\rrbracket_2
             \quad\text{and}\quad
-            \llbracket\lambda x.\llbracket x\rrbracket_1
-            \rrbracket_2
+            \llbracket\lambda x.\llbracket x
+            \rrbracket_1\rrbracket_2
         \]
         In the first case, we perform two subsequent
         interpretations on a yet unknown $x$; in the
@@ -68,13 +68,13 @@ typing judgements.
 
 To interpret conversion rule, we start by first
 pinpointing the locations where conversion rule is
-actually used; in order to do this, we \textit{need} to
+actually used; in order to do this ergonomically, we
 use bidirectional type checking. At the moment of
 conversion, interpretation has enough information to
-know both $T$ and $T'$; thus we can translate a chain of
-reductions performed during definitional equality check
-into a chain of propositional equalities taken from
-coherence conditions proven in the definition of a
+know both $T$ and $T'$; thus we can translate a chain
+of reductions performed during definitional equality
+check into a chain of propositional equalities taken
+from coherence conditions proven in the definition of a
 model. Then, a point of conversion is wrapped in
 equality elimination with synthesized witness as a
 scrutinee.
@@ -102,7 +102,9 @@ computations inside reinterpretation by allowing
 ``splicing'' boxed expressions into other boxed
 expressions; inside splices, computation is allowed to
 bring terms to the boxed form for further
-interpretation.
+interpretation. Such a typing discipline brings us very
+close to two-level type theories [CITE], but we found
+notation via modalities to be more convenient.
 
 \begin{figure}
 \centering
@@ -157,58 +159,60 @@ $t$, $s$ : Term ::=
     | $t\,\colon T$ : ascription
     ;;
 \end{bnf}
-\caption{MLTT-R grammar}
-\label{mltt-r-grammar}
+\caption{$\twoLTT$ grammar}
+\label{twoltt-grammar}
 \end{figure}
 
-Grammar rules given in figure \ref{mltt-r-grammar}
-reflect discussion above. Note that there is a type of
-models $\mathcal{M}$ which is annotated with a sequence
-of levels $\ell_0,\ldots,\ell_\kappa$: level $\ell_j$
-is a level which types in $\mathcal{U}_j$ would have
-after interpretation in such a model.
+Grammar rules given in Figure~\ref{twoltt-grammar}
+reflect discussion above. Note that there is no
+separate type of models $\mathcal{M}$: instead of there
+being a single builtin type, there is a family of
+model types $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa}^{
+    \ell'_0,\ldots,\ell'_\kappa}$ where each concrete
+type is \emph{definable} in $\twoLTT$; types in a
+family are indexed by a bunch of universe levels whose
+exact role will be explained later; a general idea is
+that $\ell_j$ is a level which types in $\mathcal{U}_j$
+would have after interpretation in such a model.
 
 Typing rules are also a straightforward adaptation of a
 general recipe for bidirectional typing of
 dependently-typed systems \cite{Thiago2025} and are
-given in figures \ref{mltt-r-wf}-\ref{mltt-r-typing};
-level placement rules are constructed in such a way
-that $\Gamma\vdash_\ell\mathrm{level}(T)=\kappa$ always
-implies $\kappa\leqslant\ell$.
-
-Important discrepancy from standard bidirectional
+given in Figures~\ref{twoltt-wf}-\ref{twoltt-typing}.
+Important departure from standard bidirectional
 recipe ``constructors are checked, eliminators are
 inferred'' is that levels of types are always inferred
 since we do not have cumulativity of universes and do
 not have a lifting operator, thus we cannot check
-levels of $\Sigma$ and $\Pi$. Also note that we provide
-levels needed to check $t$ in typal interpretation
-$T^t$: this happens because $\mathcal{M}$ would be
-definitionally equal to some huge nested $\Sigma$-type,
-thus it would be intractable to \textit{match} on it if
-it were inferred from $t$ instead.
+levels of $\Sigma$ and $\Pi$. Also note that exact
+model type is always inferred, both in interpretation
+of types and in interpretation of terms: even though
+$\mathcal{M}$ would be some huge nested $\Sigma$-type,
+it is still more correct to \textit{match} on it
+instead of asking to provide levels explicitly.
 
 As already said, reinterpretation is constrained to act
 on boxed types; in addition, we require a non-locked
-context for reinterpretation. Together these constraints
-guarantee that, indeed, boxed terms do not contain
-reinterpretation subterms. An important departure from
-$\mathrm{MLTT}_\text{\faLock}$\cite{Gratzer2019}, aside
-from adding a family of modalities, lies in the way
-context is locked in $[\_]_\text{\faLock}$ and unlocked
-in $[\_]_\text{\faUnlock}$: while locking, we require
-the outer context to be unlocked; while unlocking,
-instead of erasing all locks, we erase the context up
-to the first lock. Effectively, this enforces a
-constraint that typing context never contains more than
-a single lock. Thus, for example, our $\Box_\ell$ is
-not a comonad, but axiom K from modal logic still
+context for reinterpretation. Together these
+constraints guarantee that, indeed, boxed terms do not
+contain reinterpretation subterms. An important
+departure from $\mathrm{MLTT}_\text{\faLock}$
+\cite{Gratzer2019}, aside from adding a family of
+modalities, lies in the way context is locked in
+$[\_]_\text{\faLock}$ and unlocked in
+$[\_]_\text{\faUnlock}$: while locking, we require the
+outer context to be unlocked; while unlocking, instead
+of erasing all locks, we erase the context up to the
+first lock. Effectively, this enforces a constraint
+that typing context never contains more than a single
+lock. Thus, for example, our $\Box_\ell$ is not a
+comonad, but axiom K from modal logic still
 holds\footnote{Interestingly enough, a similar
-K-modality is first described by Birkedal and
-others in ``Modal dependent type theory and dependent
-right adjoints'' \cite{Birkedal2020}. Coincidentally,
-they refine typing judgements with universe levels,
-too! They have a single modality, though.}:
+K-modality is first described by Birkedal and others in
+``Modal dependent type theory and dependent right
+adjoints'' \cite{Birkedal2020}. Coincidentally, they
+refine typing judgements with universe levels, too!
+They have a single modality, though.}:
 \[
     \dfrac{\cdot\vdash_\ell A:\ell_A
     \quad\cdot\vdash_\ell B:\ell_B}{
@@ -282,7 +286,7 @@ boxed values from the ``outer world''.
 \end{mathpar}
 \caption{
     Context well-formedness \& level placement rules}
-\label{mltt-r-wf}
+\label{twoltt-wf}
 \end{figure}
 
 \begin{figure}
@@ -313,15 +317,15 @@ boxed values from the ``outer world''.
             \mathrm{Nat}_\kappa\\
         \Gamma,x:\mathrm{Nat}_\kappa\vdash_\ell T:j\\
         \Gamma\vdash_\ell s_0\Leftarrow
-            T[x\coloneqq 0:\mathrm{Nat}_\kappa]\\
+            T[(0:\mathrm{Nat}_\kappa)/x]\\
         \Gamma\vdash_\ell s_S\Leftarrow
                 (y:\mathrm{Nat}_\kappa)\to
-                (z:T[x\coloneqq y])\to
-                T[x\coloneqq\mathrm{S}\,y:
-                    \mathrm{Nat}_\kappa]
+                (z:T[y/x])\to
+                T[(\mathrm{S}\,y:\mathrm{Nat}_\kappa)
+                /x]
     }{\Gamma\vdash_\ell
         \mathrm{natind}_{x.T}\,t\,\{s_0,s_S\}
-        \Rightarrow T[x\coloneqq t]
+        \Rightarrow T[t/x]
     }(j\leqslant\ell)
     \and
     \inferrule[Infer-Sigma]{
@@ -334,7 +338,7 @@ boxed values from the ``outer world''.
     \and
     \inferrule[Check-Pair]{
         \Gamma\vdash_\ell s\Leftarrow S\\
-        \Gamma\vdash_\ell t\Leftarrow T[x\coloneqq s:S]
+        \Gamma\vdash_\ell t\Leftarrow T[(s:S)/x]
     }{\Gamma\vdash_\ell(s,t)\Leftarrow(x:S)\times T}
     \and
     \inferrule[Infer-$\mathrm{Proj}_1$]
@@ -344,7 +348,7 @@ boxed values from the ``outer world''.
     \inferrule[Infer-$\mathrm{Proj}_2$]
         {\Gamma\vdash_\ell t\Rightarrow(x:S)\times T}
         {\Gamma\vdash_\ell \pi_2\,t\Rightarrow
-            T[x\coloneqq \pi_1\,t]}
+            T[(\pi_1\,t)/x]}
     \and
     \inferrule[Infer-Pi]{
         \Gamma\vdash_\ell s\Rightarrow
@@ -363,7 +367,7 @@ boxed values from the ``outer world''.
         \Gamma\vdash_\ell t\Rightarrow (x:S)\to T\\
         \Gamma\vdash_\ell s\Leftarrow S
     }{\Gamma\vdash_\ell t\,s\Rightarrow
-        T[x\coloneqq s:S]}
+        T[(s:S)/x]}
     \and
     \inferrule[Infer-Id]{
         \Gamma\vdash_\ell t\Rightarrow
@@ -381,10 +385,10 @@ boxed values from the ``outer world''.
         \Gamma\vdash_\ell t\Rightarrow t_1=_T t_2\\
         \Gamma,x:T,y:t_1=_T x\vdash_\ell S:\kappa\\\\
         \Gamma\vdash_\ell s\Leftarrow
-            S[x\coloneqq t_1:T,
-                y\coloneqq\mathrm{refl}:t_1=_T t_1]
+            S[(t_1:T)/x,
+                (\mathrm{refl}:t_1=_T t_1)/y]
     }{\Gamma\vdash_\ell\mathrm{J}_{xy.S}\,t\,s
-        \Rightarrow S[x\coloneqq t_2:T, y\coloneqq t]
+        \Rightarrow S[(t_2:T)/x, t/y]
     }(\kappa\leqslant\ell)
     \and
     \inferrule[Infer-Var]{
@@ -419,13 +423,10 @@ boxed values from the ``outer world''.
         \Gamma\vdash_\ell s\Rightarrow\mathcal{M}_{
             \ell_0,\ldots,\ell_k}^{
             \ell'_0,\ldots,\ell'_k}\\
-        \Gamma.{}_\ell\text{\faLock}\vdash_\kappa
-            t\Rightarrow T\\
-        \Gamma.{}_\ell\text{\faLock}\vdash_\kappa
-            T:j
+        \Gamma\vdash_\ell t\Rightarrow \Box_\kappa T
     }{\Gamma\vdash_\ell s \llbracket t\rrbracket
     \Rightarrow s \llbracket T\rrbracket
-    }(j\leqslant\kappa)
+    }
     \and
     \inferrule[Infer-Ascr]{
         \Gamma\vdash_\ell T:\kappa\\
@@ -438,7 +439,7 @@ boxed values from the ``outer world''.
     }{\Gamma\vdash_\ell t\Leftarrow T}
 \end{mathpar}
 \caption{Bidirectional term typing rules}
-\label{mltt-r-typing}
+\label{twoltt-typing}
 \end{figure}
 
 \subsection{Computation rules and models of dependent
@@ -447,7 +448,7 @@ type theories}
 Note that discussion above was ambient to the choice of
 formalism to present models. Now it is finally time to
 fix the formalism since we're going to need it to
-define where $\mathcal{M}$ computes to.
+define the type of models $\mathcal{M}$.
 
 In line with current state of the art, we use
 Categories-with-Families \cite{castellan2020cwf} (or
@@ -463,98 +464,104 @@ cartesian closed category (\ref{ccc}) is also a
 category. We repeat parts of definitions for
 self-containment reasons.}:
 \begin{enumerate}
-\item A set of \textit{objects} $\mathrm{Ob}$ and a
-    family of \textit{morphisms} $\mathrm{Hom}(S, T)$
-    indexed by $S,T\in\mathrm{Ob}$, where
-    $f\in\mathrm{Hom}(S,T)$ is denoted by $f:S\to T$. In
-    addition, $S$ is called \textit{source} of $f$,
-    while $T$ is \textit{target} of $f$, while both $S$
-    and $T$ together are referred to as \textit{ends} of
-    $f$.
-\item For each $A\in\mathrm{Ob}$ there's an
-    \textit{identity morphism} $\mathrm{id}_A: A\to A$;
-    for each $f:A\to B$ and $g:B\to C$, there's their
-    \textit{composition} $g\circ f:A\to C$. If a
-    source-target of an identity morphism is clear from
-    the context, the subscript is elided. Also, the
-    following properties hold:
-    \begin{align*}
-        \mathrm{id}\circ f = f = f\circ\mathrm{id} & &
-        (f \circ g) \circ h = f \circ (g \circ h)
-    \end{align*}
-    for arbitrary morphisms $f,g,h$ with matching ends.
+    \item A class of \textit{objects} $\mathrm{Ob}$ and
+        a family of \textit{morphisms}
+        $\mathrm{Hom}(S, T)$ indexed by
+        $S,T\in\mathrm{Ob}$, where $f\in\mathrm{Hom}(S,
+        T)$ is denoted by $f:S\to T$. In addition, $S$
+        is called \textit{source} of $f$, while $T$ is
+        \textit{target} of $f$.
+    \item For each $A\in\mathrm{Ob}$ there's an
+        \textit{identity morphism} $\mathrm{id}_A:
+        A\to A$; for each $f:A\to B$ and $g:B\to C$,
+        there's their \textit{composition} $g\circ
+        f:A\to C$. If a source-target of an identity
+        morphism is clear from the context, the
+        subscript is elided. Also, the following
+        properties hold:
+        \begin{align*}
+            \mathrm{id}\circ f = f = f\circ\mathrm{id}
+            & &
+            (f \circ g) \circ h = f \circ (g \circ h)
+        \end{align*}
+        whenever all compositions are well-defined.
 \end{enumerate}
 \end{definition}
 
 \begin{definition}[Terminal object]
-Terminal object of category $\mathcal{C}$ is an object
-$\top\in\mathrm{Ob}_\mathcal{C}$ such that for each
-$A\in\mathrm{Ob}_\mathcal{C}$ there's a \textbf{unique}
-morphism $!_A:A\to\top$.
+    Terminal object of category $\mathcal{C}$ is an
+    object $\top\in\mathrm{Ob}_\mathcal{C}$ such that
+    for each $A\in\mathrm{Ob}_\mathcal{C}$ there's a
+    \textbf{unique} morphism $!_A:A\to\top$.
 \end{definition}
 
 \begin{definition}[Presheaf]
-A presheaf $P$ on a category $\mathcal{C}$ (written as
-$P:\mathcal{C}^\mathrm{op}\to\mathrm{Set}$) is a mapping
-which takes objects of $\mathcal{C}$ to sets, and
-morphisms of $\mathcal{C}$ to functions between sets, so
-that if $f:A\to_\mathcal{C} B$, then $P(f)$ is a
-function from $P(B)$ to $P(A)$. Also, the following
-properties hold:
-\begin{align*}
-    P(\mathrm{id}_A)=\mathrm{id}_{P(A)} & &
-    P(g\circ f)=P(f)\circ P(g)
-\end{align*}
-Where $\mathrm{id}_{P(A)}$ is an identity function of a
-set $P(A)$ and $P(f)\circ P(g)$ is a composition of
-functions $P(f)$ and $P(g)$.
+    A presheaf $P$ on a category $\mathcal{C}$ (written
+    as $P:\mathcal{C}^\mathrm{op}\to\mathrm{Set}$) is a
+    mapping which takes objects of $\mathcal{C}$ to
+    sets, and morphisms of $\mathcal{C}$ to functions
+    between sets, so that if $f:A\to_\mathcal{C} B$,
+    then $P(f)$ is a function from $P(B)$ to $P(A)$.
+    Also, the following properties hold:
+    \begin{align*}
+        P(\mathrm{id}_A)=\mathrm{id}_{P(A)} & &
+        P(g\circ f)=P(f)\circ P(g)
+    \end{align*}
+    Where $\mathrm{id}_{P(A)}$ is an identity function
+    of a set $P(A)$ and $P(f)\circ P(g)$ is a
+    composition of functions $P(f)$ and $P(g)$.
 \end{definition}
 
 \begin{definition}[Category of elements]
-Given a presheaf $P:\mathcal{C}^\mathrm{op}\to
-\mathrm{Set}$, a category of elements
-$\int_\mathcal{C}P$ is a category where objects are
-pairs $(A, x)$ such that $A\in\mathrm{Ob}_\mathcal{C}$
-and $x\in P(A)$, and morphisms from $(A, x)$ to $(B, y)$
-are morphisms $f:A\to_\mathcal{C} B$ such that
-$P(f)(y)=x$.
+    Given a presheaf $P:\mathcal{C}^\mathrm{op}\to
+    \mathrm{Set}$, a category of elements
+    $\int_\mathcal{C}P$ is a category where objects are
+    pairs $(A, x)$ such that
+    $A\in\mathrm{Ob}_\mathcal{C}$ and $x\in P(A)$, and
+    morphisms from $(A, x)$ to $(B, y)$ are morphisms
+    $f:A\to_\mathcal{C} B$ such that $P(f)(y)=x$.
 \end{definition}
 
-\begin{definition}[Category with families]\label{cwfdef}
-A category with families is the following datum:
-\begin{enumerate}
-    \item A \textit{category of contexts} $\mathcal{C}$
-        which is a category with a terminal object;
-    \item A \textit{presheaf of types} $\mathrm{Ty}:
-        \mathcal{C}^\mathrm{op}\to\mathrm{Set}$. Given a
-        morphism $\gamma: \Gamma\to_\mathcal{C}\Delta$
-        and a \textit{type} $T\in\mathrm{Ty}(\Delta)$,
-        element $\mathrm{Ty}(\gamma)(T)\in
-        \mathrm{Ty}(\Gamma)$ is usually written as
-        $T[\gamma]$ for brevity.
-    \item A \textit{presheaf of terms} $\mathrm{Tm}:
-        \left(\int_\mathcal{C}\mathrm{Ty}\right
-        )^\mathrm{op}\to\mathrm{Set}$. Same as with
-        types, $\mathrm{Tm}(\gamma)(t)\in\mathrm{Tm}
-        (\Gamma, T)$ is usually written as $t[\gamma]$
-        for brevity.
-    \item For each $\Gamma\in\mathrm{Ob}_\mathcal{C}$
-        and $T\in\mathrm{Ty}(\Gamma)$, there is an
-        \textit{extended context}
-        $\Gamma.T\in\mathrm{Ob}_\mathcal{C}$ together
-        with a \textit{weakening morphism}
-        $p:\Gamma.T\to\Gamma$ and \textit{variable
-        element} $q:\mathrm{Tm}(\Gamma.T, T[p])$. In
-        addition, for all $\Delta$,
-        $\gamma:\Delta\to\Gamma$ and
-        $t\in\mathrm{Tm}(\Delta, T[\gamma])$, there is a
-        unique \textit{extended substitution}
-        $\langle\gamma,t\rangle:\Delta\to\Gamma.T$ such
-        that the following holds:
-        \begin{align*}
-            p\circ\langle\gamma,t\rangle=\gamma & &
-            q[\langle \gamma, t \rangle] = t
-        \end{align*}
+\begin{definition}[Category with families]
+    \label{cwfdef}
+    A category with families is the following datum:
+    \begin{enumerate}
+        \item A \textit{category of contexts}
+            $\mathcal{C}$ which is a category with a
+            terminal object;
+        \item A \textit{presheaf of types}
+            $\mathrm{Ty}:\mathcal{C}^\mathrm{op}\to
+            \mathrm{Set}$. Given a morphism $\gamma:
+            \Gamma\to_\mathcal{C}\Delta$ and a
+            \textit{type} $T\in\mathrm{Ty}(\Delta)$,
+            element $\mathrm{Ty}(\gamma)(T)\in
+            \mathrm{Ty}(\Gamma)$ is usually written as
+            $T[\gamma]$ for brevity.
+        \item A \textit{presheaf of terms}
+            $\mathrm{Tm}:\left(\int_\mathcal{C}
+            \mathrm{Ty}\right)^\mathrm{op}\to
+            \mathrm{Set}$. Same as with types,
+            $\mathrm{Tm}(\gamma)(t)\in\mathrm{Tm}(
+            \Gamma, T)$ is usually written as
+            $t[\gamma]$ for brevity.
+        \item For each
+            $\Gamma\in\mathrm{Ob}_\mathcal{C}$ and
+            $T\in\mathrm{Ty}(\Gamma)$, there is an
+            \textit{extended context} $\Gamma.T\in
+            \mathrm{Ob}_\mathcal{C}$ together with a
+            \textit{weakening morphism} $p:\Gamma.T\to
+            \Gamma$ and \textit{variable element}
+            $q:\mathrm{Tm}(\Gamma.T, T[p])$. In
+            addition, for all $\Delta$, $\gamma:\Delta
+            \to\Gamma$ and $t\in\mathrm{Tm}(\Delta,
+            T[\gamma])$, there is a unique
+            \textit{extended substitution} $\langle
+            \gamma,t\rangle:\Delta\to\Gamma.T$ such
+            that the following holds:
+            \begin{align*}
+                p\circ\langle\gamma,t\rangle=\gamma & &
+                q[\langle \gamma, t \rangle] = t
+            \end{align*}
 \end{enumerate}
 \end{definition}
 
@@ -570,12 +577,12 @@ $x:T$; there's a way to obtain substitutions into an
 extended context by providing a term suitable for $x$.
 
 This base definition can be readily extended to
-incorporate type (and term) formers of any system. A CwF
-for MLTT-R, then, has to include $\mathrm{Ty}$- and
-$\mathrm{Tm}$- formers for analogues of universes,
-$\Pi$- and $\Sigma$- types, natural numbers and identity
-types. Interpretation for $\Box_\ell$ is not needed
-since we succesfully prevented boxed types from
+incorporate type (and term) formers of any system. A
+CwF for $\twoLTT$, then, has to include $\mathrm{Ty}$-
+and $\mathrm{Tm}$- formers for analogues of universes,
+$\Pi$- and $\Sigma$- types, natural numbers and
+identity types. Interpretation for $\Box_\ell$ is not
+needed since we succesfully prevented boxed types from
 appearing inside boxed terms via rigid \faLock-ing
 discipline\footnote{That's also the reason we dubbed
 this system \textit{almost} reflective, since its
@@ -585,37 +592,28 @@ be interpreted are constructed via vanilla context
 extensions from empty context, and a usual CwF is
 enough for our purposes. Since actual internalized
 definition of our CwF largely repeats typing and
-computation rules from figures
-\ref{mltt-r-wf}-\ref{mltt-r-typing} and
-\ref{mltt-r-typcomp}-\ref{mltt-r-comp} in internal
-language, we do not provide it here; to get a bit more
-details, you can refer to our supplementary materials.
+computation rules from
+Figures~\ref{twoltt-wf}-\ref{twoltt-typing} and
+Figures~\ref{twoltt-typcomp}-\ref{twoltt-comp} in
+internal language, we do not provide it here; to get a
+bit more details, you can refer to our
+Appendix~\ref{twoltt-internal-model-def}.
 
-Finally, on to computation rules as given in figures
-\ref{mltt-r-typcomp}-\ref{mltt-r-comp} (full typal
-computation relation is spelled as
-$\Gamma\vdash_\ell T\leadsto T'$, while term computation
-is spelled as $\Gamma\vdash_\ell t\leadsto t'
-\Leftrightarrow T$; when type is not important and
-context or level bound is simply propagated, they are
-omitted for brevity). Thanks to internalized definition
-of a CwF, we know how $\mathcal{M}$ computes; most of
-the remaining computation rules for types and terms are
-standard MLTT computation rules for bidirectional
-typing (without $\eta$-equality for now). Importantly
-enough, we \textbf{do not compute inside locked terms
-and inside boxed types} in order to not stumble into a
-variant of our no-go theorem \ref{no-go} again (modal
-variant is spelled out in discussion, see section
-\ref{global-elements}).
+Finally, on to computation rules as given in
+Figures~\ref{twoltt-typcomp}-\ref{twoltt-comp}.
+Mostly they are standard MLTT computation rules for
+bidirectional typing (without $\eta$-equality for now).
+Importantly enough, we \textbf{do not compute inside
+locked terms and inside boxed types} in order to not
+stumble into a variant of our no-go theorem \ref{no-go}
+again (modal variant is spelled out in discussion, see
+Section~\ref{global-elements}).
 
 \begin{figure}
 \centering
 \begin{mathpar}
-    \inferrule
-        {t\leadsto t'\Leftarrow\mathcal{U}_\kappa}
-        {\mathrm{El}_\kappa(t)\leadsto
-            \mathrm{El}_\kappa(t')}
+    \inferrule{t\leadsto t'}
+    {\mathrm{El}(t)\leadsto\mathrm{El}(t')}
     \and
     \inferrule{}{\mathrm{El}(\mathtt{U}_\kappa)\leadsto
         \mathcal{U}_\kappa}
@@ -638,38 +636,31 @@ variant is spelled out in discussion, see section
     \inferrule{S\leadsto S'}
         {(x:S)\times T\leadsto (x:S')\times T}
     \and
-    \inferrule
-        {\Gamma,x:S\vdash_\ell T\leadsto T'}
-        {\Gamma\vdash_\ell (x:S)\times T\leadsto
-            (x:S)\times T'}
+    \inferrule{T\leadsto T'}
+    {(x:S)\times T\leadsto(x:S)\times T'}
     \and
     \inferrule{S\leadsto S'}
-        {(x:S)\to T\leadsto (x:S')\to T}
+    {(x:S)\to T\leadsto (x:S')\to T}
     \and
-    \inferrule
-        {\Gamma,x:S\vdash_\ell T\leadsto T'}
-        {\Gamma\vdash_\ell (x:S)\to T\leadsto
-            (x:S)\to T'}
+    \inferrule{T\leadsto T'}
+    {(x:S)\to T\leadsto(x:S)\to T'}
     \and
     \inferrule{T\leadsto T'}
         {t_1=_T t_2\leadsto t_1=_{T'} t_2}
     \and
-    \inferrule{t_1\leadsto t_1'\Leftarrow T}
+    \inferrule{t_1\leadsto t_1'}
         {t_1=_T t_2\leadsto t_1'=_T t_2}
     \and
-    \inferrule{t_2\leadsto t_2'\Leftarrow T}
+    \inferrule{t_2\leadsto t_2'}
         {t_1=_T t_2\leadsto t_1=_T t_2'}
     \and
-    \inferrule{}{\mathcal{M}_{
-        \ell_0,\ldots,\ell_\kappa}\leadsto
-        \mathtt{modelDef}(\ell_0,\ldots,\ell_\kappa)}
-    \and
     \inferrule{}{
-        T_{\ell_0,\ldots,\ell_\kappa}^t\leadsto
-        t.\mathrm{Tm}(t.\cdot, T_t^\cdot)}
+        t\llbracket T\rrbracket\leadsto
+        t.\mathrm{Tm}(t.\cdot, t\llbracket\cdot\vdash
+        T\rrbracket)}
 \end{mathpar}
-\caption{MLTT-R typal computation rules}
-\label{mltt-r-typcomp}
+    \caption{$\twoLTT$ typal computation rules}
+\label{twoltt-typcomp}
 \end{figure}
 
 \begin{figure}
@@ -684,22 +675,21 @@ variant is spelled out in discussion, see section
     \and
     \inferrule{}{\mathrm{natind}_{x.T}
         (0:\mathrm{Nat}_\ell)\{s_0,s_S\}
-        \leadsto (s_0:T[x\coloneqq 0:\mathrm{Nat}_\ell]
+        \leadsto (s_0:T[(0:\mathrm{Nat}_\ell)/x]
         )}
     \and
     \inferrule{}{\mathrm{natind}_{x.T}
         (S\,t:\mathrm{Nat}_\ell)\{s_0,s_S\}
         \leadsto (s_S:(x:\mathrm{Nat}_\ell)\to T\to
-            T[x\coloneqq S x])\,t\,(\mathrm{natind
+            T[(S x)/x])\,t\,(\mathrm{natind
             }_{x.T}(t:\mathrm{Nat}_\ell)\{s_0,s_S\})}
     \and
     \inferrule{s\leadsto s'}{\mathtt{Sigma}(x:s)t
         \leadsto\mathtt{Sigma}(x:s')t}
     \and
     \inferrule
-        {\Gamma,x:\mathrm{El}(s)\vdash_\ell
-            t\leadsto t'}
-        {\Gamma\vdash_\ell\mathtt{Sigma}(x:s)t\leadsto
+        {t\leadsto t'}
+        {\mathtt{Sigma}(x:s)t\leadsto
             \mathtt{Sigma}(x:s)t'}
     \and
     \inferrule{s\leadsto s'}{(s,t)\leadsto(s',t)}
@@ -708,28 +698,27 @@ variant is spelled out in discussion, see section
     \and
     \inferrule{t\leadsto t'}{\pi_i t\leadsto \pi_i t'}
     \and
-    \inferrule{}{\pi_i(t_1,t_2)\leadsto t_i}
+    \inferrule{}
+    {\pi_i((t_1,t_2):(x:S)\times T)\leadsto t_i}
     \and
     \inferrule{s\leadsto s'}{\mathtt{Pi}(x:s)t
         \leadsto\mathtt{Pi}(x:s')t}
     \and
     \inferrule
-        {\Gamma,x:\mathrm{El}(s)\vdash_\ell
-            t\leadsto t'}
-        {\Gamma\vdash_\ell\mathtt{Pi}(x:s)t\leadsto
+        {t\leadsto t'}
+        {\mathtt{Pi}(x:s)t\leadsto
             \mathtt{Pi}(x:s)t'}
     \and
     \inferrule
-        {\Gamma,x:S\vdash_\ell t\leadsto t':T}
-        {\Gamma\vdash_\ell\lambda x.t\leadsto
-            \lambda x.t'}
+        {t\leadsto t'}
+        {\lambda x.t\leadsto\lambda x.t'}
     \and
     \inferrule{t\leadsto t'}{t\,s\leadsto t'\,s}
     \and
     \inferrule{s\leadsto s'}{t\,s\leadsto t\,s'}
     \and
-    \inferrule{\Gamma\vdash_\ell s\Rightarrow S}
-        {(\lambda x.t)s\leadsto t[x\coloneqq s:S]}
+    \inferrule{}
+        {((\lambda x.t):(x:S)\to T)s\leadsto t[(s:S)/x]}
     \and
     \inferrule{t\leadsto t'}{\mathtt{Id}\,t\,t_1\,t_2
         \leadsto\mathtt{Id}\,t'\,t_1\,t_2}
@@ -748,24 +737,37 @@ variant is spelled out in discussion, see section
         \leadsto\mathrm{J}_{xy.S}\,t'\,s}
     \and
     \inferrule{}{\mathrm{J}_{xy.S}(\mathrm{refl}:
-        t_1=_T t_2)\,s\leadsto(s:S[x\coloneqq t_2,
-            y\coloneqq\mathrm{refl}:t_1=_T t_2])}
+        t_1=_T t_2)\,s\leadsto(s:S[t_2/x,
+            (\mathrm{refl}:t_1=_T t_2)/y])}
     \and
     \inferrule{t\leadsto t'}{(t:T)\leadsto(t':T)}
     \and
-    \inferrule{t\leadsto t'}{\llbracket t\rrbracket^{
-        \ell_0,\ldots,\ell_\kappa}
-    \leadsto\llbracket t'\rrbracket^{\ell_0,\ldots,
-    \ell_\kappa}}
+    \inferrule{t\leadsto t'}
+    {[t]_\text{\faUnlock}\leadsto[t']_\text{\faUnlock}}
     \and
-    \inferrule{}{\llbracket [t]_\text{\faLock}:
-        \Box_\kappa T
-    \rrbracket^{\ell_0,\ldots,\ell_\kappa}\leadsto
-    \lambda\mathtt{m}.\llbracket t\rrbracket^\cdot_{
-    \Leftarrow T}\,\mathtt{m}}
+    \inferrule{}{[[t]_\text{\faLock}:\Box_\kappa T
+    ]_\text{\faUnlock}\leadsto t:T}
+    \and
+    \inferrule{}{[[t]_\text{\faUnlock}]_\text{\faLock}
+    \leadsto t}
+    \and
+    \inferrule{s\leadsto s'}{s\llbracket t\rrbracket
+    \leadsto s'\llbracket t\rrbracket}
+    \and
+    \inferrule{t\leadsto t'}{s\llbracket t\rrbracket
+    \leadsto s\llbracket t'\rrbracket}
+    \and
+    \inferrule{}{
+        s\llbracket[t]_\text{\faLock}:\Box_\kappa T
+        \rrbracket\leadsto
+        s\llbracket\cdot\vdash t\Leftarrow T\rrbracket
+    }
+    \and
+    \inferrule{ }{t:T\leadsto t}(t\text{ is
+    synthesizing})
 \end{mathpar}
-\caption{MLTT-R term computation rules}
-\label{mltt-r-comp}
+\caption{$\twoLTT$ term computation rules}
+\label{twoltt-comp}
 \end{figure}
 
 Also we need to give the rules for computing
@@ -773,18 +775,19 @@ reinterpretation; as it turns out,
 \textit{reinterpreting terms as-is} allows to define
 reinterpretation not as a redex, but rather as a couple
 of total functions on types and terms, just as it was in
-a non-dependently-typed case (section \ref{HM-R}). To be
-precise, we need two mutually recursive functions for
-terms: $\llbracket t\rrbracket^\Gamma_{\Leftarrow T}
-\mathtt{m}$ computes on checkable terms, while
-$\llbracket t\rrbracket^\Gamma_{\Rightarrow}\mathtt{m}$
-computes on synthesizing terms and outputs an inferred
-type; both compute elements of corresponding
-$\mathrm{Tm}(\Gamma,\_)$-s from a CwF $\mathtt{m}$.
-$T^\Gamma_\mathtt{m}$ computes an element of
-$\mathrm{Ty}(\Gamma)$. Another auxiliary function is
-required to compute chain of equalities to handle
-conversion rule; this function has two subtle points:
+a non-dependently-typed case (Section~\ref{SSTLC}). To
+be precise, we need two mutually recursive functions
+for terms:
+$m\llbracket\Gamma\vdash t\Leftarrow T\rrbracket$
+computes on checkable terms, while $m\llbracket\Gamma
+\vdash t\Rightarrow\rrbracket$ computes on synthesizing
+terms and outputs an inferred type; both compute
+elements of corresponding $\mathrm{Tm}(\Gamma,\_)$-s
+from a CwF $m$. $m\llbracket\Gamma\vdash T\rrbracket$
+computes an element of $\mathrm{Ty}(\Gamma)$. Another
+auxiliary function is required to compute chain of
+equalities to handle conversion rule; this function has
+two subtle points:
 
 \begin{itemize}
     \item At this point, we don't know if system is
@@ -798,24 +801,17 @@ conversion rule; this function has two subtle points:
         function is potentially not well-defined.
 \end{itemize}
 
-Our \textit{hacky} solution is the following: let us
-fix a certain evaluation strategy (for example, strict
-evaluation) and employ it both during bidirectional
-type checking and when running a witness extraction
-function. If we run a witness extraction function on a
-term that was successfully typed by typing algorithm,
-this typing algorithm finished running, and then
-witness extraction function would terminate, too. Since
-evaluation strategy is fixed, witness extraction
-function would always produce the same output on the
-same input and is therefore well-defined. Once again,
-since interpretation functions directly translate
-bidirectional typing rules on terms into applications
-of model constructions, definition of interpretation
-functions is not given explicitly.
+Our solution is the following: let us fix a certain
+evaluation strategy (for example, strict evaluation)
+and employ it in normalization. Since terms we reduce
+to find a witness are vanilla MLTT terms, they are
+strongly normalizing, so witness extraction terminates.
 
-\subsection{Metatheoretical properties of MLTT-R}
-\label{MLTT-R-properties}
+TODO: provide interpretation definition.
+
+\subsection{Metatheoretical properties of
+\texorpdfstring{$\twoLTT$}{[[2]]LTT}}
+\label{twoLTT-properties}
 
 Once again, we only try to make sure of the most
 essential properties: that computations are confluent,
@@ -823,51 +819,73 @@ that types during computations are preserved, all
 computations terminate and that resulting type system
 is a conservative extension of MLTT.
 
-\begin{theorem}[Church-Rosser theorem for MLTT-R]
+\begin{theorem}[Church-Rosser theorem for $\twoLTT$]
     Reflexive transitive closure of $(\leadsto)$ has
     Church-Rosser property.
 \end{theorem}
 \begin{proof}
     Classic proof via parallel reduction relation
-    \cite{CRproof}. Since interpretation computes as a
+    [CITE]. Since interpretation computes as a
     recursive functions on open terms, it commutes with
     substitution, which is crucial for confluence.
+
+    TODO: write out parallel reduction?
 \end{proof}
 
-\begin{theorem}[Type preservation for MLTT-R]
+\begin{theorem}[Type preservation for $\twoLTT$]
     If $\Gamma\vdash t\Leftarrow T$ and $t\leadsto t'$,
     then $\Gamma\vdash t'\Leftarrow T$; analogously for
     $\Gamma\vdash t\Rightarrow T$.
 \end{theorem}
 \begin{proof}
-    By structural induction on terms and $(\leadsto)$.
-    Note that, in bidirectional system, one has to take
-    care to structure rules in such a way that
-    substitutions substitute terms that are inferred, so
-    that inferrable terms stay inferrable and checkable
+    Note that, analogous to other dependently typed
+    systems, a context reduction lemma holds which is
+    crucial to handle reduction in domain of
+    $\Pi$-types (where both $\Leftarrow$ and
+    $\Rightarrow$ can stand in place of a colon):
+    \[
+        \dfrac{
+            \Gamma,x:S,\Delta\vdash_\ell t:T
+            \quad S\leadsto S'
+        }{\Gamma,x:S',\Delta\vdash_\ell t:T}
+    \]
+
+    Then the proof proceeds by structural induction on
+    terms and $(\leadsto)$. Note that, in a
+    bidirectional system, one has to take care to
+    structure rules in such a way that substitutions
+    substitute terms that are inferred, so that
+    inferrable terms stay inferrable and checkable
     terms stay checkable.
-    Analogous to the proof of type preservation for HM-R
-    (section \ref{HM-R-properties}), a vital lemma
+
+    An important difference from other dependently
+    typed systems is, of course, interpretation. For
+    this case, analogous to the proof of type
+    preservation for $\SSTLC$
+    (Section~\ref{SSTLC-properties}), a vital lemma
     holds:
     \[  \dfrac{
             \Gamma.{}_\ell\text{\faLock},\Delta
                 \vdash_\kappa t\Leftarrow T
-            \quad\Gamma\vdash_\ell s\Leftarrow
-                \mathcal{M}^{\ell_0,\ldots,\ell_\kappa}
-        }{\Gamma\vdash_\ell\llbracket t\rrbracket_{
-            \Leftarrow T}\Rightarrow
+            \quad\Gamma\vdash_\ell s\Rightarrow
+                \mathcal{M}_{\ell_0,\ldots,\ell_\kappa
+                }^{\ell'_0,\ldots,\ell'_\kappa}
+        }{\Gamma\vdash_\ell s\llbracket\Delta\vdash t
+        \Leftarrow T\rrbracket\Rightarrow
             s.\mathrm{Tm}(s\llbracket\Delta\rrbracket,
-                T_s^\Delta)}
+                s\llbracket\Delta\vdash T\rrbracket)}
     \]
-    Along with similar lemmas for $\llbracket\_
-    \rrbracket_\Rightarrow$ and $\__s^\Delta$.
+    Along with similar lemmas for
+    $\_\llbracket\_\vdash\_\Rightarrow\rrbracket$ and
+    $\_\llbracket\_\vdash\_\rrbracket$.
 \end{proof}
 
 \begin{theorem}[Identity model]
     For each $\ell$, there is an identity model
-    $I_\ell:\mathcal{M}_{0,\ldots,\ell}$ with a property
-    that $\llbracket [t]_\text{\faLock} \rrbracket
-    I_\ell \equiv t$ for each closed $t$.
+    $I_\ell:\mathcal{M}_{0,\ldots,\ell}^{1,\ldots,
+    \ell+1}$ with a property that $I_\ell\llbracket
+    [t]_\text{\faLock}:\Box_\kappa T\rrbracket\equiv
+    t:T$ for each closed $t$.
 \end{theorem}
 \begin{proof}
     Take a universe at appropriate level as type of
@@ -878,34 +896,52 @@ is a conservative extension of MLTT.
     interpretations to reinterpret to the same terms.
 \end{proof}
 
-\begin{theorem}[Strong normalization for MLTT-R]
-\label{mltt-r-sn}
-    Closed terms typable in MLTT-R are strongly
+\begin{theorem}[Strong normalization for $\twoLTT$]
+    Closed terms typable in $\twoLTT$ are strongly
     normalizing with respect to $(\leadsto)$.
 \end{theorem}
 \begin{proof}
-    Any proof of normalization for MLTT suffices. For
-    techniques via Tait's logical relations (as was done
-    for HM-R in section \ref{HM-R-properties}), take
-    $t\in\mathcal{R}_{\Box_\kappa T}$ to mean
-    ``interpretation of $t$ is in $\mathcal{R}$ for
-    interpretation of $T$ for all internal models in
-    $\mathcal{R}_\mathcal{M}$''. For techniques via
-    normalization-by-evaluation as in \cite{ABEL200717},
-    take value of such $t$ to be its interpretation
-    function; to quote value back into a term, run this
-    function with an identity model.
+    We could reprove normalization from scratch, just
+    how we did with $\SSTLC$. However, here we can
+    provide a much simpler proof which delegates
+    normalization to another type system. To be more
+    precise, this system $\mathcal{S}$ is Martin-L\"of
+    type theory with $\omega+\omega$ universes and
+    first-class universe polymorphism allowed to range
+    over first $\omega$ universes; we know it to be
+    strongly normalizing [CITE]. Then, we define a
+    translation function $[\_]$ which transforms types
+    and terms of $\twoLTT$ into types and terms of
+    $\mathcal{S}$: it preserves all vanilla grammar
+    formers and only translates lock
+    $[\_]_\text{\faLock}$ into a function from the type
+    of models $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa
+    }^{\ell'_0,\ldots,\ell'_\kappa}$ into interpreted
+    type. Since $\kappa$ is fixed, first-class universe
+    polymorphism is enough to translate it into a
+    function which accepts models for \emph{any} list
+    of levels of fitting length. Then, unlocking
+    $[\_]_\text{\faUnlock}$ translates into application
+    of this function to identity model of fitting
+    level; interpretation translates into application.
+
+    Note that $t\leadsto t'$ implies
+    $[t]\leadsto^+[t']$; this concludes the proof since
+    any infinite chain of reductions in our system
+    would imply an existence of infinite chain of
+    reductions in $\mathcal{S}$.
 \end{proof}
 
 \begin{theorem}[Conservativity over MLTT]
-    For MLTT context $\Gamma$, MLTT type $T$ and MLTT-R
-    term $t$, if $\Gamma\vdash t\Leftarrow T$, then
+    For MLTT context $\Gamma$, MLTT type $T$ and
+    $\twoLTT$ term $t$, if
+    $\Gamma\vdash t\Leftarrow T$, then
     $\Gamma\vdash_\mathrm{MLTT}\mathrm{nf}(t)\Leftarrow
     T$.
 \end{theorem}
 \begin{proof}
     Thanks to type preservation, normal form
-    $\mathrm{nf}(t)$ is typable in MLTT-R. Since
+    $\mathrm{nf}(t)$ is typable in $\twoLTT$. Since
     $\Gamma$ does not contain neither $\Box$-es nor
     \faLock-s, any subterm of type $\Box_\kappa T$
     has form $[\_]_\text{\faLock}$. Since $T$ is an MLTT
@@ -919,19 +955,20 @@ is a conservative extension of MLTT.
     $\Box_\kappa T$; then it has no unlocking and
     interpretation subterms and is an MLTT term and is
     typable in bidirectional MLTT (it is obtained from
-    MLTT-R by getting rid of rules involving modalities,
-    locking and reinterpretation).
+    $\twoLTT$ by getting rid of rules involving
+    modalities, locking and reinterpretation).
 \end{proof}
 
-\subsection{Useful reinterpretations inside MLTT-R}
-\label{MLTT-R-applications}
+\subsection{Useful reinterpretations inside
+\texorpdfstring{$\twoLTT$}{[[2]]LTT}}
+\label{twoLTT-applications}
 
 Here we list some of the language features which
 reinterpretation enables without any additional language
 support.
 
 \subsubsection{Crude, but effective stratification}
-\label{MLTT-R-displacement}
+\label{twoLTT-displacement}
 
 Due to McBride \cite{McBride:Crude2011,
 McBride:Crude2012}, a technique of crude, but effective
@@ -943,23 +980,23 @@ which is equal to $t$ except for universes which are
 replaced with $U_{i+1},U_{j+1},U_{k+1},\ldots$. The
 displaced term is also well-typed, however it is defined
 <<one level higher>>. While not directly definable as a
-single operator inside MLTT-R, for each $\kappa,\ell$,
-one can define displacement operators
-$\uparrow_\ell^\kappa:\mathcal{M}_{\kappa,
-\kappa+1,\ldots,\kappa+\ell}$ that shifts a boxed
-definition which uses universes up to $\mathcal{U}_\ell$
-by $\kappa$ levels up. In this model, category of
-contexts basic presheaves
-are shifted by $\kappa$ in comparison to an identity
-model; all other term interpretations are identical to
-the ones given in an identity model.
+single operator inside $\twoLTT$, for each
+$\kappa,\ell$, one can define displacement operators
+$\uparrow_\ell^\kappa:\mathcal{M}_{\kappa+0,
+\kappa+1,\ldots,\kappa+\ell}^{\kappa+1,\kappa+2,\ldots,
+\kappa+\ell+1}$ that shifts a boxed definition which
+uses universes up to $\mathcal{U}_\ell$ by $\kappa$
+levels up. In this model, category of contexts basic
+presheaves are shifted by $\kappa$ in comparison to an
+identity model; all other term interpretations are
+identical to the ones given in an identity model.
 
 A bit more details on definition of
-$\uparrow_\ell^\kappa$ are given in supplementary
-materials.
+$\uparrow_\ell^\kappa$ are given in
+Appendix~\ref{twoltt-displacement-model-def}.
 
 \subsubsection{Internal external parametricity}
-\label{MLTT-R-parametricity}
+\label{twoLTT-parametricity}
 
 Demonstrated by Reynolds \cite{reynolds1983types},
 parametricity is a property of a type system that, in
@@ -977,23 +1014,23 @@ dependently-typed systems dubbed <<external
 parametricity>>. Once again, this relational
 interpretation is definable in our system
 \textit{internally} with the help of a relational model
-$\mathrm{Para}_\ell:\mathcal{M}_{1,\ldots,\ell+1}$. The
-shift by one level happens because type
-$T:\mathcal{U}_\ell$ in such a model is interpreted by
-a triple $(T_1\,T_2:\mathcal{U}_\ell)\times
-(T_1\to T_2\to\mathcal{U}_\ell)$.
-Since interpreted functions do not depend on local
-context, we sidestep issues with relational context
-highlighted by Altenkirch and others
+$\mathrm{Para}_\ell:\mathcal{M}_{1,\ldots,\ell+1}^{2,
+\ldots,\ell+2}$. The shift by one level happens because
+type $T:\mathcal{U}_\ell$ in such a model is
+interpreted by a triple $(T_1\,T_2:\mathcal{U}_\ell)
+\times(T_1\to T_2\to\mathcal{U}_\ell)$. Since
+interpreted functions do not depend on local context,
+we sidestep issues with relational context highlighted
+by Altenkirch and others
 \cite{Altenkirch:Parametricity2024}, thus result of the
 interpretation is a proper proof of a free theorem.
 
 A bit more details on definition of
-$\mathrm{Para}_\ell$ are given in supplementary
-materials.
+$\mathrm{Para}_\ell$ are given in
+Appendix~\ref{twoltt-parametricity-model-def}.
 
 \subsubsection{Synthetic mathematics}
-\label{MLTT-R-synthetic}
+\label{twoLTT-synthetic}
 
 As thoroughly discussed in a recent paper by Nawrocki
 and others \cite{Nawrocki:Lean2026}, thanks to MLTT
@@ -1002,7 +1039,7 @@ $(\infty,1)$-categories, we can do \textit{synthetic
 mathematics} inside it: prove a theorem inside MLTT
 about types; interpret it in a model of MLTT and yield
 a proof about objects in that model. It is easy to see
-that reinterpretation operator we have in MLTT-R is
+that reinterpretation operator we have in $\twoLTT$ is
 sufficient to do synthetic mathematics in it and
 immediately apply results interpreted in a suitable
 model.
