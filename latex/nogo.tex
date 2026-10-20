@@ -10,7 +10,7 @@ equalities of a system; in a dependently typed system,
 this could be naturally achieved by using an identity
 type to spell out corresponding equalities inside a
 model. Then, it would be nice if, before interpreting
-a term, system would first bring it to normal form to
+a term, the system would first bring it to normal form to
 get rid of the artifacts of the construction in the
 result of the interpretation. Finally, in a dependently
 typed system, it is natural to expect reductions of open
@@ -35,7 +35,7 @@ one-step reduction relation $t\leadsto t'$ on terms.
     a reduction relation on types $(\leadsto)$ and
     $T\leadsto T'$, then $F[T]\leadsto^* F[T']$), and
     computes as a primitive recursive function on normal
-    forms of types. Analogously, term with a hole
+    forms of types. Analogously, a term with a hole
     $\llbracket\_\rrbracket$ is a na\"ive
     computational interpretation of terms if it
     respects computation on terms, computes as a
@@ -77,7 +77,7 @@ The proof is by direct example:
         \Gamma,x:S\to T,y:S\vdash
             \llbracket x\,y\rrbracket:F[T]
     \]
-    Term under interpretation is in normal form, hence
+    The term under interpretation is in normal form; hence
     the whole term computes to $\mathtt{app}\llbracket x
     \rrbracket\llbracket y\rrbracket$.
     Substituting $\lambda x.t$ for $x$ and $s$ for $y$,
@@ -91,7 +91,7 @@ The proof is by direct example:
     $\llbracket t[s/x] \rrbracket$.
 
     Since reduction commutes with substitution and
-    system is confluent, there should be such $u$ that
+    the system is confluent, there should be such $u$ that
     both terms reduce to.
 \end{proof}
 

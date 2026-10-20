@@ -14,7 +14,7 @@ Section~\ref{no-go-section}, the best practical
 solution to reinterpretation here would be to forbid
 reductions under it and reinterpret terms as-is, and
 constrain models using $\mathrm{Id}$-types. Still, in
-comparison to non-dependently typed case, there are
+comparison to the non-dependently typed case, there are
 infinitely more problems to solve if we want to define
 a truly reflective system:
 
@@ -26,7 +26,7 @@ a truly reflective system:
         universe. And even if we did, to which universe
         does the type of models belong?
     \item Now that we have computations in types, we
-        have to deal with conversion rule under
+        have to deal with the conversion rule under
         reinterpretation:
         \[
             \dfrac{t:T\quad T\equiv T'}{t:T'}
@@ -59,15 +59,15 @@ a truly reflective system:
 To deal with universe sizing issues, consider the
 following observation: in a system without level
 binders, each term uses only a finite number of levels.
-Hence to reinterpret this term, we need to only provide
+Hence, to reinterpret this term, we need to only provide
 a finite number of universe models, which can together
 fit into some larger universe of a finite level. No
 universe polymorphism required! However, we now have to
 track the maximal level which appears in a term in our
 typing judgements.
 
-To interpret conversion rule, we start by first
-pinpointing the locations where conversion rule is
+To interpret the conversion rule, we start by first
+pinpointing the locations where the conversion rule is
 actually used; in order to do this ergonomically, we
 use bidirectional type checking. At the moment of
 conversion, interpretation has enough information to
@@ -96,7 +96,7 @@ this term, and all levels appearing in it are not above
 $\kappa$''. Terms have to have a boxed type to be
 reinterpreted. In the notation for modality and general
 typing discipline for it, we largely follow Gratzer et
-al \cite{Gratzer2019} with a few important differences
+al. \cite{Gratzer2019} with a few important differences
 discussed later. We also use $\Box$ to relax a ban on
 computations inside reinterpretation by allowing
 ``splicing'' boxed expressions into other boxed
@@ -171,7 +171,7 @@ $t$, $s$ : Term ::=
 \end{figure}
 
 Grammar rules given in Figure~\ref{twoltt-grammar}
-reflect discussion above. Note that there is no
+reflect the discussion above. Note that there is no
 separate type of models $\mathcal{M}$: instead of there
 being a single builtin type, there is a family of
 model types $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa}^{
@@ -193,7 +193,7 @@ recipe ``constructors are checked, eliminators are
 inferred'' is that levels of types are always inferred
 since we do not have cumulativity of universes and do
 not have a lifting operator, thus we cannot check
-levels of $\Sigma$ and $\Pi$. Also note that exact
+levels of $\Sigma$ and $\Pi$. Also note that the exact
 model type is always inferred, both in interpretation
 of types and in interpretation of terms: even though
 $\mathcal{M}$ would be some huge nested $\Sigma$-type,
@@ -454,16 +454,16 @@ boxed values from the ``outer world''.
 \subsection{Computation rules and models of dependent
 type theories}
 
-Note that discussion above was ambient to the choice of
+Note that the discussion above was ambient to the choice of
 formalism to present models. Now it is finally time to
 fix the formalism since we're going to need it to
 define the type of models $\mathcal{M}$.
 
-In line with current state of the art, we use
+In line with the current state of the art, we use
 Categories-with-Families \cite{castellan2020cwf} (or
 CwFs for short) as it is currently one of the most
 convenient frameworks to specify models of dependent
-type theories. Here is a self-contatined definition of
+type theories. Here is a self-contained definition of
 a category with families, given for clear reference in
 subsequent internalization:
 
@@ -543,7 +543,7 @@ self-containment reasons.}:
             \mathrm{Set}$. Given a morphism $\gamma:
             \Gamma\to_\mathcal{C}\Delta$ and a
             \textit{type} $T\in\mathrm{Ty}(\Delta)$,
-            element $\mathrm{Ty}(\gamma)(T)\in
+            the element $\mathrm{Ty}(\gamma)(T)\in
             \mathrm{Ty}(\Gamma)$ is usually written as
             $T[\gamma]$ for brevity.
         \item A \textit{presheaf of terms}
@@ -591,7 +591,7 @@ CwF for $\twoLTT$, then, has to include $\mathrm{Ty}$-
 and $\mathrm{Tm}$- formers for analogues of universes,
 $\Pi$- and $\Sigma$- types, natural numbers and
 identity types. Interpretation for $\Box_\ell$ is not
-needed since we succesfully prevented boxed types from
+needed since we successfully prevented boxed types from
 appearing inside boxed terms via rigid \faLock-ing
 discipline\footnote{That's also the reason we dubbed
 this system \textit{almost} reflective, since its
@@ -779,9 +779,9 @@ Section~\ref{global-elements}).
 \label{twoltt-comp}
 \end{figure}
 
-Also we need to give the rules for computing
+Also, we need to give the rules for computing
 reinterpretation; as it turns out,
-\textit{reinterpreting terms as-is} allows to define
+\textit{reinterpreting terms as-is} allows defining
 reinterpretation not as a redex, but rather as a couple
 of total functions on types and terms, just as it was in
 a non-dependently-typed case (Section~\ref{SSTLC}). To
@@ -794,13 +794,13 @@ terms and outputs an inferred type; both compute
 elements of corresponding $\mathrm{Tm}(\Gamma,\_)$-s
 from a CwF $m$. $m\llbracket\Gamma\vdash T\rrbracket$
 computes an element of $\mathrm{Ty}(\Gamma)$. Another
-auxiliary function is required to compute chain of
-equalities to handle conversion rule; this function has
+auxiliary function is required to compute the chain of
+equalities to handle the conversion rule; this function has
 two subtle points:
 
 \begin{itemize}
-    \item At this point, we don't know if system is
-        strongly normalizing yet, therefore we
+    \item At this point, we don't know if the system is
+        strongly normalizing yet; therefore, we
         potentially might encounter an infinite chain
         of equalities.
     \item In systems where equality is proof-relevant
@@ -816,7 +816,7 @@ and employ it in normalization. Since terms we reduce
 to find a witness are vanilla MLTT terms, they are
 strongly normalizing, so witness extraction terminates.
 
-Once again, definition of interpretation is highly
+Once again, the definition of interpretation is highly
 repetitive, so it is given in
 Appendix~\ref{interpretation-definition}.
 
@@ -827,7 +827,7 @@ Appendix~\ref{interpretation-definition}.
 Once again, we only try to make sure of the most
 essential properties: that computations are confluent,
 that types during computations are preserved, all
-computations terminate and that resulting type system
+computations terminate and that the resulting type system
 is a conservative extension of MLTT.
 
 \begin{theorem}[Church-Rosser theorem for $\twoLTT$]
@@ -981,7 +981,7 @@ is a conservative extension of MLTT.
     t:T$ for each closed $t$.
 \end{theorem}
 \begin{proof}
-    Take a universe at appropriate level as type of
+    Take a universe at an appropriate level as a type of
     contexts; $\mathrm{Ty}_\ell(\Gamma)=
     \Gamma\to\mathcal{U}_\ell$;
     $\mathrm{Tm}_\ell(\Gamma, T)=(\gamma:\Gamma)\to
@@ -999,7 +999,7 @@ is a conservative extension of MLTT.
     provide a much simpler proof which delegates
     normalization to another type system. To be more
     precise, this system $\mathcal{S}$ is Martin-L\"of
-    type theory with $\omega$ universes and; we know it
+    type theory with $\omega$ universes; we know it
     to be strongly normalizing
     \cite{coquand2019canonicity}. So we define a
     translation function $[\_]$ which transforms types
@@ -1013,13 +1013,13 @@ is a conservative extension of MLTT.
     type, one per model type occurring in a term.
 
     $[\_]_\text{\faUnlock}$ translates into application
-    of this function to identity model of fitting
+    of this function to an identity model of fitting
     level; interpretation translates into application.
 
     Note that $t\leadsto t'$ implies
     $[t]\leadsto^+[t']$; this concludes the proof since
     any infinite chain of reductions in our system
-    would imply an existence of infinite chain of
+    would imply the existence of an infinite chain of
     reductions in $\mathcal{S}$.
 \end{proof}
 
@@ -1038,11 +1038,11 @@ is a conservative extension of MLTT.
     has form $[\_]_\text{\faLock}$. Since $T$ is an MLTT
     type, every such locking is wrapped either in a
     $[\_]_\text{\faUnlock}$ or in a $\llbracket\_
-    \rrbracket$. Second case is a redex and is
+    \rrbracket$. The second case is a redex and is
     impossible in a normal form; $[\_]_\text{\faUnlock}$
     is possible only in a locked context, so that means
     that there's another $[\_]_\text{\faLock}$ above it.
-    Therefore $\mathrm{nf}(t)$ has no subterms of type
+    Therefore, $\mathrm{nf}(t)$ has no subterms of type
     $\Box_\kappa T$; then it has no unlocking and
     interpretation subterms and is an MLTT term and is
     typable in bidirectional MLTT (it is obtained from
@@ -1075,14 +1075,14 @@ single operator inside $\twoLTT$, for each
 $\kappa,\ell$, one can define displacement operators
 $\uparrow_\ell^\kappa:\mathcal{M}_{\kappa+0,
 \kappa+1,\ldots,\kappa+\ell}^{\kappa+1,\kappa+2,\ldots,
-\kappa+\ell+1}$ that shifts a boxed definition which
+\kappa+\ell+1}$ that shift a boxed definition which
 uses universes up to $\mathcal{U}_\ell$ by $\kappa$
 levels up. In this model, category of contexts basic
 presheaves are shifted by $\kappa$ in comparison to an
 identity model; all other term interpretations are
 identical to the ones given in an identity model.
 
-A bit more details on definition of
+A few more details on the definition of
 $\uparrow_\ell^\kappa$ are given in
 Appendix~\ref{twoltt-displacement-model-def}.
 
@@ -1116,7 +1116,7 @@ by Altenkirch and others
 \cite{Altenkirch:Parametricity2024}, thus result of the
 interpretation is a proper proof of a free theorem.
 
-A bit more details on definition of
+A few more details on the definition of
 $\mathrm{Para}_\ell$ are given in
 Appendix~\ref{twoltt-parametricity-model-def}.
 
@@ -1130,7 +1130,7 @@ $(\infty,1)$-categories, we can do \textit{synthetic
 mathematics} inside it: prove a theorem inside MLTT
 about types; interpret it in a model of MLTT and yield
 a proof about objects in that model. It is easy to see
-that reinterpretation operator we have in $\twoLTT$ is
+that the reinterpretation operator we have in $\twoLTT$ is
 sufficient to do synthetic mathematics in it and
 immediately apply results interpreted in a suitable
 model.
