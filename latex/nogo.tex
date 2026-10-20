@@ -100,9 +100,15 @@ the original term; if we restrict interpretation to
 compute on closed terms only, we can arrive at a sound
 system without requiring definitional equalities in
 models, as exemplified by our non-dependently typed
-system $\SSTLC$ described in Section~\ref{SSTLC}. For
-a dependently typed system, however, our no-go theorem
-leaves us with three options:
+system $\SSTLC$ described in Section~\ref{SSTLC}. And
+this, actually, is a well-known setup: under the same
+conditions (no dependent types + computation on closed
+terms), self-interpreters for System~T and
+System~F$\omega$ were developed \cite{brown2016breaking}
+\cite{bauer2016selfinterpreters}.
+
+For a dependently typed system, however, our no-go
+theorem leaves us with three options:
 
 \begin{enumerate}
     \item Restrict models to those where equalities hold
