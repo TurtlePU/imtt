@@ -20,7 +20,7 @@ the usage of reinterpretation, including (but not
 limited to) universe polymorphism, external
 parametricity and more. However, Conal's approach is
 more flexible since his translation to categories
-requires desired category to only implement primitives
+requires the desired category to only implement primitives
 actually used for translation of a particular term at
 hand.
 
@@ -34,7 +34,7 @@ typed at a lower universe level, lift all levels in a
 term by adding a constant shift $s$. From the point of
 view advocated by this paper, you can see it as an act
 of reinterpreting an expression in an internal model of
-type system where universe at level $i$ is interpreted
+a type system where the universe at level $i$ is interpreted
 as a universe at level $i+s$
 (Section~\ref{twoLTT-displacement}).
 
@@ -78,7 +78,7 @@ in Lean, extracting proofs done in MLTT applied to more
 specific categories. Thus our results in
 Section~\ref{twoLTT-synthetic} are close to the results shown in
 their paper. To add to that, their work is already
-implemented in practical proof assistant. Yet, our type
+implemented in a practical proof assistant. Yet our type
 system involves no metaprogramming since
 reinterpretation is internal to it, and it handles
 conversion rule. In addition, the focus is a bit
@@ -140,7 +140,7 @@ reinterpretation can be defined as follows.
     computation on types (if $T\to T'$, then
     $F[T]\to^* F[T']$) and computes as a primitive
     recursive function on normal forms of types.
-    Analogously, term with a hole
+    Analogously, a term with a hole
     $\llbracket\_\rrbracket$ is a modal computational
     reinterpretation of terms if it respects computation
     on terms, computes as a primitive recursive
@@ -149,7 +149,7 @@ reinterpretation can be defined as follows.
     $\Gamma\vdash\llbracket t\rrbracket:F[T]$.
 \end{definition}
 
-Maybe, this definition of reintrerpretation is ``nice''?
+Maybe this definition of reinterpretation is ``nice''?
 Regrettably, there's a no-go theorem which is similar to
 na\"{\i}ve version \ref{no-go} which holds in this case:
 
@@ -177,8 +177,8 @@ na\"{\i}ve version \ref{no-go} which holds in this case:
         \Gamma,x:\Box(S\to T),y:\Box\,S\vdash
             \llbracket K\,x\,y\rrbracket:F[T]
     \]
-    Since $K$ is atomic, term under interpretation is in
-    normal form, hence the whole term computes to
+    Since $K$ is atomic, the term under interpretation is in
+    normal form; hence the whole term computes to
     $\mathtt{app}\llbracket x\rrbracket \llbracket y
     \rrbracket$. Substituting $\mathrm{nec}\,
     \lambda x.t$ for $x$ and $\mathrm{nec}\,s$ for $y$,
@@ -194,8 +194,8 @@ na\"{\i}ve version \ref{no-go} which holds in this case:
     $\llbracket\mathrm{nec}(t[s/x])\rrbracket$.
 
     In a confluent type system with functions,
-    multi-step reduction commutes with substitution,
-    therefore two terms are definitionally equivalent.
+    multi-step reduction commutes with substitution;
+    therefore, two terms are definitionally equivalent.
 \end{proof}
 
 This, of course, doesn't prohibit us from using such a
@@ -218,12 +218,12 @@ is the following property:
 \end{theorem}
 
 We do not give a direct proof here, but the general idea
-is that any level higher than level of $T$ can only
+is that any level higher than the level of $T$ can only
 appear in some redex of $t$ or $T$. Then, if modalities
 were computational, it would be enough to use a single
 modality $\Box$ instead of using a family of modalities
 $\Box_\ell$: level of type under box would tell how many
-universe models do we need to provide.
+universe models we need to provide.
 
 But, again, it all comes down to defining the type of
 \textit{definitional} internal models.
@@ -236,13 +236,13 @@ constraining way specifically so that we wouldn't have
 to provide interpretation of this modality inside
 internal models. Once again, the problem is with terms
 that try to interpret variables from CwF context;
-simplest example is $\llbracket \lambda x.\llbracket x
+the simplest example is $\llbracket \lambda x.\llbracket x
 \rrbracket_1\rrbracket_2$. In order to be able to
-interpret such term, we would have to define \textit{
+interpret such a term, we would have to define \textit{
 what reinterpretation operator means inside an internal
 model}. This quickly gets out of hand: rather than just
-turning type of models into a (recursive? inductive?)
-type, type of models would become such a type that a
+turning the type of models into a (recursive? inductive?)
+type, the type of models would become such a type that a
 type of one of its fields depends on the value of the
 whole model. Actually, this happened before:
 Kolomatskaia et al. \cite{Kolomatskaia_Shulman_2025}
@@ -252,6 +252,6 @@ semi-simplicial types is defined coinductively in terms
 of values of itself\footnote{More generally, Shulman
 dubs such types \textit{modal codatatypes}
 \cite{shulman2026}.}. While defining type of models in
-similar vein could be an interesting development of type
+a similar vein could be an interesting development of the type
 system presented in this paper, we deem it out of scope
 for now.

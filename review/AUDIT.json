@@ -1,0 +1,2163 @@
+{
+  "decisions": [
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L5-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L5-S3-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L314-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "excluded-word"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L314-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "excluded-word"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L314-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L5",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L138",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L240",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L264",
+      "provider": "DeepL Write",
+      "decision": "ambiguous-source-edit"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L266",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L277",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L299",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L303",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L305",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L314",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L316",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/appendix.tex",
+      "id": "appendix-L393",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L3-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "manual-exclusion",
+      "reason": "Inserting a before plural type systems is ungrammatical."
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L3-S2-P2",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L21-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "manual-exclusion",
+      "reason": "The isolated rewrite breaks the parallel construction with incorporate."
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L21-S2-P2",
+      "provider": "Grazie cloud",
+      "decision": "manual-exclusion",
+      "reason": "The context requires witness, not withes."
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L21-S2-P3",
+      "provider": "Grazie cloud",
+      "decision": "excluded-word"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L38-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "ambiguous-source-edit"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L49-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L3",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L14",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L21",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L29",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L38",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L49",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/conclusion.tex",
+      "id": "conclusion-L53",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L5-S4-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L22-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L28-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L59-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L69-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L69-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L69-S1-P3",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L82-S4-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L173-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L185-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L185-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L185-S3-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L457-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L462-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L462-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L536-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L538-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L541-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L577-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L588-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L588-S2-P2",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L588-S3-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L611-S3-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L782-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L782-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L782-S1-P3",
+      "provider": "Grazie cloud",
+      "decision": "excluded-word"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L782-S4-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L802-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L802-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L819-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L827-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L827-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L838-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L838-S2-P2",
+      "provider": "Grazie cloud",
+      "decision": "no-safe-prose-edits"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L855-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "excluded-word"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L984-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L984-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L984-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L997-S3-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1015-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1019-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1019-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1034-S4-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1034-S4-P2",
+      "provider": "Grazie cloud",
+      "decision": "excluded-word"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1034-S5-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1085-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1119-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1126-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L5",
+      "provider": "DeepL Write",
+      "decision": "proper-name"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L22",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L28",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L39",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L43",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L53",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L59",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L69",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L82",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L173",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L185",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L203",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L234",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L457",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span",
+      "reason": "Relevant does not preserve the discussion being independent of the chosen model formalism."
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L462",
+      "provider": "DeepL Write",
+      "decision": "ambiguous-source-edit"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L471",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L476",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L483",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L496",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L501",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L508",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L519",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L525",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L536",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L538",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L541",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L549",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L556",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L577",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L588",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L611",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L782",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L802",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L806",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L813",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L819",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L827",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L834",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L838",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L844",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L848",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L855",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L929",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L934",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L946",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L954",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L971",
+      "provider": "DeepL Write",
+      "decision": "manual-exclusion",
+      "reason": "The source asserts additional analogous lemmas, rather than comparing the preceding lemma with them."
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L977",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L984",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L993",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L997",
+      "provider": "DeepL Write",
+      "decision": "proper-name"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1015",
+      "provider": "DeepL Write",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1019",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1027",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1034",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1057",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1064",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1085",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1092",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1101",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1119",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/dependently-typed.tex",
+      "id": "dependently-typed-L1126",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L5-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "no-safe-prose-edits"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L12-S4-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L12-S4-P2",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L27-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "proper-name"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L27-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L27-S2-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L68-S5-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L99-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L99-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L135-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L152-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L152-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L152-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L180-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L180-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L196-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L201-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L220-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L220-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "excluded-word"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L220-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L228-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L233-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L233-S3-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L233-S3-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L233-S4-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L233-S4-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L233-S6-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L233-S6-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L5",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L12",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L27",
+      "provider": "DeepL Write",
+      "decision": "proper-name"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L41",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L68",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L92",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L99",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L117",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L123",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L131",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L135",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L152",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L157",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L166",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L172",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L180",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L189",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L196",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L201",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L206",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L210",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L220",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L228",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/discussion.tex",
+      "id": "discussion-L233",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L14-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L49-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L62-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L84-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L91-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L101-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L3-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L3",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L14",
+      "provider": "DeepL Write",
+      "decision": "proper-name"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L26",
+      "provider": "DeepL Write",
+      "decision": "proper-name"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L49",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L62",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L84",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L91",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L101",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/intro.tex",
+      "id": "intro-L108",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/main.tex",
+      "id": "main-L48-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "manual-exclusion",
+      "reason": "TeX closing quotes are valid syntax, not extra punctuation."
+    },
+    {
+      "file": "latex/main.tex",
+      "id": "main-L48-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/main.tex",
+      "id": "main-L48-S3-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/main.tex",
+      "id": "main-L48",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L4-S4-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L4-S4-P2",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L32-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L49-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L87-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L93-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "manual-exclusion",
+      "reason": "The singular system requires is, not are."
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L98-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L148-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L4",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L20",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L23",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L32",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L49",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L59",
+      "provider": "DeepL Write",
+      "decision": "manual-exclusion",
+      "reason": "Deleting where breaks the continuation after the displayed theorem."
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L63",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L74",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L80",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L87",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L93",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L98",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L109",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L113",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L115",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L120",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L127",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/nogo.tex",
+      "id": "nogo-L148",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L16-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "no-safe-prose-edits"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L16-S2-P2",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L16-S4-P1",
+      "provider": "Grazie cloud",
+      "decision": "no-safe-prose-edits"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L35-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "no-safe-prose-edits"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L35-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L103-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L103-S1-P2",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L103-S3-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L336-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L355-S2-P1",
+      "provider": "Grazie cloud",
+      "decision": "overlaps-applied-correction"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L450-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L624-S1-P1",
+      "provider": "Grazie cloud",
+      "decision": "manual-exclusion",
+      "reason": "The subject gamma is a single substitution and requires is, not are."
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L6",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L16",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L35",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L37",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L50",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L61",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L62",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L66",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L77",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L92",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L103",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L111",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L118",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L133",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L139",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L173",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L225",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L229",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L259",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L269",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L286",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L336",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L349",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L355",
+      "provider": "DeepL Write",
+      "decision": "ambiguous-source-edit"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L450",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L463",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L467",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L521",
+      "provider": "DeepL Write",
+      "decision": "no-safe-prose-edits"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L523",
+      "provider": "DeepL Write",
+      "decision": "ambiguous-source-edit"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L529",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L533",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L538",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L543",
+      "provider": "DeepL Write",
+      "decision": "retained"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L547",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L552",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L580",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L588",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L592",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L601",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L605",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L609",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L615",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L624",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L632",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L636",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L644",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L647",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L651",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L655",
+      "provider": "DeepL Write",
+      "decision": "technical-terminology"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L658",
+      "provider": "DeepL Write",
+      "decision": "technical-edit-span"
+    },
+    {
+      "file": "latex/simply-typed.tex",
+      "id": "simply-typed-L667",
+      "provider": "DeepL Write",
+      "decision": "protected-content"
+    }
+  ],
+  "counts": {
+    "overlaps-applied-correction": 60,
+    "excluded-word": 7,
+    "retained": 27,
+    "technical-terminology": 79,
+    "technical-edit-span": 62,
+    "ambiguous-source-edit": 5,
+    "protected-content": 42,
+    "manual-exclusion": 8,
+    "no-safe-prose-edits": 6,
+    "proper-name": 6
+  },
+  "retained_passages": 27,
+  "applied_source_lines": 68,
+  "protected_names": [
+    "Pavel",
+    "Sokolov",
+    "Alexander",
+    "Kuklev",
+    "HSE",
+    "Radboud",
+    "Nijmegen",
+    "Nawrocki",
+    "Hua",
+    "Carneiro",
+    "Xu",
+    "Woolfson",
+    "Rong",
+    "Hazratpour",
+    "Awodey",
+    "Altenkirch",
+    "Thorsten",
+    "Chamoun",
+    "Yorgo",
+    "Kaposi",
+    "Ambrus",
+    "Shulman",
+    "Michael",
+    "Elliott",
+    "Conal",
+    "McBride",
+    "Conor",
+    "Richards",
+    "Bernardy",
+    "Jean-Philippe",
+    "Jansson",
+    "Patrik",
+    "Paterson",
+    "Ross",
+    "Lambek",
+    "Joachim",
+    "Favonia",
+    "Hou",
+    "Angiuli",
+    "Mullanix",
+    "Moggi",
+    "Clément",
+    "Despeyroux",
+    "Kahn",
+    "Castellan",
+    "Clairambault",
+    "Dybjer",
+    "Reynolds",
+    "Hofmann",
+    "Streicher",
+    "Rypacek",
+    "Kolomatskaia",
+    "Astra",
+    "Bezem",
+    "Coquand",
+    "Escardó",
+    "Howard",
+    "Abel",
+    "Aehlig",
+    "Amin",
+    "Rompf",
+    "Gratzer",
+    "Sterling",
+    "Birkedal",
+    "Felicissimo",
+    "Thiago",
+    "Clouston",
+    "Mannaa",
+    "Møgelberg",
+    "Pitts",
+    "Spitters",
+    "Hu",
+    "Pientka",
+    "Schöpp",
+    "Thibodeau",
+    "Ferreira",
+    "Zucchini",
+    "Cavallo",
+    "Harper",
+    "Jang",
+    "Kovács",
+    "Annenkov",
+    "Capriotti",
+    "Kraus",
+    "Sattler",
+    "Brown",
+    "Palsberg",
+    "Bauer",
+    "Kawata",
+    "Igarashi",
+    "Martin-Löf",
+    "Chapman",
+    "Norell",
+    "Gödel",
+    "Barras",
+    "Sozeau",
+    "Boulier",
+    "Forster",
+    "Tabareau",
+    "Winterhalter",
+    "Voevodsky",
+    "Kapulkin",
+    "Lumsdaine",
+    "Wadler",
+    "Atkey",
+    "Ghani",
+    "Johann",
+    "Krishnaswami",
+    "Dreyer",
+    "Watkins",
+    "Cervesato",
+    "Pfenning",
+    "Walker",
+    "Keller",
+    "Takahashi",
+    "Barendregt",
+    "Tait",
+    "Girard",
+    "Lafont",
+    "Taylor",
+    "Luo",
+    "Damas",
+    "Milner",
+    "Hindley",
+    "Kiselyov",
+    "Taha",
+    "Sheard",
+    "Dunfield",
+    "Öhman",
+    "Vezzosi",
+    "Adjedj",
+    "Lennon-Bertrand",
+    "Maillard",
+    "Pédrot",
+    "Pujet",
+    "Nanevski",
+    "Curry",
+    "Church",
+    "Rosser",
+    "Univalent Foundations Program",
+    "Agda Development Team"
+  ],
+  "protected_terms": [
+    "reinterpretation",
+    "reinterpretable",
+    "reflection",
+    "reflective",
+    "parametricity",
+    "displacement",
+    "category",
+    "categories",
+    "cartesian",
+    "closed",
+    "context",
+    "contexts",
+    "contextual",
+    "morphism",
+    "morphisms",
+    "presheaf",
+    "presheaves",
+    "comonad",
+    "modality",
+    "modalities",
+    "modal",
+    "locking",
+    "unlocking",
+    "lock",
+    "locks",
+    "splicing",
+    "splice",
+    "conversion",
+    "confluence",
+    "confluent",
+    "conservative",
+    "conservativity",
+    "recursive",
+    "recursion",
+    "primitive",
+    "synthetic",
+    "nominal",
+    "univalence",
+    "univalent",
+    "semisimplicial",
+    "semi-simplicial",
+    "bidirectional",
+    "checkable",
+    "inferrable",
+    "inferable",
+    "synthesizing",
+    "synthesising",
+    "typechecker",
+    "redex",
+    "redexes",
+    "formers",
+    "former",
+    "strict",
+    "strictly",
+    "deterministic",
+    "judgement",
+    "judgment",
+    "judgements",
+    "judgments",
+    "equality",
+    "equalities",
+    "propositional",
+    "propositionally",
+    "definitionally",
+    "external",
+    "internal",
+    "object-level",
+    "meta-level",
+    "set-theoretic",
+    "proof-theoretic",
+    "simply-typed",
+    "dependently-typed",
+    "subterm",
+    "subterms",
+    "non-cumulative",
+    "cumulative",
+    "box",
+    "boxed",
+    "normalizer",
+    "normaliser",
+    "normalizing",
+    "normalising",
+    "normalization",
+    "normalisation",
+    "soundness",
+    "termination",
+    "totality",
+    "weakening",
+    "neutral",
+    "neutrality",
+    "well-typed",
+    "well-formed",
+    "strongly",
+    "iff",
+    "identity",
+    "coherence",
+    "naturality",
+    "transport",
+    "transports",
+    "Universe",
+    "MLTT",
+    "STLC",
+    "CwF",
+    "CwFs",
+    "CCC",
+    "CCCs",
+    "HoTT",
+    "UIP",
+    "UA",
+    "GHC",
+    "Haskell",
+    "Agda",
+    "Lean",
+    "Coq",
+    "MetaOCaml",
+    "System",
+    "SST",
+    "NBG",
+    "MK",
+    "ZFC/S",
+    "implication",
+    "implications",
+    "such that",
+    "coinductively",
+    "inductive",
+    "countably",
+    "finite",
+    "infinitely",
+    "nonempty",
+    "empty",
+    "least",
+    "greatest",
+    "finitely",
+    "maximal",
+    "minimal",
+    "strictness",
+    "commutes",
+    "admissible",
+    "beta-reductions",
+    "weak-head",
+    "proof-relevant",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "witness",
+    "witnesses",
+    "datum",
+    "data",
+    "exponential",
+    "exponentials",
+    "covariant",
+    "contravariant",
+    "semantics",
+    "monomorphic",
+    "polymorphic",
+    "decidable",
+    "decidability",
+    "computes",
+    "computation",
+    "computational",
+    "interpreted",
+    "interprets",
+    "interpretation",
+    "interpretations",
+    "model",
+    "models",
+    "terminate",
+    "terminates",
+    "terminal",
+    "substitutions",
+    "substitute",
+    "substitutes"
+  ]
+}
