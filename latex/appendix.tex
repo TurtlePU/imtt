@@ -2,8 +2,6 @@
 \texorpdfstring{$\twoLTT$}{[[2]]LTT}}
 \label{twoltt-internal-model-def}
 
-TODO: finish
-
 A comprehension $[x:A,y:B,z:C]$ denotes
 a right-nested $\Sigma$-type. $\{x:A\}\to B$ is a
 syntactic sugar meaning that argument $x$ is always
@@ -42,7 +40,8 @@ $\eta$-equivalence, uniqueness properties are skipped.
     !:\{\Gamma\}\to\Gamma\triangleright\cdot,\\
 \end{array}\]
 
-\subsection{Common part for each level j}
+\subsection{Base type formers for each
+\texorpdfstring{$j$}{j}}
 
 \[\begin{array}{l}
     \mathrm{Ty}_j:\mathcal{C}\to\mathcal{U}_{\ell'_j},
@@ -90,73 +89,302 @@ $\eta$-equivalence, uniqueness properties are skipped.
     \mathrm{refl}:\{\Gamma\,T\}\to
         \{t\,t':\mathrm{Tm}_j\,\Gamma\,T\}\to
         t=t'\to\mathrm{Tm}_j\,\Gamma\,
-            (\mathrm{Id}\,T\,t\,t'),
+            (\mathrm{Id}\,T\,t\,t'),\\
+    \mathrm{Nat}[\,] : \{\sigma\}\to
+        \mathrm{Nat}_j[\sigma]=\mathrm{Nat}_j,\\
+    0[\,] : 0[\sigma]=0,\\
+    \mathrm S[\,] :
+        (\mathrm S\,t)[\sigma]=\mathrm S\,(t[\sigma]),\\
+    \mathrm{Id}[\,] :
+        (\mathrm{Id}\,T\,t\,t')[\sigma] =
+        \mathrm{Id}\,(T[\sigma])\,(t[\sigma])\,
+        (t'[\sigma]),\\
+    \mathrm{refl}[\,] :
+        (\mathrm{refl}\,e)[\sigma] =
+        \mathrm{refl}\,(\mathrm{ap}_{\_[\sigma]}\,e),
 \end{array}\]
 
-\subsection{Common part for each j less then k}
+\subsection{Universes, for each
+\texorpdfstring{$j<\kappa$}{j<k}}
+\[\begin{array}{l}
+    \mathrm U_j :
+        \{\Gamma\}\to\mathrm{Ty}_{j+1}\,\Gamma,\\
+    \mathrm U[\,] : \mathrm U_j[\sigma]=\mathrm U_j,\\
+    \mathrm{El} :
+        \{\Gamma\}\to\mathrm{Tm}_{j+1}\,
+        \Gamma\,\mathrm U_j\to\mathrm{Ty}_j\,\Gamma,\\
+    \mathrm{El}[\,] :
+        (\mathrm{El}\,t)[\sigma]=
+        \mathrm{El}\,(t[\sigma]),\\
+    \mathrm u_j : \{\Gamma\}\to\mathrm{Tm}_{j+2}\,
+        \Gamma\,\mathrm U_{j+1}\ \ (j+1<\kappa),\\
+    \mathrm{El/u} : \mathrm{El}\,\mathrm u_j =
+        \mathrm U_j,\\
+    \mathrm{nat}_j : \{\Gamma\}\to\mathrm{Tm}_{j+1}\,
+        \Gamma\,\mathrm U_j,\\
+    \mathrm{El/nat} :
+        \mathrm{El}\,\mathrm{nat}_j=\mathrm{Nat}_j,\\
+    \mathrm{id}_j :
+        \{\Gamma\}\to(a:\mathrm{Tm}\,\Gamma\,
+        \mathrm U_j)\to\mathrm{Tm}\,\Gamma\,(
+        \mathrm{El}\,a)\to\mathrm{Tm}\,\Gamma\,(
+        \mathrm{El}\,a)\to\mathrm{Tm}\,\Gamma\,
+        \mathrm U_j,\\
+    \mathrm{El/id} :
+        \mathrm{El}\,(\mathrm{id}_j\,a\,t\,t')=
+        \mathrm{Id}\,(\mathrm{El}\,a)\,t\,t',
+\end{array}\]
+together with naturality of $\mathrm u_j,\mathrm{nat}_j,\mathrm{id}_j$ under substitution.
 
-Here, definition of a model contains internalization of
-universes and of type family $\mathrm{El}$ at internal
-level $j+1$.
-
-\subsection{Common part for each i, j}
-
-Here, definition of a model contains eliminators for
-model of naturals and for model of an identity type;
-additionally, models of $\Pi$- and $\Sigma$- types for
-internal level $\max(i,j)$ are defined here.
+\subsection{\texorpdfstring{$\Pi$}{Pi},
+\texorpdfstring{$\Sigma$}{Sigma} and eliminators, for
+each \texorpdfstring{$i,j\le\kappa$}{i,j<=k}}
+\[\begin{array}{l}
+    \Pi : \{\Gamma\}\to(A:\mathrm{Ty}_i\,\Gamma)
+    \to\mathrm{Ty}_j\,(\Gamma.A)
+    \to\mathrm{Ty}_{i\sqcup j}\,\Gamma,\\
+    \Pi[\,] : (\Pi\,A\,B)[\sigma]=
+    \Pi\,(A[\sigma])\,(B[\sigma^+]),\\
+    \mathrm{lam} :
+    \mathrm{Tm}_j\,(\Gamma.A)\,B\to
+    \mathrm{Tm}_{i\sqcup j}\,\Gamma\,(\Pi\,A\,B),\\
+    \mathrm{app} :
+    \mathrm{Tm}\,\Gamma\,(\Pi\,A\,B)
+    \to(a:\mathrm{Tm}\,\Gamma\,A)
+    \to\mathrm{Tm}_j\,\Gamma\,(B[\overline a]),\\
+    \Pi\text{-}\beta : \mathrm{app}\,(\mathrm{lam}\,b)\,
+        a = b[\overline a],\\
+    \mathrm{lam}[\,] :
+        (\mathrm{lam}\,b)[\sigma]=
+        \mathrm{lam}\,(b[\sigma^+]),\\
+    \mathrm{app}[\,] :
+        (\mathrm{app}\,f\,a)[\sigma]=
+        \mathrm{app}\,(f[\sigma])\,(a[\sigma]),\\
+    \mathrm{pi} : (a:\mathrm{Tm}\,\Gamma\,\mathrm U_i)
+    \to\mathrm{Tm}\,(\Gamma.\mathrm{El}\,a)\,
+    \mathrm U_j\to\mathrm{Tm}\,\Gamma\,
+    \mathrm U_{i\sqcup j}\ (i,j<\kappa),\\
+    \mathrm{El/pi} : \mathrm{El}\,(\mathrm{pi}\,a\,b)=
+    \Pi\,(\mathrm{El}\,a)\,(\mathrm{El}\,b),\\
+    \Sigma : \{\Gamma\}\to(A:\mathrm{Ty}_i\,\Gamma)
+    \to\mathrm{Ty}_j\,(\Gamma.A)
+    \to\mathrm{Ty}_{i\sqcup j}\,\Gamma,\\
+    \Sigma[\,] : (\Sigma\,A\,B)[\sigma]=
+    \Sigma\,(A[\sigma])\,(B[\sigma^+]),\\
+    \mathrm{pair} : (a:\mathrm{Tm}\,\Gamma\,A)\to
+        \mathrm{Tm}\,\Gamma\,(B[\overline a])\to
+        \mathrm{Tm}\,\Gamma\,(\Sigma\,A\,B),\\
+    \mathrm{fst} : \mathrm{Tm}\,\Gamma\,(\Sigma\,A\,B)
+        \to\mathrm{Tm}\,\Gamma\,A,\\
+    \mathrm{snd} : (s:\mathrm{Tm}\,\Gamma\,
+        (\Sigma\,A\,B))\to\mathrm{Tm}\,\Gamma\,
+        (B[\overline{\mathrm{fst}\,s}]),\\
+    \Sigma\text{-}\beta_1 :
+        \mathrm{fst}\,(\mathrm{pair}\,a\,b)=a,\\
+    \Sigma\text{-}\beta_2 :
+        \mathrm{snd}\,(\mathrm{pair}\,a\,b)=b,\\
+    \mathrm{sigma},\ \mathrm{El/sigma},
+    \ \mathrm{pair}[\,],\ \mathrm{fst}[\,],
+    \ \mathrm{snd}[\,]\ \text{analogous},\\
+    \mathrm{natind} :
+        (M:\mathrm{Ty}_i\,(\Gamma.\mathrm{Nat}_j))
+        \to\mathrm{Tm}\,\Gamma\,(M[\overline 0])
+        \to\mathrm{Tm}\,(\Gamma.\mathrm{Nat}_j.M)\,
+        (M[\langle p\circ p,\ \mathrm S\,(q[p])\rangle])
+        \to\\\qquad
+        \to(n:\mathrm{Tm}\,\Gamma\,\mathrm{Nat}_j)
+        \to\mathrm{Tm}_i\,\Gamma\,(M[\overline n]),\\
+    \mathrm{Nat}\text{-}\beta_0 :
+        \mathrm{natind}\,M\,z\,s\,0=z,\\
+    \mathrm{Nat}\text{-}\beta_{\mathrm S} :
+        \mathrm{natind}\,M\,z\,s\,(\mathrm S\,n)=
+        s[\langle\overline n,\ \mathrm{natind}\,M\,z\,s
+        \,n\rangle],\\
+    \mathrm{natind}[\,],\\
+    \mathrm J : (T:\mathrm{Ty}_j\,\Gamma)
+        (t:\mathrm{Tm}\,\Gamma\,T)
+        (M:\mathrm{Ty}_i\,(\Gamma.T.
+            \mathrm{Id}\,(T[p])\,(t[p])\,q))
+        \to\mathrm{Tm}\,\Gamma\,
+            (M[\langle\overline t,\mathrm{refl}\rangle])
+            \to\\
+        \qquad\to(t':\mathrm{Tm}\,\Gamma\,T)
+        (e:\mathrm{Tm}\,\Gamma\,(\mathrm{Id}\,T\,t\,t'))
+        \to\mathrm{Tm}_i\,\Gamma\,
+        (M[\langle\overline{t'},e\rangle]),\\
+    \mathrm{Id}\text{-}\beta :
+        \mathrm J\,T\,t\,M\,r\,t\,\mathrm{refl}=
+        r,\\ \mathrm J[\,],
+\end{array}\]
 
 \subsection{End of definition of a model type}
 
 \[{]}\]
 
-\section{Parts of a definition of a displacement model}
+\section{Interpretation procedures}
+\label{interpretation-definition}
+
+\paragraph{Contexts and variables.}
+\begin{align*}
+m\llbracket\cdot\rrbracket &= m.\cdot &
+m\llbracket\Delta, x:T\rrbracket &=
+    m\llbracket\Delta\rrbracket\,.\,
+    m\llbracket\Delta\vdash T\rrbracket\\
+m\llbracket\Delta,x:T\vdash x\Rightarrow\rrbracket&=
+    (q,\; T) &
+m\llbracket\Delta, y:S \vdash x\Rightarrow\rrbracket &=
+    (u[p],\; T)\ \text{ where }
+(u,T)=m\llbracket\Delta\vdash x\Rightarrow\rrbracket
+\end{align*}
+(the second component is the syntactic $T$; its
+interpretation is weakened by $\mathrm{wk}_m$, see
+below).
+
+\paragraph{Types.}
+\begin{align*}
+m\llbracket\Delta\vdash \mathcal U_j\rrbracket &=
+    \mathrm U_j \\
+m\llbracket\Delta\vdash \mathrm{Nat}_j\rrbracket &=
+    \mathrm{Nat}_j\\
+m\llbracket\Delta\vdash \mathrm{El}(t)\rrbracket &=
+    \mathrm{El}\big(\pi_1\,m\llbracket\Delta\vdash
+        t\Rightarrow\rrbracket\big) \\
+m\llbracket\Delta\vdash t_1 =_T t_2\rrbracket &=
+\mathrm{Id}\big(m\llbracket\Delta\vdash T\rrbracket,\,
+m\llbracket\Delta\vdash t_1\Leftarrow T\rrbracket,\,
+m\llbracket\Delta\vdash t_2\Leftarrow T\rrbracket\big)\\
+m\llbracket\Delta\vdash (x:S)\times T\rrbracket &=
+\Sigma\big(m\llbracket\Delta\vdash S\rrbracket,
+\ m\llbracket\Delta,x:S\vdash T\rrbracket\big)\\
+m\llbracket\Delta\vdash (x:S)\to T\rrbracket &=
+\Pi\big(m\llbracket\Delta\vdash S\rrbracket,
+\ m\llbracket\Delta,x:S\vdash T\rrbracket\big)
+\end{align*}
+$\square_\kappa T$ and $t\llbracket T\rrbracket$ cannot occur under a lock and need no clause.
+
+\paragraph{Checked terms.} Whenever a rule demands a type of a particular shape, the type is first brought to weak head normal form by the fixed strategy and a transport along $\mathrm{eq}_m$ is inserted; we write $t \Leftarrow^{\!*} T$ for this.
+\begin{align*}
+m\llbracket\Delta\vdash 0 \Leftarrow^{\!*} \mathrm{Nat}_j\rrbracket &= 0 \\
+m\llbracket\Delta\vdash \mathrm S\,t \Leftarrow^{\!*} \mathrm{Nat}_j\rrbracket &= \mathrm S\,m\llbracket\Delta\vdash t\Leftarrow \mathrm{Nat}_j\rrbracket\\
+m\llbracket\Delta\vdash (s,t) \Leftarrow^{\!*} (x:S)\times T\rrbracket &= \mathrm{pair}\big(m\llbracket\Delta\vdash s\Leftarrow S\rrbracket,\ m\llbracket\Delta\vdash t\Leftarrow T[(s:S)/x]\rrbracket\big)\\
+m\llbracket\Delta\vdash \lambda x.t \Leftarrow^{\!*} (x:S)\to T\rrbracket &= \mathrm{lam}\big(m\llbracket\Delta,x:S\vdash t\Leftarrow T\rrbracket\big)\\
+m\llbracket\Delta\vdash \mathrm{refl} \Leftarrow^{\!*} t_1 =_T t_2\rrbracket &= \mathrm{refl}\big(\mathrm{eq}_m(\Delta; t_1, t_2)\big)\\
+m\llbracket\Delta\vdash t \Leftarrow T\rrbracket &= \mathrm{tr}_{\mathrm{Tm}\,m\llbracket\Delta\rrbracket}\big(\mathrm{eq}_m(\Delta; S, T),\ u\big) \\
+   &\text{where } (u,S)=m\llbracket\Delta\vdash t\Rightarrow\rrbracket \quad(\textsc{Check-Inferred})
+\end{align*}
+
+\paragraph{Synthesising terms.} Below $(u,S)=m\llbracket\Delta\vdash t\Rightarrow\rrbracket$, $\mathrm{whnf}(S)$ is matched against the required shape, and $u^{\dagger}$ denotes $u$ transported along $\mathrm{eq}_m(\Delta;S,\mathrm{whnf}(S))$.
+\begin{align*}
+m\llbracket\Delta\vdash \mathtt U_\kappa\Rightarrow\rrbracket &= (\mathrm u_\kappa,\ \mathcal U_{\kappa+1}) \\
+m\llbracket\Delta\vdash \mathtt{Nat}_\kappa\Rightarrow\rrbracket &= (\mathrm{nat}_\kappa,\ \mathcal U_\kappa)\\
+m\llbracket\Delta\vdash \mathtt{Pi}(x:s)t\Rightarrow\rrbracket &= \big(\mathrm{pi}(a, b),\ \mathcal U_{j\sqcup\kappa}\big)\\
+ &\text{with } (a,\mathcal U_j) \leftarrow m\llbracket\Delta\vdash s\Rightarrow\rrbracket,\ (b,\mathcal U_\kappa) \leftarrow m\llbracket\Delta,x:\mathrm{El}(s)\vdash t\Rightarrow\rrbracket\\
+m\llbracket\Delta\vdash \mathtt{Sigma}(x:s)t\Rightarrow\rrbracket &= \big(\mathrm{sigma}(a,b),\ \mathcal U_{j\sqcup\kappa}\big) \\ &\text{likewise}\\
+m\llbracket\Delta\vdash \mathtt{Id}\,t\,t_1\,t_2\Rightarrow\rrbracket &= \big(\mathrm{id}(a, e_1, e_2),\ \mathcal U_\kappa\big)\\
+&(a,\mathcal U_\kappa) \leftarrow m\llbracket\Delta\vdash t\Rightarrow\rrbracket,\ e_i = m\llbracket\Delta\vdash t_i\Leftarrow\mathrm{El}(t)\rrbracket\\
+m\llbracket\Delta\vdash t\,s\Rightarrow\rrbracket &= \big(\mathrm{app}(u^\dagger, a)^{\,\mathrm{sub}},\ T[(s:S')/x]\big)
+ \\ &\mathrm{whnf}(S)=(x:S')\to T,\ a=m\llbracket\Delta\vdash s\Leftarrow S'\rrbracket\\
+m\llbracket\Delta\vdash \pi_1 t\Rightarrow\rrbracket &= (\mathrm{fst}\,u^\dagger,\ S') \\ &\mathrm{whnf}(S)=(x:S')\times T\\
+m\llbracket\Delta\vdash \pi_2 t\Rightarrow\rrbracket &= \big((\mathrm{snd}\,u^\dagger)^{\mathrm{sub}},\ T[(\pi_1 t)/x]\big)\\
+m\llbracket\Delta\vdash \mathrm{natind}_{x.T}\,t\,\{s_0,s_{\mathrm S}\}\Rightarrow\rrbracket &=
+ \big(\mathrm{natind}(M, z, s, u^\dagger)^{\mathrm{sub}},\ T[t/x]\big)\\
+ & M = m\llbracket\Delta,x:\mathrm{Nat}_\kappa\vdash T\rrbracket,\ z = m\llbracket\Delta\vdash s_0\Leftarrow T[0/x]\rrbracket,\\
+ & s = m\llbracket\Delta,y:\mathrm{Nat}_\kappa, z:T[y/x]\vdash s_{\mathrm S}\,y\,z \Leftarrow T[\mathrm S y/x]\rrbracket\\
+m\llbracket\Delta\vdash \mathrm J_{xy.S}\,t\,s\Rightarrow\rrbracket &= \big(\mathrm J(A, e_1, M, r, e_2, u^\dagger)^{\mathrm{sub}},\ S[(t_2:T)/x, t/y]\big)
+ \\ & \mathrm{whnf}(S_t) = t_1 =_T t_2,\ A = m\llbracket\Delta\vdash T\rrbracket,\ e_i = m\llbracket\Delta\vdash t_i\Leftarrow T\rrbracket,\\
+ & M = m\llbracket\Delta,x:T,y:t_1=_Tx\vdash S\rrbracket,\ r = m\llbracket\Delta\vdash s\Leftarrow S[t_1/x,\mathrm{refl}/y]\rrbracket\\
+m\llbracket\Delta\vdash (t:T)\Rightarrow\rrbracket &= \big(m\llbracket\Delta\vdash t\Leftarrow T\rrbracket,\ T\big)
+\end{align*}
+The superscript $(\_)^{\mathrm{sub}}$ is a transport along the \emph{substitution lemma}
+\[
+\mathrm{sub}_m :\ m\llbracket\Delta,x:S\vdash T\rrbracket[\overline{m\llbracket\Delta\vdash s\Leftarrow S\rrbracket}] \;=\; m\llbracket\Delta\vdash T[(s:S)/x]\rrbracket
+\]
+(and its weakening instance $\mathrm{wk}_m$), proved by induction on $T$ from the naturality equations $\mathrm{sub/id}$, $\mathrm{sub/comp}$, $\Pi[\,]$, $\Sigma[\,]$, $\mathrm{Id}[\,]$, $\mathrm{El}[\,]$, $\mathrm{U}[\,]$, $\mathrm{Nat}[\,]$ of the model; it is a closed meta-level term and is computed, not postulated.
+
+\paragraph{Equality witnesses.} For $a \equiv b$ (both types, or both terms of the same type), with $\leadsto_{\mathrm s}$ the deterministic strict strategy:
+\[
+\mathrm{eq}_m(\Delta; a, b) =
+\begin{cases}
+\mathrm{refl} & a =_\alpha b,\\
+\mathrm{trans}\big(\mathrm{step}_m(\Delta; a\leadsto_{\mathrm s} a'),\ \mathrm{eq}_m(\Delta; a', b)\big) & a \leadsto_{\mathrm s} a',\\
+\mathrm{sym}\,\mathrm{eq}_m(\Delta; b, a) & a \text{ normal}, b \text{ not}.
+\end{cases}
+\]
+$\mathrm{step}_m$ maps the contracted redex to the corresponding model equation — $\Pi$-$\beta$, $\Sigma$-$\beta_i$, $\mathrm{Nat}$-$\beta_{0/\mathrm S}$, $\mathrm{Id}$-$\beta$, the $\mathrm{El}$-equations, $\mathrm{refl}$ for $(t:T)\leadsto t$ — composed with $\mathrm{sub}_m$ where the redex substitutes, and placed under the surrounding term formers by $\mathrm{ap}$ (interpretation of a former is a meta-level function of the interpretations of its immediate subterms, so congruence is $\mathrm{ap}$). Termination: the argument of the recursive call is strictly closer to normal form, and $a,b$ are MLTT terms, hence strongly normalising; well-definedness: convertible normal MLTT terms are $\alpha$-equal (confluence; no $\eta$).
+
+Note a nice property: under the identity model
+$I_\ell$ all equations used by $\mathrm{step}_m$ and
+$\mathrm{sub}_m$ are $\mathrm{refl}$, so all transports
+vanish and $I_\ell\llbracket\Delta\vdash t\Leftarrow T
+\rrbracket$ is the standard shallow embedding of $t$.
+
+\section{Definition of a displacement model}
 \label{twoltt-displacement-model-def}
 
-TODO: finish
-
 \[\begin{array}{ll}
-    \uparrow_\ell^\kappa\;=&[\\
-        &\mathcal{C}=\mathcal{U}_{\ell+\kappa},
-        \triangleright=(\to),
-        \mathrm{id}=\lambda x.x,
-        \circ=\lambda fgx.f(gx),
-        \mathrm{id-}\circ=\mathrm{refl},
-        \circ\mathrm{-id}=\mathrm{refl},\\
-        &\ldots,\\
-        &\mathrm{Ty}_j=\lambda\Gamma.\Gamma\to
-            \mathcal{U}_{j+\kappa},
-        \mathrm{Tm}_j=\lambda\Gamma\,f.
-            (\gamma:\Gamma)\to\,f\,\gamma,\\
-        &\ldots\\
-    &]
+    \uparrow^{\kappa}_{\ell} = &[\;
+\mathcal C = \mathcal U_{\ell+\kappa},\quad
+\Gamma\triangleright\Delta = \Gamma\to\Delta,\quad
+\mathrm{id}=\lambda x.x,\quad f\circ g=\lambda x.f(gx),\quad
+\cdot = \top,\quad {!}=\lambda\_.(),\\
+&\mathrm{Ty}_j\,\Gamma=\Gamma\to\mathcal U_{j+\kappa},\quad T[\sigma]=\lambda\gamma.T(\sigma\gamma),\quad
+\mathrm{Tm}_j\,\Gamma\,T=(\gamma:\Gamma)\to T\gamma,\quad t[\sigma]=\lambda\gamma.t(\sigma\gamma),\\
+&\Gamma.T=(\gamma:\Gamma)\times T\gamma,\quad p=\pi_1,\quad q=\pi_2,\quad \langle\sigma,t\rangle=\lambda\delta.(\sigma\delta,t\delta),\\
+&\mathrm{Nat}_j=\lambda\_.\mathrm{Nat}_{j+\kappa},\quad 0=\lambda\_.0,\quad \mathrm S\,t=\lambda\gamma.\mathrm S(t\gamma),\\
+&\mathrm{natind}\,M\,z\,s\,n=\lambda\gamma.\mathrm{natind}_{x.M(\gamma,x)}(n\gamma)\{z\gamma,\ \lambda y\,r.\,s((\gamma,y),r)\},\\
+&\mathrm{Id}\,T\,t\,t'=\lambda\gamma.(t\gamma=_{T\gamma}t'\gamma),\quad \mathrm{refl}\,e=\lambda\gamma.\mathrm{tr}(e,\mathrm{refl}),\quad
+\mathrm J\,T\,t\,M\,r\,t'\,e=\lambda\gamma.\mathrm J_{xy.M((\gamma,x),y)}(e\gamma)(r\gamma),\\
+&\mathrm U_j=\lambda\_.\mathcal U_{j+\kappa},\quad \mathrm{El}\,t=\lambda\gamma.\mathrm{El}(t\gamma),\quad
+\mathrm u_j=\lambda\_.\mathtt U_{j+\kappa},\quad \mathrm{nat}_j=\lambda\_.\mathtt{Nat}_{j+\kappa},\\
+&\mathrm{pi}\,a\,b=\lambda\gamma.\mathtt{Pi}(x:a\gamma)\,b(\gamma,x),\quad
+\mathrm{sigma}\,a\,b=\lambda\gamma.\mathtt{Sigma}(x:a\gamma)\,b(\gamma,x),\\
+&\mathrm{id}_j\,a\,t\,t'=\lambda\gamma.\mathtt{Id}\,(a\gamma)\,(t\gamma)\,(t'\gamma),\\
+&\Pi\,A\,B=\lambda\gamma.(x:A\gamma)\to B(\gamma,x),\quad \mathrm{lam}\,b=\lambda\gamma\,x.b(\gamma,x),\quad \mathrm{app}\,f\,a=\lambda\gamma.f\gamma(a\gamma),\\
+&\Sigma\,A\,B=\lambda\gamma.(x:A\gamma)\times B(\gamma,x),\quad \mathrm{pair}\,a\,b=\lambda\gamma.(a\gamma,b\gamma),\\
+&\mathrm{fst}\,s=\lambda\gamma.\pi_1(s\gamma),\quad \mathrm{snd}\,s=\lambda\gamma.\pi_2(s\gamma),\\
+&\text{all equations}=\mathrm{refl}
+\;]
 \end{array}
 \]
 
-\section{Parts of a definition of a parametricity model}
+\section{Definition of a parametricity model}
 \label{twoltt-parametricity-model-def}
 
-TODO: finish
-
 \[\begin{array}{ll}
-    \mathrm{Para}_\ell\;=&[\\
-        &\mathcal{C}=
-            (\Gamma\,\Gamma':\mathcal{U}_{\ell+1})
-            \times(\Gamma\to\Gamma'\to
-                \mathcal{U}_{\ell+1}),\\
-        &\triangleright=\lambda(\Gamma,\Gamma',Q)
-            (\Delta,\Delta',R).(f:\Gamma\to\Delta)
-                \times(f':\Gamma'\to\Delta')
-                \times((\gamma\,\gamma')\to
-                    Q\,\gamma\,\gamma'\to
-                    R\,(f\,\gamma)\,(f'\,\gamma')),\\
-        &\mathrm{id}=
-            (\lambda x.x,\lambda x.x,\lambda x.x),\\
-        &\circ=\lambda (f,f',q)(g,g',r)(x,x',s).
-            (f(g(x)), f'(g'(x')), q(r(s))),\\
-        &\mathrm{id-}\circ=\mathrm{refl},
-        \circ\mathrm{-id}=\mathrm{refl},\\
-        &\ldots,\\
-    &]
+    \mathrm{Para}_\ell = &[\;
+\mathcal C=(\Gamma_0\ \Gamma_1:\mathcal U_{\ell+1})\times(\Gamma_0\to\Gamma_1\to\mathcal U_{\ell+1}),\\
+&(\Gamma_0,\Gamma_1,\Gamma_r)\triangleright(\Delta_0,\Delta_1,\Delta_r)=\\ &\qquad=(f_0:\Gamma_0\to\Delta_0)\times(f_1:\Gamma_1\to\Delta_1)\times
+ \big((\gamma_0\,\gamma_1)\to\Gamma_r\,\gamma_0\,\gamma_1\to\Delta_r\,(f_0\gamma_0)\,(f_1\gamma_1)\big),\\
+&\mathrm{id}=(\lambda x.x,\lambda x.x,\lambda\_\_\,r.r),\\
+&(f_0,f_1,f_r)\circ(g_0,g_1,g_r)=(f_0\circ g_0,\ f_1\circ g_1,\ \lambda\gamma_0\gamma_1 r.f_r\,\_\,\_\,(g_r\,\gamma_0\,\gamma_1\,r)),\\
+&\cdot=(\top,\top,\lambda\_\_.\top),\\
+&\mathrm{Ty}_j\,(\Gamma_0,\Gamma_1,\Gamma_r)=\\&\qquad=
+(A_0:\Gamma_0\to\mathcal U_j)\times(A_1:\Gamma_1\to\mathcal U_j)\times\\&\qquad\quad\times
+ \big((\gamma_0\,\gamma_1)(\gamma_r:\Gamma_r\gamma_0\gamma_1)\to A_0\gamma_0\to A_1\gamma_1\to\mathcal U_j\big),\\
+&\mathrm{Tm}_j\,\Gamma\,(A_0,A_1,A_r)=\\&\qquad=(t_0:(\gamma_0:\Gamma_0)\to A_0\gamma_0)\times(t_1:(\gamma_1:\Gamma_1)\to A_1\gamma_1)\times\\&\qquad\quad\times
+ \big((\gamma_0\,\gamma_1\,\gamma_r)\to A_r\,\gamma_0\gamma_1\gamma_r\,(t_0\gamma_0)\,(t_1\gamma_1)\big),\\
+&\Gamma.A=\big((\gamma_0:\Gamma_0)\times A_0\gamma_0,\ (\gamma_1:\Gamma_1)\times A_1\gamma_1,\\&\qquad
+ \lambda(\gamma_0,a_0)(\gamma_1,a_1).(\gamma_r:\Gamma_r\gamma_0\gamma_1)\times A_r\,\gamma_0\gamma_1\gamma_r\,a_0\,a_1\big),\\
+&p=(\pi_1,\pi_1,\lambda\_\_.\pi_1),\quad q=(\pi_2,\pi_2,\lambda\_\_.\pi_2),\\
+&\langle\sigma,t\rangle=(\lambda\delta.(\sigma_0\delta,t_0\delta),\ \lambda\delta.(\sigma_1\delta,t_1\delta),\
+ \lambda\delta_0\delta_1\delta_r.(\sigma_r\,\delta_0\delta_1\delta_r,\ t_r\,\delta_0\delta_1\delta_r)),\\
+&\mathrm U_j=(\lambda\_.\mathcal U_j,\ \lambda\_.\mathcal U_j,\ \lambda\_\_\_\,A_0\,A_1.\,A_0\to A_1\to\mathcal U_j),\\
+&\mathrm{El}\,(t_0,t_1,t_r)=(\lambda\gamma_0.\mathrm{El}(t_0\gamma_0),\ \lambda\gamma_1.\mathrm{El}(t_1\gamma_1),\ t_r),\\
+&\mathrm{Nat}_j=(\lambda\_.\mathrm{Nat}_j,\ \lambda\_.\mathrm{Nat}_j,\ \lambda\_\_\_\,m\,n.\,m=_{\mathrm{Nat}_j}n),\\
+&0=(\lambda\_.0,\lambda\_.0,\lambda\_\_\_.\mathrm{refl}),\quad
+\mathrm S\,t=(\lambda\gamma.\mathrm S(t_0\gamma),\ \lambda\gamma.\mathrm S(t_1\gamma),\ \lambda\gamma_0\gamma_1\gamma_r.\mathrm{ap}_{\mathrm S}(t_r\,\gamma_0\gamma_1\gamma_r)),\\
+&\Pi\,A\,B=\big(\lambda\gamma_0.(x_0:A_0\gamma_0)\to B_0(\gamma_0,x_0),\ \lambda\gamma_1.(x_1:A_1\gamma_1)\to B_1(\gamma_1,x_1),\\
+&\qquad\quad \lambda\gamma_0\gamma_1\gamma_r\,f_0\,f_1.(x_0\,x_1)(x_r:A_r\,\gamma_0\gamma_1\gamma_r\,x_0\,x_1)\to\\&\qquad\to B_r\,(\gamma_0,x_0)(\gamma_1,x_1)(\gamma_r,x_r)\,(f_0x_0)\,(f_1x_1)\big),\\
+&\mathrm{lam}\,b=(\lambda\gamma_0x_0.b_0(\gamma_0,x_0),\ \lambda\gamma_1x_1.b_1(\gamma_1,x_1),\ \lambda\gamma_0\gamma_1\gamma_rx_0x_1x_r.b_r(\gamma_0,x_0)(\gamma_1,x_1)(\gamma_r,x_r)),\\
+&\mathrm{app}\,f\,a=(\lambda\gamma_0.f_0\gamma_0(a_0\gamma_0),\ \lambda\gamma_1.f_1\gamma_1(a_1\gamma_1),\ \lambda\gamma_0\gamma_1\gamma_r.f_r\,\gamma_0\gamma_1\gamma_r\,(a_0\gamma_0)(a_1\gamma_1)(a_r\gamma_0\gamma_1\gamma_r)),\\
+&\Sigma\,A\,B=\big(\lambda\gamma_0.(x_0:A_0\gamma_0)\times B_0(\gamma_0,x_0),\ \dots,\
+ \lambda\gamma_0\gamma_1\gamma_r\,s_0\,s_1.\\
+ &\qquad\quad(x_r:A_r\,\gamma_0\gamma_1\gamma_r\,(\pi_1s_0)(\pi_1s_1))\times B_r\,\_\,\_\,(\gamma_r,x_r)\,(\pi_2s_0)(\pi_2s_1)\big),\\
+&\mathrm{Id}\,A\,t\,t'=\big(\lambda\gamma_0.t_0\gamma_0=t_0'\gamma_0,\ \lambda\gamma_1.t_1\gamma_1=t_1'\gamma_1,\
+ \\&\qquad\lambda\gamma_0\gamma_1\gamma_r\,e_0\,e_1.\ \mathrm{tr}^{A_r\gamma_0\gamma_1\gamma_r}_{e_0,e_1}(t_r\,\gamma_0\gamma_1\gamma_r)=t'_r\,\gamma_0\gamma_1\gamma_r\big),\\
+&\mathrm{refl}\,e=(\dots,\mathrm{refl},\mathrm{refl}),\\
+&\mathrm u_j,\ \mathrm{nat}_j,\ \mathrm{pi},\ \mathrm{sigma},\ \mathrm{id}_j,\ \mathrm{natind},\ \mathrm J:\ \text{componentwise},\\
+&\text{all equations}=\mathrm{refl}
+\;]
 \end{array}
 \]

@@ -4,40 +4,47 @@ An idea that a ``type theory should eat itself'' is a
 well-established concept in study of dependent type
 theory. Under this guise, if a type theory is presented
 as a ``full-scale system for constructive mathematics``
-[CITE], then it should be capable of proving its own
-metatheoretical properties. For example, in a paper
-bearing the same name [CITE], the author presents a
-normalizer for type theory written in Agda [CITE].
+\cite{martinlof1984intuitionistic,
+martinlof1982constructive}, then it should be capable of
+proving its own metatheoretical properties. For example,
+in a paper bearing the same name \cite{chapman2009type},
+the author presents a normalizer for type theory written
+in Agda \cite{norell2007towards,agda2024manual}.
 
-Of course, G\"odel's incompleteness theorems [CITE]
-still apply in a constructive context, so na\"ively
-proving self-consistency of a type system supporting
-primitive recursion and induction is out of question.
-What is usually proven instead is that a particular
-implementation of a type theory inside itself is sound
-assuming the consistency of the theory, so no paradox
-arises [CITE] [CITE]; this is still useful because it
-leads to the phenomena of \emph{certified proof
-assistants}.
+Of course, G\"odel's incompleteness theorems
+\cite{godel1931formal} still apply in a constructive
+context, so na\"ively proving self-consistency of a type
+system supporting primitive recursion and induction is
+out of question. What is usually proven instead is that
+a particular implementation of a type theory inside
+itself is sound assuming the consistency of the theory,
+so no paradox arises \cite{barras1999autovalidation,
+sozeau2020coqcoqcorrect,carneiro2024lean4lean}; this is
+still useful because it leads to the phenomena of
+\emph{certified proof assistants}.
 
 Another possible approach is to work in a two-level type
-theory [CITE]. As the name implies, such a theory
-consists of two levels: the lower \emph{object} level is
-the main type theory, and a higher \emph{meta} level is
-used to internalize statements about object level which
-are external to it. A classical example given in the
-cited paper is a construction of a \emph{semisimplicial
-type of level $n$} for each external $n\in\mathbb{N}$;
-object level here is homotopy type theory (HoTT) with
-univalence axiom (UA) [CITE] and meta level is
-Martin-L\"of type theory (MLTT) with uniqueness of
-identity proofs (UIP) [CITE]; in usual type theory,
-these two axioms are mutually exclusive, but the trick
-is that an object-level equality becomes a different
-type when viewed from meta level, so UA and UIP apply to
-different notions of ``equality'', keeping the system
-consistent (and sound with existing models of HoTT
-[CITE]).
+theory \cite{annenkov2023twolevel,voevodsky2013hts}. As
+the name implies, such a theory consists of two levels:
+the lower \emph{object} level is the main type theory,
+and a higher \emph{meta} level is used to internalize
+statements about object level which are external to it.
+A classical example given in the cited paper is a
+construction of a \emph{semisimplicial type of level
+$n$} for each external $n\in\mathbb{N}$; object level
+here is homotopy type theory (HoTT) with univalence
+axiom (UA) \cite{hottbook,kapulkin2021simplicial} and
+meta level is Martin-L\"of type theory (MLTT) with
+uniqueness of identity proofs (UIP)
+\cite{streicher1993investigations,hofmann1998groupoid};
+in usual type theory, these two axioms are mutually
+exclusive, but the trick is that an object-level
+equality becomes a different type when viewed from meta
+level, so UA and UIP apply to different notions of
+``equality'', keeping the system consistent (and sound
+with respect to existing models of HoTT
+\cite{annenkov2023twolevel,kapulkin2021simplicial,
+capriotti2016models}).
 
 We aim to generalize this construction in the following
 way. It can be said that an object level has a fixed
@@ -52,17 +59,21 @@ system? (We will call such systems \emph{reflective}.)
 Turns out, we would get quite a few useful
 metatheoretical results about object-level theory for
 free; in particular, Wadler's parametricity theorem
-[CITE] (for its formulation in dependently typed
-context, see [CITE] and [CITE]) about object-level
+\cite{wadler1989theorems,reynolds1983types} (for its
+formulation in dependently typed context, see
+\cite{Bernardy:Parametricity2010} and
+\cite{Altenkirch:Parametricity2024}) about object-level
 theory would be provable on the meta-level by means of
 specifying a relational model; a fraction of displayed
-type theory [CITE] can be obtained via similar
-translation of a type into a unary predicate. Another
-fun consequence is that object-level theory would get
-universe polymorphism via displacements as described by
-Conor Titania McBride [CITE] and Favonia [CITE]; we
-suspect that there might be other useful applications of
-internal interpretation.
+type theory \cite{Kolomatskaia_Shulman_2025} can be
+obtained via similar translation of a type into a unary
+predicate. Another fun consequence is that object-level
+theory would get universe polymorphism via displacements
+as described by Conor McBride \cite{McBride:Crude2011,
+McBride:Crude2012} and Favonia
+\cite{Favonia:Displacement2023}; we suspect that there
+might be other useful applications of internal
+interpretation.
 
 \subsection{Contributions}
 

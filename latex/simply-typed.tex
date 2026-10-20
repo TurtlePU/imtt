@@ -166,7 +166,8 @@ get to be reinterpreted. In this system,
 reinterpretation is nothing but a total function on
 closed values which is called whenever a value is
 substituted into such an $x$ (so, in a way, this is
-similar to hereditary substitution [CITE]).
+similar to hereditary substitution
+\cite{watkins2003concurrent,keller2010hereditary}).
 
 \begin{definition}[Values of $\SSTLC$]
 Values are denoted by metavariables $u,v$ in the BNF
@@ -290,7 +291,8 @@ allowing to refer only to let-bound terms inside other
 let-bound terms. Again, aside from that and the typing
 rule for universes, there's nothing different from the
 usual declarative typing rules for a Hindley-Milner type
-system \cite{Clement:ML1986}.
+system \cite{Clement:ML1986,damas1982principal,
+milner1978theory}.
 
 \begin{figure}
 \centering
@@ -463,7 +465,8 @@ system.
 \end{theorem}
 \begin{proof}
     Classic proof via parallel reduction relation
-    [CITE]. Parallel reduction is defined as:
+    \cite{takahashi1995parallel,barendregt1984lambda}.
+    Parallel reduction is defined as:
     \begin{mathpar}
         \inferrule{}{t\rightrightarrows t}
         \and
@@ -546,15 +549,17 @@ system.
     to a value.
 \end{theorem}
 \begin{proof}
-    Classic proof via saturated sets [CITE]. Let
-    $\mathsf{SN}$ be a set of terms which are strongly
-    normalizing with respect to $(\leadsto)$ and normal
-    forms of which are values. Let $\mathsf{Atomic}$ be
-    the least set of terms satisfying the following
-    conditions: variables $x$ are $\mathsf{Atomic}$; if
-    $t$ is $\mathsf{Atomic}$, then so are $\pi_i\,t$ and
-    $t\,s$. Then, let $t\to_\mathrm{WHR}t'$ be the
-    following relation on terms:
+    Classic proof via saturated sets
+    \cite{tait1967intensional,girard1989proofs,
+    luo1994computation}. Let $\mathsf{SN}$ be a set of
+    terms which are strongly normalizing with respect to
+    $(\leadsto)$ and normal forms of which are values.
+    Let $\mathsf{Atomic}$ be the least set of terms
+    satisfying the following conditions: variables $x$
+    are $\mathsf{Atomic}$; if $t$ is $\mathsf{Atomic}$,
+    then so are $\pi_i\,t$ and $t\,s$. Then, let
+    $t\to_\mathrm{WHR}t'$ be the following relation on
+    terms:
     \begin{mathpar}
         \inferrule{t\in\mathsf{SN}}
         {(\lambda x.s)t\to_\mathrm{WHR}s[t/x]}

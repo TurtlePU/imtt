@@ -103,12 +103,15 @@ computations inside reinterpretation by allowing
 expressions; inside splices, computation is allowed to
 bring terms to the boxed form for further
 interpretation. Such a typing discipline brings us very
-close to two-level type theories [CITE], but we found
-notation via modalities to be more convenient; such
-presentation also puts an accent on closeness of our
-system to metaprogramming systems with staging such as
-MetaOCaml and the like
-\cite{kawata2021dependentlytypedmultistagecalculus}.
+close to two-level type theories
+\cite{annenkov2023twolevel,kovacs2022staged}, but we
+found notation via modalities to be more convenient;
+such presentation also puts an accent on closeness of
+our system to metaprogramming systems with staging such
+as MetaOCaml and the like
+\cite{kiselyov2014metaocaml,
+kawata2021dependentlytypedmultistagecalculus,
+taha2000metaml}.
 
 \begin{figure}
 \centering
@@ -181,8 +184,10 @@ would have after interpretation in such a model.
 
 Typing rules are also a straightforward adaptation of a
 general recipe for bidirectional typing of
-dependently-typed systems \cite{Thiago2025} and are
-given in Figures~\ref{twoltt-wf}-\ref{twoltt-typing}.
+dependently-typed systems \cite{Thiago2025} (see also
+\cite{dunfield2021bidirectional,coquand1996algorithm})
+and are given in
+Figures~\ref{twoltt-wf}-\ref{twoltt-typing}.
 Important departure from standard bidirectional
 recipe ``constructors are checked, eliminators are
 inferred'' is that levels of types are always inferred
@@ -796,8 +801,8 @@ two subtle points:
 \begin{itemize}
     \item At this point, we don't know if system is
         strongly normalizing yet, therefore we
-        potentially might encounter an infinite chain of
-        equalities.
+        potentially might encounter an infinite chain
+        of equalities.
     \item In systems where equality is proof-relevant
         (and we want to be able to develop in that
         direction), different reduction chains might
@@ -811,7 +816,9 @@ and employ it in normalization. Since terms we reduce
 to find a witness are vanilla MLTT terms, they are
 strongly normalizing, so witness extraction terminates.
 
-TODO: provide interpretation definition.
+Once again, definition of interpretation is highly
+repetitive, so it is given in
+Appendix~\ref{interpretation-definition}.
 
 \subsection{Metatheoretical properties of
 \texorpdfstring{$\twoLTT$}{[[2]]LTT}}
@@ -829,11 +836,93 @@ is a conservative extension of MLTT.
 \end{theorem}
 \begin{proof}
     Classic proof via parallel reduction relation
-    [CITE]. Since interpretation computes as a
-    recursive functions on open terms, it commutes with
+    \cite{takahashi1995parallel,barendregt1984lambda}.
+    Since interpretation computes as a recursive
+    functions on open terms, it commutes with
     substitution, which is crucial for confluence.
 
-    TODO: write out parallel reduction?
+    $(\rightrightarrows)$ is the least relation on
+    terms and types closed under:
+    \begin{itemize}
+        \item reflexivity $t \rightrightarrows t$;
+        \item congruence: for every term/type former
+            $C$ \emph{other than} locking
+            $[\_]_\text{\faLock}$ and the type
+            annotations of $\mathrm{natind}_{x.T}$,
+            $\mathrm J_{xy.S}$ and ascription $(\_:T)$,
+            if $t_i \rightrightarrows t_i'$ then
+            $C[\vec t]\rightrightarrows C[\vec t\,']$;
+        \item redex rules (each premise may itself be
+            reflexive):
+    \end{itemize}
+    \begin{mathpar}
+        \inferrule{
+            t\rightrightarrows t'\\
+            s\rightrightarrows s'
+        }{((\lambda x.t):(x:S)\to T)\,s
+            \rightrightarrows t'[(s':S)/x]
+        }\and
+        \inferrule{t_i\rightrightarrows t_i'}{
+            \pi_i((t_1,t_2):(x:S)\times T)
+            \rightrightarrows t_i'
+        }\and
+        \inferrule{s_0\rightrightarrows s_0'}{
+            \mathrm{natind}_{x.T}(0:\mathrm{Nat}_\ell)
+            \{s_0,s_{\mathrm S}\}\rightrightarrows
+            (s_0':T[0/x])
+        }\and
+        \inferrule{
+            t\rightrightarrows t'\\
+            s_0\rightrightarrows s_0'\\
+            s_{\mathrm S}\rightrightarrows
+            s_{\mathrm S}'
+        }{
+            \mathrm{natind}_{x.T}(\mathrm S t
+            :\mathrm{Nat}_\ell)\{s_0,s_{\mathrm S}\}
+            \rightrightarrows
+            (s_{\mathrm S}' : \dots)\,t'\,
+            (\mathrm{natind}_{x.T}
+            (t':\mathrm{Nat}_\ell)
+            \{s_0',s_{\mathrm S}'\})
+        }\and
+        \inferrule{s\rightrightarrows s'}{
+            \mathrm J_{xy.S}(\mathrm{refl}:t_1=_Tt_2)
+            \,s
+            \rightrightarrows
+            (s':S[t_2/x,\mathrm{refl}/y])
+        }\and
+        \inferrule{ }
+        {[[t]_\text{\faLock}:\square_\kappa T
+        ]_\text{\faUnlock}\rightrightarrows t:T}
+        \and
+        \inferrule{t\rightrightarrows t'}
+        {[[t]_\text{\faUnlock}]_\text{\faLock
+        }\rightrightarrows t'}\and
+        \inferrule{t\rightrightarrows t'}
+        {(t:T)\rightrightarrows t'}
+        (t\ \text{synthesizing})
+        \and
+        \inferrule{s\rightrightarrows s'}{
+            s\llbracket [t]_\text{\faLock}:
+            \square_\kappa T\rrbracket
+            \rightrightarrows
+            s'\llbracket\cdot\vdash t\Leftarrow T
+            \rrbracket
+        }\and
+        \inferrule{t\rightrightarrows t'}{
+            t\llbracket T\rrbracket\rightrightarrows
+            t'.\mathrm{Tm}(t'.\cdot,
+            \ t'\llbracket\cdot\vdash T\rrbracket)
+        }\and
+        \inferrule{
+            s\rightrightarrows s'\\
+            u\rightrightarrows u'
+        }{
+            \mathrm{El}(\mathtt{Pi}(x:s)u)
+            \rightrightarrows
+            (x:\mathrm{El}(s'))\to\mathrm{El}(u')
+        }\ \text{(etc.\ for the $\mathrm{El}$-rules)}
+    \end{mathpar}
 \end{proof}
 
 \begin{theorem}[Type preservation for $\twoLTT$]
@@ -910,21 +999,19 @@ is a conservative extension of MLTT.
     provide a much simpler proof which delegates
     normalization to another type system. To be more
     precise, this system $\mathcal{S}$ is Martin-L\"of
-    type theory with $\omega+\omega$ universes and
-    first-class universe polymorphism allowed to range
-    over first $\omega$ universes; we know it to be
-    strongly normalizing [CITE]. Then, we define a
+    type theory with $\omega$ universes and; we know it
+    to be strongly normalizing
+    \cite{coquand2019canonicity}. So we define a
     translation function $[\_]$ which transforms types
     and terms of $\twoLTT$ into types and terms of
     $\mathcal{S}$: it preserves all vanilla grammar
     formers and only translates lock
-    $[\_]_\text{\faLock}$ into a function from the type
-    of models $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa
+    $[\_]_\text{\faLock}$ into a tuple of functions
+    from the type of models
+    $\mathcal{M}_{\ell_0,\ldots,\ell_\kappa
     }^{\ell'_0,\ldots,\ell'_\kappa}$ into interpreted
-    type. Since $\kappa$ is fixed, first-class universe
-    polymorphism is enough to translate it into a
-    function which accepts models for \emph{any} list
-    of levels of fitting length. Then, unlocking
+    type, one per model type occurring in a term.
+
     $[\_]_\text{\faUnlock}$ translates into application
     of this function to identity model of fitting
     level; interpretation translates into application.
