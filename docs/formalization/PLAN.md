@@ -6,7 +6,7 @@ Companion to the [coverage and label map](README.md). Baseline: paper revision `
 
 Deliver two related developments:
 
-1. A faithful, deep syntactic formalization of the restricted simply typed calculus (SSTLC), the dependent two-level calculus, their internal models and interpretations, and all claims listed in the coverage map.
+1. A faithful, deep syntactic formalization of the restricted simply typed calculus (SSTLC), the dependent two-level calculus, their internal models and interpretations, and the contribution-specific claims listed in the coverage map.
 2. Executable syntax operations, SSTLC inference, checked reduction/interpretation and normalization, extracted to OCaml with a small documented interface.
 
 Rocq proves facts **about the object calculus**. Its own universes, conversion, function η or proof irrelevance must not silently discharge an object-language equation absent from the paper. Object identity proofs stored in models are object terms, not erased Rocq proofs.
@@ -15,13 +15,41 @@ Aim for a constructive, axiom-free closed development. Generic no-go statements 
 
 Generated OCaml inherits the extractor/compiler/runtime trust boundary; this is not a verified OCaml compiler project. Parsing and pretty-printing are untrusted unless proved separately, so raw input always crosses a verified checker.
 
+## 1.1 Reuse policy and dependency boundaries
+
+**Never re-formalize material already available in major Rocq libraries.** Import it; use notation aliases and prove only paper-specific representation bridges or extension lemmas. An inconvenient interface is not a reason to rebuild category theory, substitution algebra or a known base-calculus metatheory. If compatibility blocks reuse, record the mismatch and resolve the dependency/adapter choice before proceeding.
+
+The inspected sources below are references for dependency selection, not a claim that their current revisions have been built together:
+
+| Background | Existing formalization | Required local work |
+| --- | --- | --- |
+| Categories and terminal objects | UniMath [Core.Categories](https://github.com/UniMath/UniMath/blob/96eb565099e5e08e2542eba57f994217ed463195/UniMath/CategoryTheory/Core/Categories.v), [Limits.Terminal](https://github.com/UniMath/UniMath/blob/96eb565099e5e08e2542eba57f994217ed463195/UniMath/CategoryTheory/Limits/Terminal.v) | Notation/representation adapters only; choose precategory versus category to match the paper's hom-type assumptions. |
+| Cartesian closed structure | UniMath [Limits.BinProducts](https://github.com/UniMath/UniMath/blob/96eb565099e5e08e2542eba57f994217ed463195/UniMath/CategoryTheory/Limits/BinProducts.v), [Exponentials](https://github.com/UniMath/UniMath/blob/96eb565099e5e08e2542eba57f994217ed463195/UniMath/CategoryTheory/Exponentials.v), and Terminal | Reference the existing product/exponential interface. The paper's equation-free internal model encoding is a distinct syntactic construction, not a replacement CCC library. |
+| Presheaves and their categories of elements | UniMath [Presheaf](https://github.com/UniMath/UniMath/blob/96eb565099e5e08e2542eba57f994217ed463195/UniMath/CategoryTheory/Presheaf.v), [CategoryOfElementsPsh](https://github.com/UniMath/UniMath/blob/96eb565099e5e08e2542eba57f994217ed463195/UniMath/CategoryTheory/Categories/CategoryOfElementsPsh.v) | Check variance and HSET-valuedness; no new presheaf or elements construction. |
+| Categories with families | UniMath/TypeTheory [CwF_def.v](https://github.com/UniMath/TypeTheory/blob/d5d992d34649e1835d52f0a42e9a6b7058677060/TypeTheory/CwF/CwF_def.v): `cwf_structure`, `cwf` | Reference/import the represented-map CwF interface. Relate the required fragment to the paper's syntactic telescope; do not recreate the existing CwF theory. |
+| Standard de Bruijn substitution | [Autosubst](https://github.com/rocq-community/autosubst/tree/755000e9f8e10919791523e3a2675e36b92af636); the LogRel development also uses [Autosubst-OCaml](https://github.com/uds-psl/autosubst-ocaml) | Reuse generated operations and proved algebra. Add only the new lock boundary and interpretation/value-substitution cases. |
+| First-order unification | [FOUnify](https://github.com/rocq-archive/founify), [description](https://github.com/rocq-archive/founify/blob/master/description), [extraction roots](https://github.com/rocq-archive/founify/blob/master/extract.v) | A certified Robinson-style extraction candidate, not a tested modern dependency. Check archived compiler compatibility and preserve the paper's constructor arities in the encoding; select another certified component if necessary. |
+| Base MLTT logical relations and checking | [LogRel-Coq](https://github.com/CoqHott/logrel-coq/tree/9ca549d553bd41a6c00efb0655d23fa9a8dabd48), [its declarative rules](https://github.com/CoqHott/logrel-coq/blob/9ca549d553bd41a6c00efb0655d23fa9a8dabd48/theories/DeclarativeTyping.v) | Reuse matching results and interfaces. This revision has one universe and `TermFunEta`/`TermPairEta`; it is not an off-the-shelf proof for the paper's infinite noncumulative, η-free hierarchy or its full strong-normalization relation. |
+
+Pin mutually supported revisions after an import/build smoke check. UniMath/TypeTheory depends on UniMath, so do not choose their revisions independently merely because both sources were inspected. Current compiler support is a compatibility question, not permission to duplicate existing formalizations.
+
+Keep the executable syntactic core independent of the categorical reference layer where possible. A small semantic adapter target may import UniMath/TypeTheory without making those libraries part of the extracted dependency closure. Audit actual assumptions per target: importing UniMath is not grounds to assume univalence, extensionality, hom-set truncation or proof irrelevance for arbitrary object-language identity types. Do not identify the paper's potentially proof-relevant internal model with a set-valued external CwF without a justified bridge.
+
+For base MLTT, first match a reusable certified interface to the paper. Where LogRel-Coq differs, document precisely what can be transferred; η-rich conversion cannot decide η-free definitional equality merely by reuse. Seek an exact existing development or a justified translation. Only genuinely missing extension/bridge lemmas are local work. If no applicable normalization theorem is established, keep the dependent normalization milestone blocked; do not schedule a new background normalization formalization as a side project.
+
+## 1.2 Contribution-only scope
+
+The new coverage contains 23 explicit items: 4 definitions, 8 figures and 11 theorems. Six categorical background definitions are reference-only. The four items in `discussion.tex`—global-elements modality, modal computational reinterpretation, modal no-go and modal collapse—are excluded; they receive no modules, proofs, milestones or badges. Generic modal K, synthetic mathematics, general parametricity/displacement theory and speculative interpretation-of-interpretation are likewise not deliverables.
+
+Retain only concrete internal displacement/parametricity model instances that validate the new reinterpretation mechanism, using existing semantic constructions rather than redeveloping their theories. Retain the first no-go theorem in `nogo.tex` as motivation for the central construction. Structural lemmas are in scope only when required by an in-scope theorem or the requested extraction interface.
+
 ## 2. Specification audit: first milestone, not deferred cleanup
 
 Maintain the following issue register in this plan during implementation. For each item, record a precise formal statement, a minimal positive/negative example, a resolution and the affected coverage IDs. Do not change the paper in this planning PR. Any required mathematical correction needs a separate reviewed source change.
 
 | Gate | Source and issue | Required resolution |
 | --- | --- | --- |
-| G1 | `nogo.tex:30–96`, `discussion.tex:98–198`: primitive recursion on normal forms alone does not supply every compositionality equation used in the proofs. | State the normal-neutral application equation, substitution stability, reduction compatibility, typing and confluence explicitly. Prove the claimed implication, not an unconditional impossibility theorem. |
+| G1 | `nogo.tex:30–96`: primitive recursion on normal forms alone does not supply every compositionality equation used in the proof. | State the normal-neutral application equation, substitution stability, reduction compatibility, typing and confluence explicitly. Prove the claimed implication, not an unconditional impossibility theorem. |
 | G2 | `simply-typed.tex:276–335, 513–517, 581–590`: closed-value substitution, omitted closure condition in the parallel contraction, and saturation notation. | Preserve closedness in every substitution lemma; reconcile parallel and ordinary reductions. Check the printed inclusion into SAT versus the intended candidate X before using it. |
 | G3 | `dependently-typed.tex:238–452`: budget bounds, noncumulative universes, model-profile/quotation-level alignment and bidirectional annotations. | Make all presuppositions explicit; check Level-Uni/Level-Nat bounds, the model's coverage of quotation levels, dependent projection substitution and synthesis-preserving β outputs. Preserve the printed theorem or seek its correction; do not silently weaken exact synthesis preservation to conversion. |
 | G4 | `dependently-typed.tex:612–781, 838–927`: frozen quotes/types versus active splices; parallel congruence appears broader than one-step congruence. | Specify evaluation contexts crossing only splice boundaries, if intended. Prove ordinary-step inclusion in parallel reduction and parallel inclusion in ordinary multisteps. Do not enable unrestricted reduction under quotation or Box. |
@@ -29,11 +57,10 @@ Maintain the following issue register in this plan during implementation. For ea
 | G6 | `appendix.tex:225–320`: interpretation has no explicit splice clause, and conversion inserts proof-relevant transports. | Define splice environment semantics, all binder cases and an executable conversion certificate. Prove substitution/weakening compatibility of generated witnesses; deterministic choice alone does not establish this coherence. |
 | G7 | `dependently-typed.tex:977–991`, `appendix.tex:313–320, 393–395`: identity interpretation and all-equations-by-reflexivity claims without η. | Test neutral functions and dependent pairs, including η-expanded shallow embeddings. Prove object definitional equality exactly as stated or obtain a paper revision; propositional equality is a different theorem. Expand every parametricity component and its coherence proof. |
 | G8 | `dependently-typed.tex:993–1051`: normalization via finite tuples of model interpretations; conservativity is open-context while normalization is stated closed. | Close the finite model-instance set under substitution/reduction, use one stable typed translation, and establish a well-founded simulation. Account for administrative/stuttering steps. Prove an open normalization strengthening or a valid reduction to the closed theorem. Canonicity alone is not strong normalization. |
-| G9 | `discussion.tex:209–230`: modal collapse has only a proof idea. | State exactly what level(T) measures, which contexts are fixed, and which computational variant is quantified over. Test normal neutrals and high-level annotations; prove the stated budget-lowering lemma or report a counterexample. Do not infer computational collapse for the frozen modality. |
 
 Existing `src/stlc-r.agda` and `src/mltt-r.agda` are exploratory references, not proof provenance. Inventory holes and compare every constructor/rule with this pinned paper before porting anything. The STLC sketch's unfinished semantic definition must not become an assumed Rocq constant.
 
-**Gate to proceed:** freeze a rule-by-rule specification and record any unresolved theorem as blocked. Infrastructure and independent STLC work can continue, but dependent theorem badges cannot bypass G3–G9.
+**Gate to proceed:** freeze a rule-by-rule specification and record any unresolved theorem as blocked. Infrastructure and independent STLC work can continue, but dependent theorem badges cannot bypass G3–G8 or the library-compatibility gate.
 
 ## 3. Representation and proposed directory/file structure
 
@@ -51,20 +78,16 @@ formalization/
     imtt.opam                       # exact supported dependencies
     theories/
       dune
+      Imports/
+        Stdlib.v                    # reuse finite indices/maps/relations
+        Binding.v                   # Autosubst imports and notation
+        BaseCalculi.v               # certified base-theory interfaces
+      Adapters/
+        BaseSyntax.v                # syntax/rule correspondence only
+        BaseMetatheory.v            # transfer existing results
       Common/
-        Names.v                     # indices, scopes, finite maps
-        Levels.v                    # budgets and finite level profiles
-        Relations.v                 # multisteps, joinability, SN
+        Levels.v                    # paper-specific budgets/profiles
         Certificates.v              # informative trace datatypes
-      Category/
-        Category.v                  # category, terminal, elements
-        Presheaf.v                  # contravariance and laws
-        CwF.v                       # external CwF presentation
-      Base/
-        STLC.v                      # syntax, typing, reduction
-        MLTT.v                      # noncumulative Pi/Sigma/Id/Nat/U
-        MLTTStructural.v            # substitution, conversion
-        MLTTNormalization.v         # exact base SN theorem
       SSTLC/
         Syntax.v                    # grammar, values, model templates
         Substitution.v              # ordinary and closed-value forms
@@ -76,7 +99,7 @@ formalization/
         Reducibility.v              # saturation and fundamental lemma
         Normalization.v
         Conservativity.v
-        Unification.v               # occurs check and correctness
+        UnificationAdapter.v        # reuse certified unifier, encode types
         Inference.v                 # algorithm and decidability
       TwoLevel/
         Syntax.v
@@ -98,11 +121,8 @@ formalization/
       Models/
         Displacement.v              # syntax generator and typing
         Parametricity.v             # full components and laws
-        Examples.v                  # free theorem / synthetic transfer
       Limits/
         Naive.v                     # abstract assumptions and no-go
-        Modal.v                     # global modality and modal no-go
-        Collapse.v                  # exact budget-lowering statement
       API/
         Errors.v                    # structured errors, resource limits
         Public.v                    # first-order extraction boundary
@@ -110,6 +130,10 @@ formalization/
       Paper/
         Claims.v                    # stable exports for every map row
         Assumptions.v               # public theorem dependency audit
+    semantics/                      # separate reference/adapter target
+      dune
+      References.v                  # UniMath + TypeTheory imports only
+      ModelBridge.v                 # only required paper-specific bridge
     extraction/
       dune
       Extract.v                     # selected roots only, OCaml backend
@@ -138,7 +162,7 @@ formalization/
     dependent/
 ```
 
-Avoid many competing representations. A scoped/typed view may wrap raw ASTs for proofs, but prove erasure/refinement and keep the extraction path first-order to reduce casts. An external semantic CwF record may organize mathematics; it does not replace the syntactic term that inhabits the paper's internal model type.
+Avoid many competing representations. A scoped/typed view may wrap raw ASTs for proofs, but prove erasure/refinement and keep the extraction path first-order to reduce casts. Reuse existing base syntax where compatible; adapters must not conceal a second implementation of background theory. Imported external CwFs organize the reference layer; they do not replace the syntactic term inhabiting the paper's internal model type. No local Category/Presheaf/CwF theory or standalone base-normalization proof is planned.
 
 `Paper/Claims.v` re-exports or bundles the actual definitions/theorems under the exact names in the coverage map; it contains no duplicate assumed statements. Multi-assertion preservation exports all conjuncts. Figure exports expose the full mutually defined judgments, not a token declaration named after the figure.
 
@@ -146,19 +170,19 @@ Avoid many competing representations. A scoped/typed view may wrap raw ASTs for 
 
 ### M0 — Freeze the specification and toolchain
 
-Complete the issue register, constructor/rule matrix and Agda comparison. Pin a supported Rocq/Stdlib/OCaml/Dune combination and dependency revisions; Rocq 9.2 is a documentation baseline, not a tested build claim here. Start with Stdlib and minimal local support; reuse another normalization library only after matching universes, identity elimination, reduction and η policy.
+Complete the issue register, constructor/rule matrix and Agda comparison. Pin a supported Rocq/Stdlib/OCaml/Dune combination and compatible library revisions after import smoke checks; Rocq 9.2 is only an extraction-documentation reference, not a compiler version to impose on older dependencies. Record exact imported definitions/theorems, their assumptions and their relation to the paper. Resolve the LogRel universe/η/normalization mismatch before claiming it discharges base metatheory. Do not replace a blocked reuse decision with local redevelopment.
 
-Acceptance: each of the 33 explicit items has a formal statement owner and dependency list; every changed interpretation of a printed rule is visible.
+Acceptance: each of the 23 in-scope explicit items has an owner and dependency list; each background item has an upstream reference, not a local proof task. All changed interpretations of printed rules and dependency incompatibilities are visible.
 
-### M1 — Binding, levels and base calculi
+### M1 — Reuse binding and base-calculus interfaces
 
-Implement raw syntax and capture-avoiding operations. Prove renaming identity/composition, lifting, substitution identity/composition, weakening, scope preservation, free-variable and level invariants. For the lock discipline, prove that ordinary variables cannot cross the lock and splices cannot capture inner locals.
+Reuse standard binding operations and their identity/composition/lifting laws from Autosubst or the selected base development. Instantiate its machinery for the new constructors; prove only additional scope, level and interpretation-specific obligations. For the new lock discipline, prove that ordinary variables cannot cross the lock and splices cannot capture inner locals.
 
-Define base STLC and exact base MLTT: noncumulative indexed universes, Pi, Sigma, intensional identity/J and indexed naturals, without object η. Prove their structural and conversion lemmas.
+Import the base STLC/MLTT interfaces and their existing structural/conversion results. Define paper-specific syntax correspondences only where necessary, with explicit forward/backward preservation properties. Require a match to noncumulative indexed universes, Pi/Sigma, intensional identity/J and indexed naturals without object η; do not equate a richer η-theory with this one.
 
-Establish a kernel-checked base MLTT normalization result before relying on it for equality-witness generation. Either port a matching proof or develop syntactic reducibility. Separate finite-fragment universe sizing from arbitrary syntactic level indices. This is a substantial proof milestone, not a one-line appeal to Rocq normalization.
+Discharge the base-normalization dependency through an applicable existing theorem and a justified transfer, before relying on it for witness generation. Separate finite-fragment universe sizing from arbitrary syntactic level indices, and strong normalization from weak normalization or conversion decidability. If existing results do not establish the required theorem, report the dependency gap and block affected milestones rather than starting an independent base-MLTT formalization.
 
-Acceptance: binder tests, substitution proofs and the precise base-normalization dependency compile without axioms.
+Acceptance: imports, paper-specific adapters and lock/substitution lemmas compile with audited assumptions; every required base result has an exact upstream provenance or is visibly blocked.
 
 ### M2 — Complete SSTLC definitions and preservation
 
@@ -172,7 +196,7 @@ Acceptance: every rule in the three SSTLC figures has both a constructor and a r
 
 Define parallel development and prove substitution compatibility, diamond, and agreement with ordinary multisteps. Prove strong normalization using the saturated-set/logical-relations argument, including interpretation reducibility and the fundamental lemma. Derive the stated normal-form characterization and conservativity with the same result type.
 
-Implement Hindley–Milner-style inference with occurs-checking unification, fresh instantiation, context-aware generalization and explicit expansion of model type templates. Prove unification soundness/completeness and inference soundness/completeness, yielding the paper's decidability theorem. Principality is an additional goal only if separately stated and proved.
+Reuse a certified unifier/inference component where its interface matches; dependency selection must precede implementation of standard occurs-checking, instantiation or generalization. Implement and prove only the new model-template expansion and restricted-let/interpretation integration, deriving inference soundness/completeness and the paper's decidability theorem from imported guarantees. A missing suitable component is a dependency decision, not an automatic unification side project. Principality is not an extra deliverable.
 
 Acceptance: extraction of SSTLC inference can be demonstrated before the harder dependent milestones; rejection examples include illegal open let bindings and scope escapes.
 
@@ -182,7 +206,7 @@ Formalize each of the five dependent figures after resolving G3/G4. Include all 
 
 Prove context conversion, weakening, lock-aware substitution, presupposition, inversion and reduction compatibility. Record annotations needed to preserve the syntactic mode of a reduct. A frozen quotation's object skeleton remains unchanged; any allowed reduction of embedded host computations must follow an explicit splice-context rule.
 
-Acceptance: forbidden nested locks and reinterpretation of inner object variables are rejected; allowed splices and modal K are derived without introducing an object computation rule under quotes.
+Acceptance: forbidden nested locks and reinterpretation of inner object variables are rejected; allowed splices work without introducing an object computation rule under quotes. No separate modal-K theory is developed.
 
 ### M5 — Full finite internal model telescope
 
@@ -222,15 +246,15 @@ Strengthen normalization to the open contexts required by T11, or prove a sound 
 
 Acceptance: full strong normalization for the specified reduction relation, not merely termination of one evaluator; normal-form characterization includes neutral/open terms.
 
-### M9 — Applications and limitations
+### M9 — Internal model instances and the central no-go result
 
-Construct displacement models and prove level shifting, typing and the intended term correspondence. Expand every parametricity field abbreviated “componentwise” or “…”; prove all naturality and identity-type coherence obligations. Resolve the appendix's explicit η warning before claiming those models inhabit the telescope.
+Reuse established semantic displacement and relational constructions; implement only their concrete object-syntax realizations needed to demonstrate the paper's reinterpretation. Prove those realizations inhabit the new internal telescope and satisfy the required term correspondence. Expand fields abbreviated “componentwise” or “…” only insofar as necessary to construct these instances, reusing existing laws through the adapter. Resolve the appendix's η warning before asserting well-typedness.
 
-Provide a small checked relational/free-theorem example and a generic synthetic-transfer lemma from an already checked model. Do not broaden this into a formalization of arbitrary higher geometry or of the paper's explicitly out-of-scope self-interpreting extensions.
+Do not add a general parametricity development, a generic synthetic-transfer lemma, a modal/global-elements library or a new universe-displacement theory. Concrete examples exercise the new interpreter; they do not expand the theorem list with standard background or remarks.
 
-Formalize the two no-go results parametrically with the explicit hypotheses from G1. For collapse, formulate the exact computational variant and prove budget lowering for normal forms. A counterexample is a specification result, not permission to add an axiom.
+Formalize only the first no-go theorem in `nogo.tex`, with G1's explicit hypotheses. The modal variant and collapse theorem in the discussion are out of scope and get no badges or modules.
 
-Acceptance: application claims and limitations are separately audited; no global normalization assumptions are smuggled into executable definitions.
+Acceptance: the concrete internal-model realizations and central no-go claim are audited; no general background theory is duplicated and no discussion-section side quest is added.
 
 ### M10 — Certified executable boundary and OCaml delivery
 
@@ -273,7 +297,8 @@ Acceptance: each coverage row resolves to the correct statement/definition and, 
 
 | Area | Required checks |
 | --- | --- |
-| Rule coverage | Every grammar constructor and rule has a mapped definition plus positive/negative examples; all 33 explicit items and appendix/helper rows are traced. |
+| Contribution coverage | All 23 in-scope explicit items and necessary appendix/helper rows are traced. Six categorical background items resolve to existing libraries; four discussion items are excluded. |
+| Reuse | Exact upstream modules/theorems and revisions recorded; dependency/assumption checks pass; local adapters contain only paper-specific bridges, not duplicate background theory. |
 | Binding and modality | Rename/substitute composition; no capture; lock separation; nested-lock rejection; legitimate host splice computation without object reduction under quote. |
 | Mathematical metatheory | Kernel-checked preservation, confluence, strong normalization and conservativity; no replacement of SN with canonicity or evaluator termination. |
 | Models/witnesses | Complete telescopes; all transports; nontrivial model laws; conversion certificate replay; substitution coherence; exact identity equation; η-sensitive examples. |
@@ -288,4 +313,3 @@ Stop a claim at its unresolved gate. Preserve completed independent modules, rec
 ## 6. Scope of this planning PR
 
 Only this plan and the coverage summary are added. No Rocq files, extracted OCaml, build configuration, tests, badge macros, manuscript edits or generated PDFs are included. The implementation will require its own reviewed milestones; the high-risk dependent proofs must not be presented as routine transcription.
-
